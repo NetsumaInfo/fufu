@@ -9,6 +9,8 @@ process.env.KV_REST_API_URL =
   process.env.KV_REST_API_URL ?? 'https://kv.example.vercel-storage.com';
 process.env.KV_REST_API_TOKEN = process.env.KV_REST_API_TOKEN ?? 'test-token';
 process.env.YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY ?? 'test-youtube-key';
+process.env.YOUTUBE_PLAYLIST_ID = process.env.YOUTUBE_PLAYLIST_ID ?? 'test-playlist-id';
+process.env.YOUTUBE_CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID ?? '';
 process.env.NEXT_PUBLIC_SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN ?? '';
 process.env.SENTRY_DSN = process.env.SENTRY_DSN ?? '';
 process.env.RESEND_API_KEY = process.env.RESEND_API_KEY ?? '';

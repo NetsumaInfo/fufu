@@ -1,5 +1,8 @@
+import type { AmvListResponse } from '@/types/amv';
+
 import type { Env } from './env';
 import { env } from './env';
+import { cacheKeys } from './cacheKeys';
 import { captureException } from './sentry';
 
 type FetchFn = typeof fetch;
@@ -182,6 +185,35 @@ export const kvClient = (options: KvClientOptions = {}): KvJsonClient => {
 };
 
 export const kv = kvClient();
+
+const AMV_LIST_TTL_SECONDS = 1030 * 60;
+
+export type AmvCacheClient = {
+  getAmvList: () => Promise<AmvListResponse | null>;
+  setAmvList: (_payload: AmvListResponse) => Promise<void>;
+  getLastAmvSync: () => Promise<string | null>;
+};
+
+export const createAmvCache = (client: KvJsonClient): AmvCacheClient => ({
+  async getAmvList() {
+    const value = await client.getJson<AmvListResponse>(cacheKeys.amvList);
+    return value ?? null;
+  },
+  async setAmvList(payload) {
+    await client.setJson(cacheKeys.amvList, payload, { ttl: AMV_LIST_TTL_SECONDS });
+    await client.setJson(cacheKeys.amvLastSync, { syncedAt: payload.syncedAt });
+  },
+  async getLastAmvSync() {
+    const record = await client.getJson<{ syncedAt: string }>(cacheKeys.amvLastSync);
+    return record?.syncedAt ?? null;
+  },
+});
+
+const amvCache = createAmvCache(kv);
+
+export const getAmvList = amvCache.getAmvList;
+export const setAmvList = amvCache.setAmvList;
+export const getLastAmvSync = amvCache.getLastAmvSync;
 
 export type KvEnvironment = Pick<
   Env,

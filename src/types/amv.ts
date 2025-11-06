@@ -1,15 +1,13 @@
 export type AmvVideo = {
   id: string;
   title: string;
-  synopsis: string;
-  youtubeId: string;
+  description: string;
+  thumbnail: string;
   publishedAt: string;
-  thumbnailUrl: string;
-  durationSeconds?: number;
-  createdBy?: string;
+  durationSeconds: number;
 };
 
-export type AmvCollection = {
-  updatedAt: string;
+export type AmvListResponse = {
   videos: AmvVideo[];
+  syncedAt: string;
 };
