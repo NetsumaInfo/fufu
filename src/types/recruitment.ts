@@ -1,8 +1,8 @@
 import type { z } from 'zod';
 
-import { recruitmentPayloadSchema } from '@/lib/validators';
+import { recruitmentFormSchema } from '@/lib/validators';
 
-export type RecruitmentSubmission = z.infer<typeof recruitmentPayloadSchema>;
+export type RecruitmentSubmission = z.infer<typeof recruitmentFormSchema>;
 
 export type RecruitmentNotification = {
   submission: RecruitmentSubmission;
