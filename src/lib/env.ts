@@ -42,6 +42,8 @@ const envSchema = z.object({
     .string()
     .min(1, 'KV_REST_API_TOKEN is required to authenticate with Vercel KV.'),
   YOUTUBE_API_KEY: z.string().min(1, 'YOUTUBE_API_KEY is required for YouTube sync.'),
+  YOUTUBE_PLAYLIST_ID: optionalString(),
+  YOUTUBE_CHANNEL_ID: optionalString(),
   RESEND_API_KEY: optionalString(),
   DISCORD_WEBHOOK_URL: optionalString({ url: true }),
   ADMIN_REFRESH_TOKEN: optionalString(),
@@ -74,6 +76,8 @@ const rawEnv = {
   KV_REST_API_URL: process.env.KV_REST_API_URL,
   KV_REST_API_TOKEN: process.env.KV_REST_API_TOKEN,
   YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
+  YOUTUBE_PLAYLIST_ID: process.env.YOUTUBE_PLAYLIST_ID,
+  YOUTUBE_CHANNEL_ID: process.env.YOUTUBE_CHANNEL_ID,
   RESEND_API_KEY: process.env.RESEND_API_KEY,
   DISCORD_WEBHOOK_URL: process.env.DISCORD_WEBHOOK_URL,
   ADMIN_REFRESH_TOKEN: process.env.ADMIN_REFRESH_TOKEN,
@@ -97,6 +101,13 @@ if (!parsed.success) {
 
   throw new Error(
     `Invalid environment configuration:\n${formatted}\n\n` +
+      'Refer to specs/01-mvp/03-setup-shared-infra.md or .env.example for required values.'
+  );
+}
+
+if (!parsed.data.YOUTUBE_PLAYLIST_ID && !parsed.data.YOUTUBE_CHANNEL_ID) {
+  throw new Error(
+    'Invalid environment configuration:\n�?� YOUTUBE_PLAYLIST_ID or YOUTUBE_CHANNEL_ID must be provided for YouTube sync.\n\n' +
       'Refer to specs/01-mvp/03-setup-shared-infra.md or .env.example for required values.'
   );
 }
