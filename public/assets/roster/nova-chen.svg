@@ -1,0 +1,48 @@
+<svg width="360" height="360" viewBox="0 0 360 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="360" height="360" rx="48" fill="url(#paint0_linear_nova)" />
+  <g filter="url(#filter0_f_nova)">
+    <circle cx="108" cy="122" r="82" fill="#61F9F5" opacity="0.6" />
+  </g>
+  <g filter="url(#filter1_f_nova)">
+    <circle cx="256" cy="236" r="92" fill="#5F87FF" opacity="0.55" />
+  </g>
+  <path
+    d="M126 96c26-20 78-16 100 18 20 30 12 74-24 96-42 26-98 10-116-26-22-44 6-78 40-88Z"
+    fill="url(#paint1_linear_nova)"
+    opacity="0.85"
+  />
+  <defs>
+    <linearGradient id="paint0_linear_nova" x1="40" y1="28" x2="320" y2="320" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#051629" />
+      <stop offset="0.6" stop-color="#0B2034" />
+      <stop offset="1" stop-color="#051221" />
+    </linearGradient>
+    <linearGradient id="paint1_linear_nova" x1="132" y1="92" x2="252" y2="252" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#40B2FF" />
+      <stop offset="1" stop-color="#9C7BFF" stop-opacity="0.55" />
+    </linearGradient>
+    <filter
+      id="filter0_f_nova"
+      x="-18"
+      y="-4"
+      width="252"
+      height="252"
+      filterUnits="userSpaceOnUse"
+      color-interpolation-filters="sRGB"
+    >
+      <feGaussianBlur stdDeviation="28" />
+    </filter>
+    <filter
+      id="filter1_f_nova"
+      x="112"
+      y="92"
+      width="288"
+      height="288"
+      filterUnits="userSpaceOnUse"
+      color-interpolation-filters="sRGB"
+    >
+      <feGaussianBlur stdDeviation="28" />
+    </filter>
+  </defs>
+</svg>
+

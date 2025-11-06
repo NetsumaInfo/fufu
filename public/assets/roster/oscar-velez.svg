@@ -1,0 +1,41 @@
+<svg width="360" height="360" viewBox="0 0 360 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="360" height="360" rx="48" fill="url(#paint0_linear_oscar)" />
+  <g opacity="0.8">
+    <path
+      d="M90 276c44-40 78-86 112-144 28 74 68 122 132 144-40 20-78 28-120 28-52 0-92-8-124-28Z"
+      fill="url(#paint1_linear_oscar)"
+    />
+  </g>
+  <path
+    d="M130 110c12-24 44-34 66-22 20 12 30 42 18 64-12 22-42 30-64 18-24-12-32-40-20-60Z"
+    fill="url(#paint2_linear_oscar)"
+    opacity="0.85"
+  />
+  <circle cx="250" cy="128" r="52" fill="url(#paint3_radial_oscar)" opacity="0.7" />
+  <defs>
+    <linearGradient id="paint0_linear_oscar" x1="48" y1="36" x2="320" y2="312" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#040C1C" />
+      <stop offset="1" stop-color="#051626" />
+    </linearGradient>
+    <linearGradient id="paint1_linear_oscar" x1="108" y1="132" x2="308" y2="332" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1B46E3" stop-opacity="0.85" />
+      <stop offset="1" stop-color="#61F9F5" stop-opacity="0.45" />
+    </linearGradient>
+    <linearGradient id="paint2_linear_oscar" x1="128" y1="96" x2="214" y2="184" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4A70FF" />
+      <stop offset="1" stop-color="#1CD5FF" stop-opacity="0.6" />
+    </linearGradient>
+    <radialGradient
+      id="paint3_radial_oscar"
+      cx="0"
+      cy="0"
+      r="1"
+      gradientUnits="userSpaceOnUse"
+      gradientTransform="translate(250 128) rotate(75) scale(90)"
+    >
+      <stop stop-color="#61F9F5" stop-opacity="0.9" />
+      <stop offset="1" stop-color="#61F9F5" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+</svg>
+

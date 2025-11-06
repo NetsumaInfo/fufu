@@ -1,0 +1,48 @@
+<svg width="360" height="360" viewBox="0 0 360 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="360" height="360" rx="48" fill="url(#paint0_linear_mina)" />
+  <g filter="url(#filter0_f_mina)">
+    <circle cx="252" cy="108" r="78" fill="#B77BFF" opacity="0.75" />
+  </g>
+  <g filter="url(#filter1_f_mina)">
+    <circle cx="132" cy="236" r="96" fill="#61F9F5" opacity="0.6" />
+  </g>
+  <path
+    d="M212 82c-12 32-16 70-4 108 16 52-14 88-66 78 46 28 118 0 134-66 14-60-16-104-64-120Z"
+    fill="url(#paint1_linear_mina)"
+    opacity="0.9"
+  />
+  <defs>
+    <linearGradient id="paint0_linear_mina" x1="36" y1="48" x2="312" y2="330" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A1030" />
+      <stop offset="0.52" stop-color="#231841" />
+      <stop offset="1" stop-color="#0E0A1F" />
+    </linearGradient>
+    <linearGradient id="paint1_linear_mina" x1="168" y1="86" x2="280" y2="296" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#925CFF" />
+      <stop offset="1" stop-color="#61F9F5" stop-opacity="0.55" />
+    </linearGradient>
+    <filter
+      id="filter0_f_mina"
+      x="114"
+      y="-30"
+      width="276"
+      height="276"
+      filterUnits="userSpaceOnUse"
+      color-interpolation-filters="sRGB"
+    >
+      <feGaussianBlur stdDeviation="24" />
+    </filter>
+    <filter
+      id="filter1_f_mina"
+      x="-12"
+      y="92"
+      width="288"
+      height="288"
+      filterUnits="userSpaceOnUse"
+      color-interpolation-filters="sRGB"
+    >
+      <feGaussianBlur stdDeviation="24" />
+    </filter>
+  </defs>
+</svg>
+

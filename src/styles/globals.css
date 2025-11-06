@@ -1,0 +1,255 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --solo-border: rgba(108, 142, 255, 0.25);
+    --solo-surface: rgba(11, 17, 34, 0.85);
+    --solo-radius: 1.25rem;
+  }
+
+  *,
+  *::before,
+  *::after {
+    border-color: var(--solo-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: #03050e;
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: #03050e;
+    color: #e2e8ff;
+    font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
+    text-rendering: optimizeLegibility;
+  }
+
+  body::before {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    content: '';
+    background:
+      radial-gradient(120% 120% at 20% 25%, rgba(71, 121, 255, 0.22) 0%, transparent 58%),
+      radial-gradient(100% 100% at 80% 18%, rgba(97, 249, 245, 0.22) 0%, transparent 60%);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-accent, var(--font-sans, 'Inter', system-ui, sans-serif));
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h5,
+  h6 {
+    font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
+    letter-spacing: 0.02em;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  section[id] {
+    scroll-margin-top: calc(var(--nav-height) + 1.5rem);
+  }
+
+  ::selection {
+    color: #f8fafc;
+    background-color: rgba(97, 249, 245, 0.35);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  .nav-surface {
+    backdrop-filter: blur(18px);
+    background:
+      linear-gradient(120deg, rgba(10, 16, 32, 0.85) 0%, rgba(11, 19, 39, 0.74) 45%, rgba(15, 24, 46, 0.65) 100%),
+      radial-gradient(120% 120% at 10% -20%, rgba(63, 100, 245, 0.35) 0%, transparent 55%);
+    border-bottom: 1px solid rgba(100, 140, 255, 0.2);
+  }
+
+  .team-card {
+    position: relative;
+    border-radius: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: 100%;
+    overflow: hidden;
+    padding: 1.5rem;
+    border: 1px solid rgba(108, 142, 255, 0.18);
+    background:
+      linear-gradient(140deg, rgba(12, 18, 36, 0.88) 0%, rgba(18, 27, 51, 0.82) 55%, rgba(22, 34, 62, 0.7) 100%),
+      radial-gradient(110% 110% at 16% 18%, rgba(95, 135, 255, 0.25) 0%, transparent 58%);
+    box-shadow: 0 0 0 1px rgba(95, 135, 255, 0.12), 0 30px 45px -38px rgba(4, 7, 20, 0.95);
+    transition: box-shadow 220ms ease, transform 220ms ease;
+    transform: translateY(0);
+  }
+
+  .team-card:hover,
+  .team-card:focus-within {
+    box-shadow: 0 0 0 1px rgba(97, 249, 245, 0.35), 0 45px 80px -36px rgba(19, 132, 162, 0.55);
+    transform: translateY(-2px);
+  }
+
+  .team-card__halo {
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+      radial-gradient(80% 80% at 20% 15%, rgba(97, 249, 245, 0.22) 0%, transparent 65%),
+      radial-gradient(85% 85% at 80% 20%, rgba(95, 135, 255, 0.24) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 260ms ease;
+  }
+
+  .team-card:hover .team-card__halo,
+  .team-card:focus-within .team-card__halo {
+    opacity: 1;
+  }
+
+  .team-card__avatar {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+      radial-gradient(120% 120% at 15% 85%, rgba(97, 249, 245, 0.24) 0%, transparent 70%),
+      linear-gradient(135deg, rgba(16, 24, 46, 0.85) 0%, rgba(16, 24, 46, 0.55) 65%, rgba(16, 24, 46, 0.35) 100%);
+    aspect-ratio: 4 / 3;
+    isolation: isolate;
+  }
+
+  .team-card__avatar-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: inherit;
+    background:
+      linear-gradient(135deg, rgba(16, 24, 46, 0.9) 0%, rgba(25, 37, 68, 0.85) 55%, rgba(34, 53, 98, 0.8) 100%),
+      radial-gradient(80% 80% at 20% 20%, rgba(97, 249, 245, 0.18) 0%, transparent 70%),
+      radial-gradient(85% 85% at 80% 15%, rgba(95, 135, 255, 0.2) 0%, transparent 75%);
+    color: rgba(222, 234, 255, 0.92);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 600;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    text-shadow: 0 0 18px rgba(97, 249, 245, 0.45);
+  }
+
+  .team-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .team-card:hover .team-card__image,
+  .team-card:focus-within .team-card__image {
+    transform: scale(1.04);
+  }
+
+  .team-card__avatar-glow {
+    position: absolute;
+    inset: -1px;
+    pointer-events: none;
+    border-radius: inherit;
+    background:
+      radial-gradient(75% 75% at 50% 85%, rgba(97, 249, 245, 0.24) 0%, transparent 70%),
+      radial-gradient(90% 90% at 50% 10%, rgba(95, 135, 255, 0.2) 0%, transparent 80%);
+    mix-blend-mode: screen;
+    opacity: 0;
+    transition: opacity 220ms ease;
+  }
+
+  .team-card:hover .team-card__avatar-glow,
+  .team-card:focus-within .team-card__avatar-glow {
+    opacity: 0.45;
+  }
+
+  .handle-chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    padding: 0.4rem 0.9rem;
+    background: rgba(9, 14, 26, 0.72);
+    border: 1px solid rgba(108, 142, 255, 0.3);
+    backdrop-filter: blur(12px);
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.35em;
+    color: rgba(222, 234, 255, 0.85);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-gradient {
+    background-image: linear-gradient(120deg, #5f87ff 0%, #61f9f5 50%, #b77bff 100%);
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .glass-ring {
+    box-shadow: 0 0 0 1px rgba(97, 249, 245, 0.08), inset 0 0 0 1px rgba(63, 100, 245, 0.12);
+    border-radius: var(--solo-radius);
+  }
+
+  .solo-border {
+    border: 1px solid rgba(108, 142, 255, 0.2);
+    border-radius: var(--solo-radius);
+  }
+
+  .solo-backdrop {
+    backdrop-filter: blur(20px);
+  }
+
+  .mesh-overlay {
+    position: relative;
+  }
+
+  .mesh-overlay::before {
+    position: absolute;
+    inset: 0;
+    content: '';
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(63, 100, 245, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(63, 100, 245, 0.08) 1px, transparent 1px);
+    background-size: 140px 140px;
+    opacity: 0.4;
+    mix-blend-mode: screen;
+  }
+
+  .shadow-card-glow {
+    box-shadow: 0 0 20px rgba(97, 249, 245, 0.35), 0 0 40px rgba(95, 135, 255, 0.2);
+  }
+}
