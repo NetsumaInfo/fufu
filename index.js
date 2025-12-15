@@ -19,9 +19,17 @@ console.log(`[server] Node.js version: ${process.version}`);
 // Fonction pour vérifier et builder si nécessaire
 function checkAndBuild() {
     const buildDir = path.join(__dirname, '.next');
+    const buildIdFile = path.join(buildDir, 'BUILD_ID');
 
-    if (!dev && !existsSync(buildDir)) {
-        console.log('[server] ⚠️  Build directory not found. Building Next.js...');
+    // Vérifier si un build de production existe vraiment
+    if (!dev && !existsSync(buildIdFile)) {
+        if (existsSync(buildDir)) {
+            console.log('[server] ⚠️  .next directory exists but no valid production build found.');
+        } else {
+            console.log('[server] ⚠️  Build directory not found.');
+        }
+
+        console.log('[server] Building Next.js for production...');
         console.log('[server] This may take a few minutes...');
 
         try {
@@ -35,7 +43,7 @@ function checkAndBuild() {
             process.exit(1);
         }
     } else if (!dev) {
-        console.log('[server] ✅ Build directory found, skipping build.');
+        console.log('[server] ✅ Valid production build found, skipping build.');
     }
 }
 
