@@ -4,21 +4,29 @@ Site vitrine moderne et premium pour le collectif AMV Fulguria Team.
 
 ## 🚀 Démarrage rapide
 
+### Développement local (recommandé)
+
 ```bash
 # Installation des dépendances
 npm install
 
-# Lancer le serveur de développement
+# Lancer le serveur de développement avec hot-reload
 npm run dev
+```
 
-# Build de production
+Le site sera accessible sur [http://localhost:3000](http://localhost:3000)
+
+### Production
+
+```bash
+# Build de production (requis avant npm start)
 npm run build
 
 # Lancer le serveur de production
 npm start
 ```
 
-Le site sera accessible sur [http://localhost:3000](http://localhost:3000)
+> **Note**: `npm start` nécessite un build de production préalable. Pour le développement, utilisez toujours `npm run dev`.
 
 ## 📁 Structure du projet
 
