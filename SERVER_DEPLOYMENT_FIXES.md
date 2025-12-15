@@ -2,6 +2,19 @@
 
 ## Problèmes détectés
 
+### ✅ Solution pour script de startup verrouillé
+
+Si votre hébergeur ne vous permet pas de modifier le script de startup, **pas de problème !** 
+
+Le fichier `server.js` a été modifié pour :
+- ✅ Détecter automatiquement si le build `.next/` existe
+- ✅ Exécuter `npm run build` automatiquement s'il n'existe pas
+- ✅ Démarrer normalement si le build existe déjà
+
+**Vous n'avez RIEN à faire !** Le serveur se configurera automatiquement.
+
+---
+
 ### 🔴 Problème 1 : Version Node.js incompatible (CRITIQUE)
 
 **Erreur** :
