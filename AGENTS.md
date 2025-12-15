@@ -1,0 +1,84 @@
+
+
+## Reference Documentation
+- Tailwind CSS: https://tailwindcss.com/docs/installation/using-vite
+- Motion.dev for React: https://motion.dev/docs/react
+- React reference: https://react.dev/reference/react
+- Next.js 15 release notes: https://nextjs.org/blog/next-15
+- Prisma: https://prisma.io/docs
+
+## Logos
+- Noir : `/assets/roster/Logo_Fulguria_Black.png`
+- Blanc : `/assets/roster/Logo_Fulguria_White.png`
+
+## Roster
+- **KiRr** - Leader, AMV maker, graphiste
+  - YouTube: https://www.youtube.com/@KiRr51
+  - X: https://x.com/kirr51
+  - Discord: kirr
+  - PNG: `/assets/roster/KIRR.png`
+- **Tenteki** - AMV maker
+  - YouTube: https://www.youtube.com/@TentekiAMV
+  - X: https://x.com/lunaticyume
+  - Instagram: https://www.instagram.com/tenteki_edit/
+  - PNG: `/assets/roster/TENTEKI.png`
+- **Netsuma** - AMV maker
+  - YouTube: https://www.youtube.com/@netsuma_amv
+  - X: https://x.com/NetsumaAMV
+  - PNG: `/assets/roster/NETSUMA.png`
+- **Ruby** - AMV maker
+  - YouTube: https://www.youtube.com/@Rubynix
+  - X: https://x.com/Rosycoco555
+  - PNG: `/assets/roster/RUBY.png`
+- **Conan** - AMV maker
+  - YouTube: https://www.youtube.com/@AkaiMV
+  - X: https://x.com/AkaiMv49068
+  - PNG: `/assets/roster/CONAN.png`
+- **ISASHII** - AMV maker
+  - YouTube: https://www.youtube.com/@ISASHII_AMV
+  - X: https://x.com/ISASHII__
+  - PNG: `/assets/roster/Isashii.png`
+- **Zeph** - AMV maker
+  - YouTube: https://www.youtube.com/@zeph_83
+  - X: https://x.com/zeph__83
+  - PNG: `/assets/roster/ZEPH.png`
+- **Kotori** - AMV maker
+  - YouTube: https://www.youtube.com/channel/UCGANQEqkX6embIReAWbFmzw
+  - X: https://x.com/KotoriSoul_
+  - PNG: `/assets/roster/koto.png`
+- **Danny** - AMV maker
+  - YouTube: https://www.youtube.com/@DannyMxz
+  - X: https://x.com/_dannymxz
+  - TikTok: https://www.tiktok.com/@dannymxz
+  - PNG: `/assets/roster/DANNY.png`
+- **Jasu** - AMV maker
+  - YouTube: https://www.youtube.com/@JasuAMV
+  - X: https://x.com/JasuAMV
+  - Instagram: https://www.instagram.com/jasuamv/
+  - TikTok: https://www.tiktok.com/@jasuamv106
+  - PNG: `/assets/roster/JASU.png`
+- **Leo** - AMV maker
+  - YouTube: https://www.youtube.com/@Leothetower_AMV
+  - PNG: `/assets/roster/LEO.png`
+- **Lunikyuu** - AMV maker
+  - YouTube: https://www.youtube.com/@lunikyuuu
+  - X: https://x.com/lunikyuu_arg
+  - PNG: `/assets/roster/LUNIKYUU.png`
+- **Atsuyo** - AMV maker
+  - YouTube: https://www.youtube.com/@atsuyoAMV
+  - PNG: `/assets/roster/ATSUYO.png`
+- **Uram's** - AMV maker, graphiste
+  - YouTube: https://www.youtube.com/@Urama3066
+  - X: https://x.com/Urama_Sama
+  - PNG: `/assets/roster/URAMA.png`
+- **Kure** - Graphiste
+  - YouTube: https://www.youtube.com/@kurx.e
+  - X: https://x.com/kurx_e
+  - PNG: `/assets/roster/KURE.png`
+- **Mirae** - Graphiste
+  - X: https://x.com/nlxy152049
+  - PNG: `/assets/roster/MIRAE.png`
+- **SAKYU** - AMV maker
+  - PNG: `/assets/roster/SAKYU.png`
+- **SYUUKI** - AMV maker
+  - PNG: `/assets/roster/SYUUKI.png`
