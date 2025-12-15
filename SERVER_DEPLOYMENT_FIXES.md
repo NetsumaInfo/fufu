@@ -73,39 +73,44 @@ git reset --hard origin/main
 | **STARTUP_FILE** | `server.js` |
 | **NODE_ENV** | `production` |
 
-### Script de startup amélioré
+### ✅ Script de startup CORRIGÉ (UTILISEZ CELUI-CI)
 
-Au lieu du script actuel, utilisez :
+**Copiez-collez ce script exact dans votre panel** :
 
 ```bash
-# Nettoyer les fichiers locaux conflictuels
-if [[ -f server.js ]] && [[ -d .git ]]; then
-    git reset --hard origin/main
-fi
+if [[ -d .git ]]; then git reset --hard origin/main; git pull; fi; if [[ ! -z ${NODE_PACKAGES} ]]; then npm install ${NODE_PACKAGES}; fi; if [ -f /home/container/package.json ]; then npm install --omit=dev; fi; npm run build; node /home/container/${STARTUP_FILE}
+```
 
-# Pull depuis Git
+**Ou en version lisible** :
+
+```bash
+# Résoudre conflit Git et pull
 if [[ -d .git ]]; then 
+    git reset --hard origin/main
     git pull
 fi
 
-# Installer les packages npm personnalisés (si définis)
+# Installer packages personnalisés
 if [[ ! -z ${NODE_PACKAGES} ]]; then 
     npm install ${NODE_PACKAGES}
 fi
 
-# Installer les dépendances de production
+# Installer dépendances
 if [ -f /home/container/package.json ]; then 
-    npm install --production
+    npm install --omit=dev
 fi
 
-# Build Next.js (IMPORTANT!)
+# Build Next.js (OBLIGATOIRE!)
 npm run build
 
-# Démarrer le serveur
+# Démarrer
 node /home/container/${STARTUP_FILE}
 ```
 
-**Note importante** : Ajoutez `npm run build` avant de démarrer le serveur !
+**Changements clés** :
+- ✅ `git reset --hard origin/main` : Résout le conflit avec `server.js`
+- ✅ `npm run build` : Build Next.js avant démarrage
+- ✅ `--omit=dev` : Remplace le deprecated `--production`
 
 ---
 
