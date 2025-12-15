@@ -20,7 +20,7 @@ Remplissez le formulaire avec ces valeurs :
 | **Application mode** | `Production` |
 | **Application root** | `/home/yourusername/fufu` (ou le chemin de votre choix) |
 | **Application URL** | Votre domaine ou sous-domaine (ex: `fufu.votredomaine.com`) |
-| **Application startup file** | `server.js` |
+| **Application startup file** | `index.js` |
 | **Passenger log file** | `/home/yourusername/logs/fufu.log` |
 
 > [!IMPORTANT]
@@ -91,7 +91,7 @@ Le `server.js` intelligent détectera automatiquement si le build manque et le c
 
 Cliquez sur le bouton **"Restart"** dans l'interface "Setup Node.js App".
 
-cPanel démarrera automatiquement votre application avec `node server.js`.
+cPanel démarrera automatiquement votre application avec `node index.js`.
 
 ---
 
@@ -108,7 +108,7 @@ cPanel démarrera automatiquement votre application avec `node server.js`.
 
 - [ ] Node.js version ≥ 18 sélectionnée dans cPanel
 - [ ] Application mode = `Production`
-- [ ] Application startup file = `server.js`
+- [ ] Application startup file = `index.js`
 - [ ] Variables d'environnement configurées (`NODE_ENV`, `YOUTUBE_API_KEY`, etc.)
 - [ ] Fichiers uploadés (via Git, SFTP ou File Manager)
 - [ ] `npm install --omit=dev` exécuté
@@ -129,7 +129,7 @@ cPanel démarrera automatiquement votre application avec `node server.js`.
 2. **Vérifications courantes** :
    - ✅ Node.js version ≥ 18 ?
    - ✅ `npm run build` a été exécuté ?
-   - ✅ Fichier `server.js` existe dans Application root ?
+   - ✅ Fichier `index.js` existe dans Application root ?
    - ✅ Variables d'environnement définies ?
 
 ### Erreur "Cannot find module 'next'"

@@ -43,12 +43,13 @@ Votre serveur devra exécuter ces commandes dans cet ordre :
 
 ## Fichiers créés
 
-### ✅ `server.js`
+### ✅ `index.js`
 
 Fichier de démarrage personnalisé pour Next.js :
 - Gère le port dynamiquement via `process.env.PORT`
 - Démarre Next.js en mode production
 - Gestion d'erreurs robuste
+- Auto-build si le dossier `.next/` n'existe pas
 
 ### 📦 Script NPM ajouté
 
