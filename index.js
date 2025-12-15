@@ -11,10 +11,11 @@ require('dotenv').config();
 // Configuration
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = '0.0.0.0'; // Écoute sur toutes les interfaces (important pour cPanel)
-const port = parseInt(process.env.PORT || '3000', 10);
+const port = parseInt(process.env.SERVER_PORT || process.env.PORT || '3000', 10);
 
 console.log(`[server] Starting in ${dev ? 'development' : 'production'} mode`);
 console.log(`[server] Node.js version: ${process.version}`);
+console.log(`[server] Internal port: ${port}`);
 
 // Fonction pour vérifier et builder si nécessaire
 function checkAndBuild() {
@@ -71,6 +72,12 @@ app.prepare()
 
         server.listen(port, hostname, () => {
             console.log(`[server] ✅ Listening on http://${hostname}:${port}`);
+
+            // Afficher l'URL publique si configurée
+            const publicIP = process.env.PUBLIC_IP || '78.108.218.37';
+            const publicPort = process.env.PUBLIC_PORT || '25590';
+            console.log(`[server] 🌐 Public URL: http://${publicIP}:${publicPort}`);
+
             console.log(`[server] Ready to accept connections`);
         });
 
