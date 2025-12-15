@@ -5,6 +5,9 @@ const { execSync } = require('child_process');
 const { existsSync } = require('fs');
 const path = require('path');
 
+// Charger les variables d'environnement depuis .env
+require('dotenv').config();
+
 // Configuration
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = '0.0.0.0'; // Écoute sur toutes les interfaces (important pour cPanel)
