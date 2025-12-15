@@ -15,6 +15,10 @@ D'après votre capture d'écran, voici la configuration à utiliser :
 | **GIT ACCESS TOKEN** | Votre token personnel GitHub |
 | **NODE PACKAGES** | (laisser vide, `npm install` sera exécuté automatiquement) |
 
+> [!IMPORTANT]
+> **Node.js Version requise** : ≥ 18.18.0  
+> Next.js 15 ne fonctionne **PAS** avec Node.js v15 ou inférieur. Assurez-vous que votre serveur utilise Node.js 18, 19, 20 ou 21.
+
 ### Variables d'environnement supplémentaires
 
 Ajoutez ces variables dans la section "Variables" de votre hébergeur :
@@ -31,8 +35,11 @@ PORT=3000
 Votre serveur devra exécuter ces commandes dans cet ordre :
 
 1. **Installation** : `npm install`
-2. **Build** : `npm run build`
+2. **Build** : `npm run build` ⚠️ **OBLIGATOIRE** avant le démarrage
 3. **Démarrage** : `node server.js`
+
+> [!WARNING]
+> Ne pas oublier `npm run build` ! Sans cette étape, le serveur ne démarrera pas.
 
 ## Fichiers créés
 
@@ -69,11 +76,23 @@ Une fois déployé, votre site devrait :
 
 Exécutez `npm install` avant `node server.js`
 
+### Si vous obtenez "Cannot find module 'node:crypto'" :
+
+Votre version de Node.js est trop ancienne. Next.js 15 requiert **Node.js ≥ 18.18.0**. Mettez à jour Node.js sur votre serveur.
+
+### Si le serveur crash au démarrage :
+
+1. Vérifiez que `npm run build` a été exécuté
+2. Vérifiez la version Node.js : `node --version` (doit être ≥ 18.18.0)
+3. Consultez les logs du serveur pour plus de détails
+
 ### Variables d'environnement importantes :
 
 ```bash
 NODE_ENV=production  # Active le mode production
 PORT=3000           # Port du serveur (votre hébergeur peut le changer)
+YOUTUBE_API_KEY=... # Votre clé API YouTube
+YOUTUBE_CHANNEL_ID=... # ID de votre chaîne
 ```
 
 ## Support
