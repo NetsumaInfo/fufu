@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { Youtube, Twitter, Instagram, Globe, Hash, ExternalLink } from "lucide-react";
+import { Youtube, Twitter, Instagram, Globe, ExternalLink } from "lucide-react";
+import { DiscordIcon } from "@/components/ui/DiscordIcon";
 import { Dialog } from "@/components/ui/Dialog";
 import { Badge, getRoleBadgeVariant } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -19,7 +20,7 @@ const socialIcons = {
     twitter: Twitter,
     instagram: Instagram,
     website: Globe,
-    discord: Hash,
+    discord: DiscordIcon,
 };
 
 const socialLabels: Record<string, string> = {
@@ -101,6 +102,20 @@ export function MemberDialog({ member, isOpen, onClose }: MemberDialogProps) {
                                 if (!url) return null;
                                 const Icon = socialIcons[platform as keyof typeof socialIcons] || Globe;
                                 const label = socialLabels[platform] || platform;
+
+                                // Special handling for Discord - if it's just a username (not a URL), display it as text
+                                if (platform === 'discord' && !url.startsWith('http')) {
+                                    return (
+                                        <div
+                                            key={platform}
+                                            className="flex items-center gap-3 p-3 rounded-lg border border-border bg-secondary/50"
+                                        >
+                                            <Icon className="w-5 h-5 text-primary flex-shrink-0" />
+                                            <span className="flex-1 font-medium">{label}</span>
+                                            <span className="text-sm text-muted-foreground">@{url}</span>
+                                        </div>
+                                    );
+                                }
 
                                 return (
                                     <a

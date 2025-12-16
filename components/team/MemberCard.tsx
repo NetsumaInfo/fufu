@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { Youtube, Twitter, Instagram, Globe, Hash } from "lucide-react";
+import { Youtube, Twitter, Instagram, Globe } from "lucide-react";
+import { DiscordIcon } from "@/components/ui/DiscordIcon";
 import { Member } from "@/lib/types";
 import { Badge, getRoleBadgeVariant } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
@@ -18,7 +19,7 @@ const socialIcons = {
     twitter: Twitter,
     instagram: Instagram,
     website: Globe,
-    discord: Hash,
+    discord: DiscordIcon,
 };
 
 export function MemberCard({ member, onClick, className }: MemberCardProps) {
