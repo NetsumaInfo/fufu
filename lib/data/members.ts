@@ -9,7 +9,7 @@ export const members: Member[] = [
         pseudo: "KiRr",
         primaryRole: "Leader",
         secondaryRoles: ["AMV Maker", "Design FX"],
-        avatarUrl: "/assets/roster/KIRR.png",
+        avatarUrl: "/images/team/PP/KIRR.png",
         bioShort: "Leader de la Fulguria Team, AMV Maker et Graphiste polyvalent.",
         bioLong: "Leader fondateur de la Fulguria Team. Je combine mes compétences en editing et en graphisme pour guider la vision artistique du collectif. Passionné par la création visuelle sous toutes ses formes.",
         socials: {
@@ -17,29 +17,16 @@ export const members: Member[] = [
             x: "https://x.com/kirr51",
             discord: "kirr",
         },
-        joinedDate: "2019-01-01", // Placeholder date
+        joinedDate: "2019-01-01",
     },
 
     // AMV Makers
-    {
-        id: "tenteki",
-        slug: "tenteki",
-        pseudo: "Tenteki",
-        primaryRole: "AMV Maker",
-        avatarUrl: "/assets/roster/TENTEKI.png",
-        bioShort: "AMV Maker passionné par l'editing créatif.",
-        socials: {
-            youtube: "https://www.youtube.com/@TentekiAMV",
-            x: "https://x.com/lunaticyume",
-            instagram: "https://www.instagram.com/tenteki_edit/",
-        },
-    },
     {
         id: "netsuma",
         slug: "netsuma",
         pseudo: "Netsuma",
         primaryRole: "AMV Maker",
-        avatarUrl: "/assets/roster/NETSUMA.png",
+        avatarUrl: "/images/team/PP/NETSUMA.png",
         bioShort: "AMV Maker au style dynamique.",
         socials: {
             youtube: "https://www.youtube.com/@netsuma_amv",
@@ -51,7 +38,7 @@ export const members: Member[] = [
         slug: "ruby",
         pseudo: "Ruby",
         primaryRole: "AMV Maker",
-        avatarUrl: "/assets/roster/RUBY.png",
+        avatarUrl: "/images/team/PP/RUBY.png",
         bioShort: "Créateur de contenus AMV.",
         socials: {
             youtube: "https://www.youtube.com/@Rubynix",
@@ -63,7 +50,7 @@ export const members: Member[] = [
         slug: "conan",
         pseudo: "Conan",
         primaryRole: "AMV Maker",
-        avatarUrl: "/assets/roster/CONAN.png",
+        avatarUrl: "/images/team/PP/CONAN.png",
         bioShort: "Passionné par l'animation et le montage.",
         socials: {
             youtube: "https://www.youtube.com/@AkaiMV",
@@ -75,7 +62,7 @@ export const members: Member[] = [
         slug: "isashii",
         pseudo: "ISASHII",
         primaryRole: "AMV Maker",
-        avatarUrl: "/assets/roster/ISASHI.png",
+        avatarUrl: "/images/team/PP/ISASHI.png",
         bioShort: "Éditeur AMV talentueux.",
         socials: {
             youtube: "https://www.youtube.com/@ISASHII_AMV",
@@ -87,7 +74,7 @@ export const members: Member[] = [
         slug: "zeph",
         pseudo: "Zeph",
         primaryRole: "AMV Maker",
-        avatarUrl: "/assets/roster/ZEPH.png",
+        avatarUrl: "/images/team/PP/ZEPH.png",
         bioShort: "Créateur de vidéos musicales anime.",
         socials: {
             youtube: "https://www.youtube.com/@zeph_83",
@@ -99,7 +86,7 @@ export const members: Member[] = [
         slug: "kotori",
         pseudo: "Kotori",
         primaryRole: "AMV Maker",
-        avatarUrl: "/assets/roster/koto.png",
+        avatarUrl: "/images/team/PP/koto.png",
         bioShort: "AMV Maker avec une touche unique.",
         socials: {
             youtube: "https://www.youtube.com/channel/UCGANQEqkX6embIReAWbFmzw",
@@ -111,7 +98,7 @@ export const members: Member[] = [
         slug: "danny",
         pseudo: "Danny",
         primaryRole: "AMV Maker",
-        avatarUrl: "/assets/roster/DANNY.png",
+        avatarUrl: "/images/team/PP/DANNY.png",
         bioShort: "Éditeur AMV actif sur YouTube et TikTok.",
         socials: {
             youtube: "https://www.youtube.com/@DannyMxz",
@@ -124,7 +111,7 @@ export const members: Member[] = [
         slug: "jasu",
         pseudo: "Jasu",
         primaryRole: "AMV Maker",
-        avatarUrl: "/assets/roster/JASU.png",
+        avatarUrl: "/images/team/PP/JASU.png",
         bioShort: "Créateur polyvalent sur plusieurs plateformes.",
         socials: {
             youtube: "https://www.youtube.com/@JasuAMV",
@@ -138,7 +125,7 @@ export const members: Member[] = [
         slug: "leo",
         pseudo: "Leo",
         primaryRole: "AMV Maker",
-        avatarUrl: "/assets/roster/LEO.png",
+        avatarUrl: "/images/team/PP/LEO.png",
         bioShort: "AMV Maker.",
         socials: {
             youtube: "https://www.youtube.com/@Leothetower_AMV",
@@ -149,7 +136,7 @@ export const members: Member[] = [
         slug: "lunikyuu",
         pseudo: "Lunikyuu",
         primaryRole: "AMV Maker",
-        avatarUrl: "/assets/roster/LUNIKYUU.png",
+        avatarUrl: "/images/team/PP/LUNIKYUU.png",
         bioShort: "Créateur de contenu AMV.",
         socials: {
             youtube: "https://www.youtube.com/@lunikyuuu",
@@ -161,8 +148,8 @@ export const members: Member[] = [
         slug: "atsuyo",
         pseudo: "Atsuyo",
         primaryRole: "AMV Maker",
-        avatarUrl: "/assets/roster/ATSUYO.png",
-        bioShort: "Pasisonné d'AMV.",
+        avatarUrl: "/images/team/PP/ATSUYO.png",
+        bioShort: "Passionné d'AMV.",
         socials: {
             youtube: "https://www.youtube.com/@atsuyoAMV",
         },
@@ -173,7 +160,7 @@ export const members: Member[] = [
         pseudo: "Uram's",
         primaryRole: "AMV Maker",
         secondaryRoles: ["Design FX"],
-        avatarUrl: "/assets/roster/URAMA.png",
+        avatarUrl: "/images/team/PP/URAMA.png",
         bioShort: "AMV Maker et Graphiste.",
         socials: {
             youtube: "https://www.youtube.com/@Urama3066",
@@ -181,22 +168,49 @@ export const members: Member[] = [
         },
     },
     {
-        id: "sakyu",
-        slug: "sakyu",
-        pseudo: "SAKYU",
+        id: "tenteki",
+        slug: "tenteki",
+        pseudo: "Tenteki",
         primaryRole: "AMV Maker",
-        avatarUrl: "/assets/roster/SAKYU.png",
-        bioShort: "Membre AMV Maker de la team.",
-        socials: {},
+        avatarUrl: "/images/team/PP/TENTEKI.png",
+        bioShort: "AMV Maker passionné par l'editing créatif.",
+        socials: {
+            youtube: "https://www.youtube.com/@TentekiAMV",
+            x: "https://x.com/lunaticyume",
+            instagram: "https://www.instagram.com/tenteki_edit/",
+        },
     },
     {
         id: "syuuki",
         slug: "syuuki",
-        pseudo: "SYUUKI",
+        pseudo: "Syuuki",
         primaryRole: "AMV Maker",
-        avatarUrl: "/assets/roster/SYUUKI.png",
+        avatarUrl: "/images/team/PP/SYUUKI.png",
         bioShort: "Membre AMV Maker de la team.",
         socials: {},
+    },
+    {
+        id: "louvi",
+        slug: "louvi",
+        pseudo: "Louvi",
+        primaryRole: "AMV Maker",
+        avatarUrl: "/images/team/PP/LOUVI.png",
+        bioShort: "AMV Maker créatif.",
+        socials: {
+            youtube: "https://www.youtube.com/@Louvi_Amv",
+            x: "https://x.com/Louviisback",
+        },
+    },
+    {
+        id: "j3ifer",
+        slug: "j3ifer",
+        pseudo: "J3ifer",
+        primaryRole: "AMV Maker",
+        avatarUrl: "/images/team/PP/J3ifer.png",
+        bioShort: "AMV Maker talentueux.",
+        socials: {
+            youtube: "https://www.youtube.com/@j3ferrr",
+        },
     },
 
     // Design FX / Graphistes
@@ -205,7 +219,7 @@ export const members: Member[] = [
         slug: "kure",
         pseudo: "Kure",
         primaryRole: "Design FX",
-        avatarUrl: "/assets/roster/KURE.png",
+        avatarUrl: "/images/team/PP/KURE.png",
         bioShort: "Graphiste talentueux pour la team.",
         socials: {
             youtube: "https://www.youtube.com/@kurx.e",
@@ -217,7 +231,7 @@ export const members: Member[] = [
         slug: "mirae",
         pseudo: "Mirae",
         primaryRole: "Design FX",
-        avatarUrl: "/assets/roster/MIRAE.png",
+        avatarUrl: "/images/team/PP/MIRAE.png",
         bioShort: "Graphiste créatif.",
         socials: {
             x: "https://x.com/nlxy152049",
