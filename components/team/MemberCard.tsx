@@ -88,6 +88,22 @@ export function MemberCard({ member, onClick, className }: MemberCardProps) {
                     const Icon = socialIcons[platform as keyof typeof socialIcons];
                     if (!Icon) return null;
 
+                    // Discord: show username in tooltip, not clickable
+                    if (platform === 'discord') {
+                        return (
+                            <div
+                                key={platform}
+                                className="p-2 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors cursor-default relative group/discord"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <Icon className="w-4 h-4" />
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-black text-white text-xs rounded-lg opacity-0 group-hover/discord:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-lg">
+                                    {url}
+                                </div>
+                            </div>
+                        );
+                    }
+
                     return (
                         <a
                             key={platform}

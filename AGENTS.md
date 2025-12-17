@@ -79,8 +79,6 @@
   - X: https://x.com/lunaticyume
   - Instagram: https://www.instagram.com/tenteki_edit/
   - PNG: `/images/team/PP/TENTEKI.png`
-- **Syuuki** - AMV maker
-  - PNG: `/images/team/PP/SYUUKI.png`
 - **Louvi** - AMV maker
   - YouTube: https://www.youtube.com/@Louvi_Amv
   - X: https://x.com/Louviisback

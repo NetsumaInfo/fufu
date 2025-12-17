@@ -3,8 +3,9 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Home, Users, Video, UserPlus, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface MobileNavProps {
@@ -13,6 +14,41 @@ interface MobileNavProps {
     links: { href: string; label: string }[];
     currentPath: string;
 }
+
+// Circle animation for background
+const backgroundVariants = {
+    open: {
+        clipPath: "circle(150% at calc(100% - 40px) 40px)",
+        transition: {
+            type: "spring",
+            stiffness: 20,
+            restDelta: 2,
+        },
+    },
+    closed: {
+        clipPath: "circle(0% at calc(100% - 40px) 40px)",
+        transition: {
+            delay: 0.2,
+            type: "spring",
+            stiffness: 400,
+            damping: 40,
+        },
+    },
+};
+
+// Item animation
+const itemVariants = {
+    open: {
+        y: 0,
+        opacity: 1,
+        transition: { duration: 0.3, ease: "easeOut" },
+    },
+    closed: {
+        y: 30,
+        opacity: 0,
+        transition: { duration: 0.2 },
+    },
+};
 
 export function MobileNav({ isOpen, onClose, links, currentPath }: MobileNavProps) {
     // Lock body scroll when open
@@ -41,75 +77,103 @@ export function MobileNav({ isOpen, onClose, links, currentPath }: MobileNavProp
 
     if (typeof window === "undefined") return null;
 
+    const icons: Record<string, typeof Home> = {
+        "/": Home,
+        "/team": Users,
+        "/videos": Video,
+        "/recruitment": UserPlus,
+        "/contact": Mail,
+    };
+
     return createPortal(
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-50 md:hidden">
-                    {/* Backdrop */}
+                <>
+                    {/* Background with circle animation */}
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute inset-0 bg-background/95 backdrop-blur-lg"
-                        onClick={onClose}
-                    />
-
-                    {/* Drawer */}
-                    <motion.div
-                        initial={{ x: "100%" }}
-                        animate={{ x: 0 }}
-                        exit={{ x: "100%" }}
-                        transition={{ type: "spring", damping: 30, stiffness: 300 }}
-                        className="absolute top-0 right-0 bottom-0 w-full max-w-sm glass-strong shadow-2xl"
+                        className="fixed inset-0 z-50 bg-[#0a0a14] md:hidden"
+                        variants={backgroundVariants}
+                        initial="closed"
+                        animate="open"
+                        exit="closed"
                     >
                         {/* Header */}
-                        <div className="flex items-center justify-between p-6 border-b border-border">
-                            <span className="text-xl font-bold text-gradient">Menu</span>
+                        <motion.div
+                            className="flex items-center justify-between p-6 border-b border-primary/20"
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                        >
+                            <div className="flex items-center gap-3">
+                                <Image
+                                    src="/images/team/Logo/Logo_Fulguria_White.png"
+                                    alt="Fulguria Team"
+                                    width={32}
+                                    height={32}
+                                />
+                                <span className="text-xl font-bold text-primary">Menu</span>
+                            </div>
                             <button
                                 onClick={onClose}
-                                className="p-2 rounded-lg hover:bg-muted transition-colors"
+                                className="p-2.5 rounded-full hover:bg-primary/20 transition-all hover:rotate-90 duration-300"
                                 aria-label="Fermer le menu"
                             >
-                                <X className="w-6 h-6" />
+                                <X className="w-6 h-6 text-primary" />
                             </button>
-                        </div>
+                        </motion.div>
 
                         {/* Navigation Links */}
-                        <nav className="p-6">
-                            <ul className="space-y-2">
-                                {links.map((link, index) => (
-                                    <motion.li
-                                        key={link.href}
-                                        initial={{ opacity: 0, x: 20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: index * 0.1 }}
-                                    >
-                                        <Link
-                                            href={link.href}
-                                            onClick={onClose}
-                                            className={cn(
-                                                "block px-4 py-3 rounded-lg font-medium transition-colors",
-                                                currentPath === link.href
-                                                    ? "bg-primary/20 text-primary"
-                                                    : "hover:bg-muted text-foreground"
-                                            )}
+                        <nav className="p-6 flex-1 overflow-y-auto">
+                            <ul className="space-y-3">
+                                {links.map((link, index) => {
+                                    const Icon = icons[link.href] || Home;
+
+                                    return (
+                                        <motion.li
+                                            key={link.href}
+                                            variants={itemVariants}
+                                            initial="closed"
+                                            animate="open"
+                                            exit="closed"
+                                            transition={{ delay: 0.3 + index * 0.07 }}
+                                            whileHover={{ scale: 1.03, x: 5 }}
+                                            whileTap={{ scale: 0.97 }}
                                         >
-                                            {link.label}
-                                        </Link>
-                                    </motion.li>
-                                ))}
+                                            <Link
+                                                href={link.href}
+                                                onClick={onClose}
+                                                className={cn(
+                                                    "flex items-center gap-4 px-5 py-4 rounded-xl font-medium transition-colors",
+                                                    currentPath === link.href
+                                                        ? "bg-primary/20 text-primary"
+                                                        : "hover:bg-primary/10 text-white hover:text-primary"
+                                                )}
+                                            >
+                                                <Icon className={cn(
+                                                    "w-5 h-5",
+                                                    currentPath === link.href ? "text-primary" : "text-gray-400"
+                                                )} />
+                                                <span className="text-lg">{link.label}</span>
+                                            </Link>
+                                        </motion.li>
+                                    );
+                                })}
                             </ul>
                         </nav>
 
                         {/* Footer */}
-                        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-border">
-                            <p className="text-sm text-muted-foreground text-center">
-                                Fulguria Team © {new Date().getFullYear()}
+                        <motion.div
+                            className="border-t border-primary/20 p-6"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.5 }}
+                        >
+                            <p className="text-sm text-gray-400 text-center">
+                                © 2024-{new Date().getFullYear()} Fulguria Team
                             </p>
-                        </div>
+                        </motion.div>
                     </motion.div>
-                </div>
+                </>
             )}
         </AnimatePresence>,
         document.body

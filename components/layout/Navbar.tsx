@@ -49,7 +49,7 @@ export function Navbar() {
                         >
                             <div className="relative w-12 h-12 transition-transform group-hover:scale-110">
                                 <Image
-                                    src="/assets/roster/Logo_Fulguria_White.png"
+                                    src="/images/team/Logo/Logo_Fulguria_White.png"
                                     alt="Fulguria Team Logo"
                                     width={48}
                                     height={48}

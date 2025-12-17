@@ -1,19 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { ArrowRight, Youtube } from "lucide-react";
+import { motion } from "framer-motion";
+import { Youtube, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { SectionHeader } from "@/components/ui/SectionHeader";
 import { MemberCard } from "@/components/team/MemberCard";
 import { MemberDialog } from "@/components/team/MemberDialog";
 import { VideoCard } from "@/components/videos/VideoCard";
-import { LoadingSkeleton } from "@/components/ui/LoadingSkeleton";
-import { SlideIn } from "@/components/animations/SlideIn";
-import { StaggerContainer, StaggerItem } from "@/components/animations/StaggerContainer";
 import { Member, Video } from "@/lib/types";
-import { getFeaturedMembers } from "@/lib/data/members";
+import { getAllMembers } from "@/lib/data/members";
 
 const YOUTUBE_CHANNEL = "https://www.youtube.com/@FulguriaTeam";
 
@@ -21,24 +17,172 @@ interface HomePageClientProps {
     initialVideos: Video[];
 }
 
+// Motion variants for carousel items - matching Motion.dev tutorial
+const carouselVariants = {
+    open: {
+        transition: {
+            staggerChildren: 0.07,
+            delayChildren: 0.2
+        }
+    },
+    closed: {
+        transition: {
+            staggerChildren: 0.05,
+            staggerDirection: -1
+        }
+    }
+};
+
+const itemVariants = {
+    open: {
+        y: 0,
+        opacity: 1,
+        transition: {
+            y: { stiffness: 1000, velocity: -100 }
+        }
+    },
+    closed: {
+        y: 50,
+        opacity: 0,
+        transition: {
+            y: { stiffness: 1000 }
+        }
+    }
+};
+
+// Generic Carousel Component for horizontal scrolling
+interface CarouselProps<T> {
+    items: T[];
+    renderItem: (item: T) => React.ReactNode;
+    itemWidth: string; // e.g., "w-[320px] md:w-[380px]"
+    emptyMessage?: React.ReactNode;
+}
+
+function Carousel<T extends { id: string }>({
+    items,
+    renderItem,
+    itemWidth,
+    emptyMessage
+}: CarouselProps<T>) {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [showLeftArrow, setShowLeftArrow] = useState(false);
+    const [showRightArrow, setShowRightArrow] = useState(true);
+
+    const checkScrollPosition = useCallback(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        const { scrollLeft, scrollWidth, clientWidth } = container;
+        setShowLeftArrow(scrollLeft > 50);
+        setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 50);
+    }, []);
+
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        checkScrollPosition();
+
+        // Scroll event listener
+        container.addEventListener("scroll", checkScrollPosition);
+        window.addEventListener("resize", checkScrollPosition);
+
+        return () => {
+            container.removeEventListener("scroll", checkScrollPosition);
+            window.removeEventListener("resize", checkScrollPosition);
+        };
+    }, [checkScrollPosition]);
+
+    const handleScroll = (direction: "left" | "right") => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        const scrollAmount = direction === "left" ? -400 : 400;
+        container.scrollBy({
+            left: scrollAmount,
+            behavior: "smooth",
+        });
+    };
+
+    if (items.length === 0 && emptyMessage) {
+        return <>{emptyMessage}</>;
+    }
+
+    return (
+        <div className="relative">
+            {/* Left hover zone + button - Desktop only */}
+            {showLeftArrow && (
+                <div className="hidden md:block absolute left-0 top-0 bottom-0 w-16 z-30 group/left">
+                    <button
+                        type="button"
+                        onClick={() => handleScroll("left")}
+                        className="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-black/40 hover:bg-black/60 border border-white/20 rounded-full shadow-xl transition-all opacity-0 group-hover/left:opacity-100"
+                        aria-label="Précédent"
+                    >
+                        <ChevronLeft className="w-6 h-6 text-white" />
+                    </button>
+                </div>
+            )}
+
+            {/* Right hover zone + button - Desktop only */}
+            {showRightArrow && (
+                <div className="hidden md:block absolute right-0 top-0 bottom-0 w-16 z-30 group/right">
+                    <button
+                        type="button"
+                        onClick={() => handleScroll("right")}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-black/40 hover:bg-black/60 border border-white/20 rounded-full shadow-xl transition-all opacity-0 group-hover/right:opacity-100"
+                        aria-label="Suivant"
+                    >
+                        <ChevronRight className="w-6 h-6 text-white" />
+                    </button>
+                </div>
+            )}
+
+            <motion.div
+                ref={containerRef}
+                className="flex gap-6 overflow-x-auto pb-4 px-4 snap-x snap-mandatory scroll-smooth"
+                style={{
+                    scrollbarWidth: "none",
+                    msOverflowStyle: "none",
+                    WebkitOverflowScrolling: "touch",
+                }}
+                variants={carouselVariants}
+                initial="closed"
+                animate="open"
+            >
+                <style jsx>{`
+                    div::-webkit-scrollbar {
+                        display: none;
+                    }
+                `}</style>
+                {items.map((item, index) => (
+                    <motion.div
+                        key={item.id}
+                        className={`flex-shrink-0 ${itemWidth} snap-start`}
+                        variants={itemVariants}
+                        custom={index}
+                    >
+                        <div className="p-2">
+                            {renderItem(item)}
+                        </div>
+                    </motion.div>
+                ))}
+            </motion.div>
+        </div>
+    );
+}
+
 export function HomePageClient({ initialVideos }: HomePageClientProps) {
     const [selectedMember, setSelectedMember] = useState<Member | null>(null);
-    const featuredMembers = getFeaturedMembers();
-
-    // Use initialVideos passed from server, or empty if fail
-    const videos = initialVideos;
+    const allMembers = getAllMembers();
 
     return (
         <div>
-            {/* Team Preview Section */}
+            {/* Section Team */}
             <section className="py-20 pt-28">
                 <div className="container-custom">
-                    {/* Team Header with Link */}
                     <div className="text-center mb-12">
-                        <Link
-                            href="/team"
-                            className="inline-block group"
-                        >
+                        <Link href="/team" className="inline-block group">
                             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
                                 Membre de notre team
                             </h2>
@@ -46,62 +190,56 @@ export function HomePageClient({ initialVideos }: HomePageClientProps) {
                         </Link>
                     </div>
 
-                    <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-                        {featuredMembers.map((member) => (
-                            <StaggerItem key={member.id}>
-                                <MemberCard
-                                    member={member}
-                                    onClick={() => setSelectedMember(member)}
-                                />
-                            </StaggerItem>
-                        ))}
-                    </StaggerContainer>
+                    {/* Member Carousel */}
+                    <Carousel
+                        items={allMembers}
+                        itemWidth="w-[250px] md:w-[280px]"
+                        renderItem={(member) => (
+                            <MemberCard
+                                member={member}
+                                onClick={() => setSelectedMember(member)}
+                            />
+                        )}
+                    />
                 </div>
             </section>
 
-            {/* Latest Videos Section */}
+            {/* Section Vidéos */}
             <section className="py-16">
                 <div className="container-custom">
-                    <SlideIn direction="up">
-                        <SectionHeader
-                            subtitle="Nos créations"
-                            title="Dernières vidéos"
-                            description="Découvrez nos derniers AMV et créations visuelles."
-                            action={
-                                <Button asChild variant="secondary">
+                    {/* Video Header with Link - same style as Team */}
+                    <div className="text-center mb-12">
+                        <Link href="/videos" className="inline-block group">
+                            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                                Dernières vidéos
+                            </h2>
+                            <div className="h-1 w-24 bg-primary mx-auto rounded-full group-hover:w-32 transition-all" />
+                        </Link>
+                    </div>
+
+                    {/* Video Carousel */}
+                    <Carousel
+                        items={initialVideos}
+                        itemWidth="w-[320px] md:w-[380px]"
+                        renderItem={(video) => <VideoCard video={video} />}
+                        emptyMessage={
+                            <div className="text-center py-12">
+                                <p className="text-muted-foreground mb-4">
+                                    Aucune vidéo disponible pour le moment.
+                                </p>
+                                <Button asChild variant="primary">
                                     <Link href={YOUTUBE_CHANNEL} target="_blank">
                                         <Youtube className="w-4 h-4" />
-                                        Voir la chaîne YouTube
+                                        Visiter notre chaîne YouTube
                                     </Link>
                                 </Button>
-                            }
-                        />
-                    </SlideIn>
-
-                    {/* Videos Grid */}
-                    {videos.length > 0 ? (
-                        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {videos.map((video) => (
-                                <StaggerItem key={video.id}>
-                                    <VideoCard video={video} />
-                                </StaggerItem>
-                            ))}
-                        </StaggerContainer>
-                    ) : (
-                        <div className="text-center py-12">
-                            <p className="text-muted-foreground mb-4">Aucune vidéo disponible pour le moment.</p>
-                            <Button asChild variant="primary">
-                                <Link href={YOUTUBE_CHANNEL} target="_blank">
-                                    <Youtube className="w-4 h-4" />
-                                    Visiter notre chaîne YouTube
-                                </Link>
-                            </Button>
-                        </div>
-                    )}
+                            </div>
+                        }
+                    />
                 </div>
             </section>
 
-            {/* Member Dialog */}
+            {/* Dialog membre */}
             <MemberDialog
                 member={selectedMember}
                 isOpen={!!selectedMember}

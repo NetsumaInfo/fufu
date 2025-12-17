@@ -181,15 +181,6 @@ export const members: Member[] = [
         },
     },
     {
-        id: "syuuki",
-        slug: "syuuki",
-        pseudo: "Syuuki",
-        primaryRole: "AMV Maker",
-        avatarUrl: "/images/team/PP/SYUUKI.png",
-        bioShort: "Membre AMV Maker de la team.",
-        socials: {},
-    },
-    {
         id: "louvi",
         slug: "louvi",
         pseudo: "Louvi",
@@ -275,4 +266,9 @@ export function getFeaturedMembers(): Member[] {
     // For now, let's take: KiRr (Leader), Tenteki (AMV), Netsuma (AMV), Kure (Design), Mirae (Design)
     const featuredIds = ["kirr", "tenteki", "netsuma", "kure", "mirae"];
     return members.filter(m => featuredIds.includes(m.id));
+}
+
+// Get all members for carousel display
+export function getAllMembers(): Member[] {
+    return members;
 }

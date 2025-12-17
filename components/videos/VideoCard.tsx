@@ -19,7 +19,7 @@ export function VideoCard({ video, className }: VideoCardProps) {
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
-                "group card p-0 overflow-hidden hover:scale-[1.02] transition-all duration-300",
+                "group card p-0 overflow-hidden hover:scale-[1.01] transition-all duration-300",
                 className
             )}
         >
@@ -29,7 +29,7 @@ export function VideoCard({ video, className }: VideoCardProps) {
                     src={video.thumbnailUrl}
                     alt={video.title}
                     fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
                 />
 
                 {/* Play overlay */}
@@ -46,12 +46,6 @@ export function VideoCard({ video, className }: VideoCardProps) {
                     </div>
                 )}
 
-                {/* External link icon */}
-                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="p-1.5 bg-black/60 rounded-full">
-                        <ExternalLink className="w-4 h-4 text-white" />
-                    </div>
-                </div>
             </div>
 
             {/* Content */}
