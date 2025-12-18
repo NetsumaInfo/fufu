@@ -43,7 +43,7 @@ const contactMethods = [
 
 export default function ContactPage() {
     return (
-        <div className="py-12">
+        <div className="py-12 pt-28 md:pt-32">
             <div className="container-custom max-w-4xl">
                 <FadeIn>
                     <SectionHeader

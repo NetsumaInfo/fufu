@@ -8,7 +8,7 @@ import { recruitmentData } from "@/lib/data/recruitment";
 
 export default function RecruitmentPage() {
     return (
-        <div className="py-12">
+        <div className="py-12 pt-28 md:pt-32">
             <div className="container-custom max-w-5xl">
                 <FadeIn>
                     <SectionHeader

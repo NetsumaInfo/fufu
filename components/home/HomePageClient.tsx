@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { MemberCard } from "@/components/team/MemberCard";
 import { MemberDialog } from "@/components/team/MemberDialog";
 import { VideoCard } from "@/components/videos/VideoCard";
+import { HeroVideo } from "@/components/home/HeroVideo";
 import { Member, Video } from "@/lib/types";
 import { getAllMembers } from "@/lib/data/members";
 
@@ -140,7 +141,7 @@ function Carousel<T extends { id: string }>({
 
             <motion.div
                 ref={containerRef}
-                className="flex gap-6 overflow-x-auto pb-4 px-4 snap-x snap-mandatory scroll-smooth"
+                className="flex gap-4 md:gap-6 overflow-x-auto pb-4 px-2 sm:px-4 snap-x snap-mandatory scroll-smooth"
                 style={{
                     scrollbarWidth: "none",
                     msOverflowStyle: "none",
@@ -178,73 +179,79 @@ export function HomePageClient({ initialVideos }: HomePageClientProps) {
 
     return (
         <div>
-            {/* Section Team */}
-            <section className="py-20 pt-28">
-                <div className="container-custom">
-                    <div className="text-center mb-12">
-                        <Link href="/team" className="inline-block group">
-                            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
-                                Membre de notre team
-                            </h2>
-                            <div className="h-1 w-24 bg-primary mx-auto rounded-full group-hover:w-32 transition-all" />
-                        </Link>
+            {/* Hero Video */}
+            <HeroVideo />
+
+            {/* Main Content - appears after hero with proper z-index and background */}
+            <div className="relative z-10 bg-background">
+                {/* Section Team */}
+                <section className="py-12 md:py-16 lg:py-20 pt-16 md:pt-20">
+                    <div className="container-custom">
+                        <div className="text-center mb-8 md:mb-12">
+                            <Link href="/team" className="inline-block group">
+                                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                                    Membre de notre team
+                                </h2>
+                                <div className="h-1 w-24 bg-primary mx-auto rounded-full group-hover:w-32 transition-all" />
+                            </Link>
+                        </div>
+
+                        {/* Member Carousel */}
+                        <Carousel
+                            items={allMembers}
+                            itemWidth="w-[280px] sm:w-[300px] md:w-[320px]"
+                            renderItem={(member) => (
+                                <MemberCard
+                                    member={member}
+                                    onClick={() => setSelectedMember(member)}
+                                />
+                            )}
+                        />
                     </div>
+                </section>
 
-                    {/* Member Carousel */}
-                    <Carousel
-                        items={allMembers}
-                        itemWidth="w-[250px] md:w-[280px]"
-                        renderItem={(member) => (
-                            <MemberCard
-                                member={member}
-                                onClick={() => setSelectedMember(member)}
-                            />
-                        )}
-                    />
-                </div>
-            </section>
+                {/* Section Vidéos */}
+                <section className="py-12 md:py-16">
+                    <div className="container-custom">
+                        {/* Video Header with Link - same style as Team */}
+                        <div className="text-center mb-8 md:mb-12">
+                            <Link href="/videos" className="inline-block group">
+                                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                                    Dernières vidéos
+                                </h2>
+                                <div className="h-1 w-24 bg-primary mx-auto rounded-full group-hover:w-32 transition-all" />
+                            </Link>
+                        </div>
 
-            {/* Section Vidéos */}
-            <section className="py-16">
-                <div className="container-custom">
-                    {/* Video Header with Link - same style as Team */}
-                    <div className="text-center mb-12">
-                        <Link href="/videos" className="inline-block group">
-                            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
-                                Dernières vidéos
-                            </h2>
-                            <div className="h-1 w-24 bg-primary mx-auto rounded-full group-hover:w-32 transition-all" />
-                        </Link>
+                        {/* Video Carousel */}
+                        <Carousel
+                            items={initialVideos}
+                            itemWidth="w-[300px] sm:w-[340px] md:w-[380px]"
+                            renderItem={(video) => <VideoCard video={video} />}
+                            emptyMessage={
+                                <div className="text-center py-12">
+                                    <p className="text-muted-foreground mb-4">
+                                        Aucune vidéo disponible pour le moment.
+                                    </p>
+                                    <Button asChild variant="primary">
+                                        <Link href={YOUTUBE_CHANNEL} target="_blank">
+                                            <Youtube className="w-4 h-4" />
+                                            Visiter notre chaîne YouTube
+                                        </Link>
+                                    </Button>
+                                </div>
+                            }
+                        />
                     </div>
+                </section>
 
-                    {/* Video Carousel */}
-                    <Carousel
-                        items={initialVideos}
-                        itemWidth="w-[320px] md:w-[380px]"
-                        renderItem={(video) => <VideoCard video={video} />}
-                        emptyMessage={
-                            <div className="text-center py-12">
-                                <p className="text-muted-foreground mb-4">
-                                    Aucune vidéo disponible pour le moment.
-                                </p>
-                                <Button asChild variant="primary">
-                                    <Link href={YOUTUBE_CHANNEL} target="_blank">
-                                        <Youtube className="w-4 h-4" />
-                                        Visiter notre chaîne YouTube
-                                    </Link>
-                                </Button>
-                            </div>
-                        }
-                    />
-                </div>
-            </section>
-
-            {/* Dialog membre */}
-            <MemberDialog
-                member={selectedMember}
-                isOpen={!!selectedMember}
-                onClose={() => setSelectedMember(null)}
-            />
+                {/* Dialog membre */}
+                <MemberDialog
+                    member={selectedMember}
+                    isOpen={!!selectedMember}
+                    onClose={() => setSelectedMember(null)}
+                />
+            </div>
         </div>
     );
 }

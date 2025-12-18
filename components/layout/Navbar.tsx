@@ -36,8 +36,8 @@ export function Navbar() {
                 className={cn(
                     "fixed top-0 left-0 right-0 z-40 transition-all duration-300 border-b",
                     isScrolled
-                        ? "glass-strong shadow-xl py-4 border-primary/20"
-                        : "bg-background/80 backdrop-blur-sm py-5 border-transparent"
+                        ? "glass-strong shadow-xl py-3 md:py-4 border-primary/20"
+                        : "bg-background/80 backdrop-blur-sm py-4 md:py-5 border-transparent"
                 )}
             >
                 <div className="container-custom">
@@ -47,16 +47,16 @@ export function Navbar() {
                             href="/"
                             className="flex items-center gap-3 group"
                         >
-                            <div className="relative w-12 h-12 transition-transform group-hover:scale-110">
+                            <div className="relative w-8 h-8 sm:w-10 sm:h-10 transition-transform group-hover:scale-110">
                                 <Image
                                     src="/images/team/Logo/Logo_Fulguria_White.png"
                                     alt="Fulguria Team Logo"
-                                    width={48}
-                                    height={48}
+                                    width={40}
+                                    height={40}
                                     className="object-contain"
                                 />
                             </div>
-                            <span className="text-2xl font-bold bg-gradient-to-r from-primary-light to-primary bg-clip-text text-transparent group-hover:opacity-80 transition-opacity">
+                            <span className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-primary-light to-primary bg-clip-text text-transparent group-hover:opacity-80 transition-opacity">
                                 Fulguria Team
                             </span>
                         </Link>
@@ -82,7 +82,7 @@ export function Navbar() {
                         {/* Mobile Menu Button */}
                         <button
                             onClick={() => setIsMobileMenuOpen(true)}
-                            className="md:hidden p-2 rounded-lg hover:bg-primary/10 transition-colors"
+                            className="md:hidden p-2 rounded-lg hover:bg-primary/10 transition-colors mr-1"
                             aria-label="Ouvrir le menu"
                         >
                             <Menu className="w-6 h-6" />

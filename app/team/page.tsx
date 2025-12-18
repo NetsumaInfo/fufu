@@ -14,7 +14,7 @@ export default function TeamPage() {
     const roleGroups = getRoleGroups();
 
     return (
-        <div className="py-12">
+        <div className="py-12 pt-28 md:py-16 md:pt-32">
             <div className="container-custom">
                 <FadeIn>
                     <SectionHeader
@@ -25,7 +25,7 @@ export default function TeamPage() {
                 </FadeIn>
 
                 {/* Role sections */}
-                <div className="mt-12">
+                <div className="mt-8 md:mt-12">
                     {roleGroups.map((group) => (
                         <RoleSection
                             key={group.role}

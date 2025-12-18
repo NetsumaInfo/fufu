@@ -17,7 +17,7 @@ export function VideosPageClient({ initialVideos }: VideosPageClientProps) {
     const videos = initialVideos;
 
     return (
-        <div className="py-12">
+        <div className="py-12 pt-28 md:py-16 md:pt-32">
             <div className="container-custom">
                 <FadeIn>
                     <SectionHeader
@@ -35,9 +35,9 @@ export function VideosPageClient({ initialVideos }: VideosPageClientProps) {
                     />
                 </FadeIn>
 
-                <div className="mt-12">
+                <div className="mt-8 md:mt-12">
                     {videos.length > 0 ? (
-                        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                             {videos.map((video) => (
                                 <StaggerItem key={video.id}>
                                     <VideoCard video={video} />

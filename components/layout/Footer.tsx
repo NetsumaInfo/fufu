@@ -14,9 +14,9 @@ const socialLinks = [
 
 export function Footer() {
     return (
-        <footer className="bg-[#0d1117] border-t border-white/5 py-4">
+        <footer className="bg-[#0d1117] border-t border-white/5 py-6 md:py-4">
             <div className="container-custom">
-                <div className="flex items-center justify-center gap-6 flex-wrap">
+                <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6">
                     {/* Logo */}
                     <Image
                         src="/images/team/Logo/Logo_Fulguria_White.png"
@@ -46,7 +46,7 @@ export function Footer() {
                     </div>
 
                     {/* Copyright */}
-                    <div className="text-gray-500 text-sm">
+                    <div className="text-gray-500 text-sm text-center md:text-left">
                         © 2024-{new Date().getFullYear()} Fulguria Team, All Rights Reserved
                     </div>
 

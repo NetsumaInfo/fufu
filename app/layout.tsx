@@ -32,7 +32,7 @@ export default function RootLayout({
         <html lang="fr" className={inter.variable}>
             <body className="antialiased">
                 <Navbar />
-                <main className="min-h-screen pt-24">
+                <main className="min-h-screen">
                     {children}
                 </main>
                 <Footer />
