@@ -34,7 +34,7 @@ export function Navbar() {
         <>
             <nav
                 className={cn(
-                    "fixed top-0 left-0 right-0 z-40 transition-all duration-300 border-b",
+                    "fixed top-0 left-0 right-0 z-[60] transition-all duration-300 border-b",
                     isScrolled
                         ? "glass-strong shadow-xl py-3 md:py-4 border-primary/20"
                         : "bg-background/80 backdrop-blur-sm py-4 md:py-5 border-transparent"
@@ -79,13 +79,37 @@ export function Navbar() {
                             ))}
                         </div>
 
-                        {/* Mobile Menu Button */}
+                        {/* Mobile Menu Button - Animated bars morphing to X */}
                         <button
-                            onClick={() => setIsMobileMenuOpen(true)}
-                            className="md:hidden p-2 rounded-lg hover:bg-primary/10 transition-colors mr-1"
-                            aria-label="Ouvrir le menu"
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            className="md:hidden p-2 rounded-lg hover:bg-primary/10 transition-colors mr-1 relative z-[60] flex flex-col items-center justify-center w-10 h-10 gap-0"
+                            aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
                         >
-                            <Menu className="w-6 h-6" />
+                            {/* 3 bars that morph into X */}
+                            <span
+                                className={cn(
+                                    "block w-6 h-[2.5px] rounded-full transition-all duration-300 ease-in-out mb-[3px]",
+                                    isMobileMenuOpen
+                                        ? "bg-primary rotate-45 translate-y-[5.25px] mb-0"
+                                        : "bg-foreground"
+                                )}
+                            />
+                            <span
+                                className={cn(
+                                    "block w-6 h-[2.5px] rounded-full transition-all duration-300 ease-in-out my-[3px]",
+                                    isMobileMenuOpen
+                                        ? "opacity-0 scale-0"
+                                        : "bg-foreground opacity-100"
+                                )}
+                            />
+                            <span
+                                className={cn(
+                                    "block w-6 h-[2.5px] rounded-full transition-all duration-300 ease-in-out mt-[3px]",
+                                    isMobileMenuOpen
+                                        ? "bg-primary -rotate-45 -translate-y-[5.25px] mt-0"
+                                        : "bg-foreground"
+                                )}
+                            />
                         </button>
                     </div>
                 </div>

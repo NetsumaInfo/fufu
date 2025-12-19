@@ -97,30 +97,8 @@ export function MobileNav({ isOpen, onClose, links, currentPath }: MobileNavProp
                         animate="open"
                         exit="closed"
                     >
-                        {/* Header */}
-                        <motion.div
-                            className="flex items-center justify-between p-6 border-b border-primary/20"
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
-                        >
-                            <div className="flex items-center gap-3">
-                                <Image
-                                    src="/images/team/Logo/Logo_Fulguria_White.png"
-                                    alt="Fulguria Team"
-                                    width={32}
-                                    height={32}
-                                />
-                                <span className="text-xl font-bold text-primary">Menu</span>
-                            </div>
-                            <button
-                                onClick={onClose}
-                                className="p-2.5 rounded-full hover:bg-primary/20 transition-all hover:rotate-90 duration-300"
-                                aria-label="Fermer le menu"
-                            >
-                                <X className="w-6 h-6 text-primary" />
-                            </button>
-                        </motion.div>
+                        {/* Spacer for navbar height */}
+                        <div className="h-16 md:h-20" />
 
                         {/* Navigation Links */}
                         <nav className="p-6 flex-1 overflow-y-auto">
