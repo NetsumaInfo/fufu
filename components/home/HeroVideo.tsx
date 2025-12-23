@@ -58,10 +58,10 @@ export function HeroVideo() {
     };
 
     return (
-        <div ref={containerRef} className="relative h-screen w-full overflow-hidden">
+        <div ref={containerRef} className="relative h-screen w-full overflow-hidden z-0">
             {/* Video Container with Parallax */}
             <motion.div
-                className="fixed inset-0 w-full h-full"
+                className="fixed inset-0 w-full h-full z-0"
                 style={{ opacity: smoothOpacity, scale: smoothScale, y: smoothY }}
             >
                 {/* Video Element */}

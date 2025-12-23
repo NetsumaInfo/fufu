@@ -77,7 +77,7 @@ export const members: Member[] = [
         avatarUrl: "/images/team/PP/ZEPH.png",
         bioShort: "Créateur de vidéos musicales anime.",
         socials: {
-            youtube: "https://www.youtube.com/@zeph_83",
+            youtube: "https://www.youtube.com/@zefouuu83",
             x: "https://x.com/zeph__83",
         },
     },

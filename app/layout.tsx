@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { TransitionLayout } from "@/components/layout/TransitionLayout";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -32,9 +33,11 @@ export default function RootLayout({
         <html lang="fr" className={inter.variable}>
             <body className="antialiased">
                 <Navbar />
-                <main className="min-h-screen">
-                    {children}
-                </main>
+                <TransitionLayout>
+                    <main className="min-h-screen">
+                        {children}
+                    </main>
+                </TransitionLayout>
                 <Footer />
             </body>
         </html>

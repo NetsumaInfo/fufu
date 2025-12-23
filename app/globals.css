@@ -262,7 +262,6 @@ a:hover {
 
   .card {
     background: var(--card);
-    border: 1px solid rgba(59, 130, 246, 0.1);
     border-radius: var(--radius-lg);
     padding: var(--spacing-lg, 2rem);
     transition: all var(--transition-base);
@@ -272,7 +271,6 @@ a:hover {
 
   .card:hover {
     transform: translateY(-4px);
-    border-color: rgba(59, 130, 246, 0.3);
     box-shadow: 0 10px 40px rgba(59, 130, 246, 0.15);
   }
 
