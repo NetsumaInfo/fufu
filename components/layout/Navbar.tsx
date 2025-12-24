@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu } from "lucide-react";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "./MobileNav";
 
@@ -34,10 +34,10 @@ export function Navbar() {
         <>
             <nav
                 className={cn(
-                    "fixed top-0 left-0 right-0 z-[60] transition-all duration-300 border-b",
+                    "fixed top-0 left-0 right-0 z-[60] border-b transition-all duration-500 ease-out",
                     isScrolled
-                        ? "glass-strong shadow-xl py-3 md:py-4 border-primary/20"
-                        : "bg-background/80 backdrop-blur-sm py-4 md:py-5 border-transparent"
+                        ? "glass-strong shadow-lg py-3 md:py-4 border-primary/20 backdrop-blur-xl"
+                        : "bg-transparent py-4 md:py-5 border-transparent backdrop-blur-none"
                 )}
             >
                 <div className="container-custom">
@@ -63,19 +63,32 @@ export function Navbar() {
 
                         {/* Desktop Navigation */}
                         <div className="hidden md:flex items-center gap-1">
-                            {navLinks.map((link) => (
-                                <Link
+                            {navLinks.map((link, index) => (
+                                <motion.div
                                     key={link.href}
-                                    href={link.href}
-                                    className={cn(
-                                        "px-4 py-2 rounded-lg font-medium transition-all",
-                                        pathname === link.href
-                                            ? "text-primary bg-primary/10"
-                                            : "text-foreground hover:text-primary hover:bg-primary/5"
-                                    )}
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1, duration: 0.3 }}
                                 >
-                                    {link.label}
-                                </Link>
+                                    <Link
+                                        href={link.href}
+                                        className={cn(
+                                            "relative px-4 py-2 rounded-lg font-medium transition-all duration-300",
+                                            pathname === link.href
+                                                ? "text-primary"
+                                                : "text-foreground hover:text-primary"
+                                        )}
+                                    >
+                                        {link.label}
+                                        {pathname === link.href && (
+                                            <motion.div
+                                                className="absolute bottom-0 left-2 right-2 h-0.5 bg-primary rounded-full"
+                                                layoutId="navbar-indicator"
+                                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                            />
+                                        )}
+                                    </Link>
+                                </motion.div>
                             ))}
                         </div>
 

@@ -1,9 +1,18 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import { ChevronDown, Volume2, VolumeX } from "lucide-react";
+
+// Liste des vidéos disponibles
+const VIDEOS = [
+    { src: "/video/Aether.webm", title: "Aether" },
+    { src: "/video/KiRr_-_Shizuku_II.webm", title: "KiRr - Shizuku II" },
+    { src: "/video/Lunikyuu_-_Stardust_Universe.webm", title: "Lunikyuu - Stardust Universe" },
+    { src: "/video/Zeph83_-_Anxius.webm", title: "Zeph83 - Anxius" },
+    { src: "/video/Zeph_Lunikyuu_-_Billouuu_3.webm", title: "Zeph & Lunikyuu - Billouuu 3" },
+];
 
 export function HeroVideo() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -11,6 +20,8 @@ export function HeroVideo() {
     const [volume, setVolume] = useState(0);
     const [isVideoReady, setIsVideoReady] = useState(false);
     const [showVolumeSlider, setShowVolumeSlider] = useState(false);
+    const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+    const [isTransitioning, setIsTransitioning] = useState(false);
 
     // Scroll-based animations
     const { scrollY } = useScroll();
@@ -23,6 +34,28 @@ export function HeroVideo() {
     const smoothScale = useSpring(scale, { stiffness: 100, damping: 30 });
     const smoothY = useSpring(y, { stiffness: 100, damping: 30 });
 
+    // Navigation entre les vidéos
+    const goToNextVideo = useCallback(() => {
+        if (isTransitioning) return;
+        setIsTransitioning(true);
+        setIsVideoReady(false);
+        setCurrentVideoIndex((prev) => (prev + 1) % VIDEOS.length);
+    }, [isTransitioning]);
+
+    const goToPrevVideo = useCallback(() => {
+        if (isTransitioning) return;
+        setIsTransitioning(true);
+        setIsVideoReady(false);
+        setCurrentVideoIndex((prev) => (prev - 1 + VIDEOS.length) % VIDEOS.length);
+    }, [isTransitioning]);
+
+    const goToVideo = useCallback((index: number) => {
+        if (isTransitioning || index === currentVideoIndex) return;
+        setIsTransitioning(true);
+        setIsVideoReady(false);
+        setCurrentVideoIndex(index);
+    }, [isTransitioning, currentVideoIndex]);
+
     // Video loading - non-blocking
     useEffect(() => {
         const video = videoRef.current;
@@ -30,12 +63,16 @@ export function HeroVideo() {
 
         const handleReady = () => {
             setIsVideoReady(true);
+            setIsTransitioning(false);
             video.play().catch(() => { });
         };
 
         video.addEventListener("canplaythrough", handleReady);
         video.addEventListener("loadeddata", handleReady);
-        video.addEventListener("error", () => setIsVideoReady(true));
+        video.addEventListener("error", () => {
+            setIsVideoReady(true);
+            setIsTransitioning(false);
+        });
 
         if (video.readyState >= 3) handleReady();
 
@@ -43,15 +80,15 @@ export function HeroVideo() {
             video.removeEventListener("canplaythrough", handleReady);
             video.removeEventListener("loadeddata", handleReady);
         };
-    }, []);
+    }, [currentVideoIndex]);
 
-    // Volume sync
+    // Volume sync - also apply when video changes
     useEffect(() => {
         const video = videoRef.current;
         if (!video) return;
         video.volume = volume / 100;
         video.muted = volume === 0;
-    }, [volume]);
+    }, [volume, currentVideoIndex]);
 
     const scrollToContent = () => {
         window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
@@ -65,19 +102,26 @@ export function HeroVideo() {
                 style={{ opacity: smoothOpacity, scale: smoothScale, y: smoothY }}
             >
                 {/* Video Element */}
-                <video
-                    ref={videoRef}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    src="/video/Aether.webm"
-                    muted={volume === 0}
-                    autoPlay
-                    loop
-                    playsInline
-                    preload="auto"
-                />
+                <AnimatePresence mode="wait">
+                    <motion.video
+                        key={currentVideoIndex}
+                        ref={videoRef}
+                        className="absolute inset-0 w-full h-full object-cover"
+                        src={VIDEOS[currentVideoIndex].src}
+                        muted={volume === 0}
+                        autoPlay
+                        loop
+                        playsInline
+                        preload="auto"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                    />
+                </AnimatePresence>
 
                 {/* Gradient Overlays */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/90" />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent via-50% to-background" />
                 <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-background/30" />
 
                 {/* Vignette */}
@@ -115,6 +159,29 @@ export function HeroVideo() {
                         </motion.div>
                     </div>
                 )}
+            </motion.div>
+
+            {/* Video Navigation - Bottom left corner (DNEG style) */}
+            <motion.div
+                className="absolute bottom-12 left-6 md:left-10 z-20 flex flex-col items-start gap-1"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 0.5 }}
+                style={{ opacity: smoothOpacity }}
+            >
+                {VIDEOS.map((video, index) => (
+                    <button
+                        key={index}
+                        onMouseEnter={() => goToVideo(index)}
+                        className={`text-left text-sm md:text-base uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${index === currentVideoIndex
+                            ? "text-white"
+                            : "text-white/40 hover:text-white/70"
+                            }`}
+                        disabled={isTransitioning}
+                    >
+                        {video.title}
+                    </button>
+                ))}
             </motion.div>
 
             {/* Scroll Indicator */}
