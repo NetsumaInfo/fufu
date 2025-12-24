@@ -17,11 +17,14 @@ const VIDEOS = [
 export function HeroVideo() {
     const containerRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
+    const prevIndexRef = useRef(0);
     const [volume, setVolume] = useState(0);
     const [isVideoReady, setIsVideoReady] = useState(false);
     const [showVolumeSlider, setShowVolumeSlider] = useState(false);
     const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const [touchStart, setTouchStart] = useState<number | null>(null);
+    const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
     // Scroll-based animations
     const { scrollY } = useScroll();
@@ -37,20 +40,23 @@ export function HeroVideo() {
     // Navigation entre les vidéos
     const goToNextVideo = useCallback(() => {
         if (isTransitioning) return;
+        prevIndexRef.current = currentVideoIndex;
         setIsTransitioning(true);
         setIsVideoReady(false);
         setCurrentVideoIndex((prev) => (prev + 1) % VIDEOS.length);
-    }, [isTransitioning]);
+    }, [isTransitioning, currentVideoIndex]);
 
     const goToPrevVideo = useCallback(() => {
         if (isTransitioning) return;
+        prevIndexRef.current = currentVideoIndex;
         setIsTransitioning(true);
         setIsVideoReady(false);
         setCurrentVideoIndex((prev) => (prev - 1 + VIDEOS.length) % VIDEOS.length);
-    }, [isTransitioning]);
+    }, [isTransitioning, currentVideoIndex]);
 
     const goToVideo = useCallback((index: number) => {
         if (isTransitioning || index === currentVideoIndex) return;
+        prevIndexRef.current = currentVideoIndex;
         setIsTransitioning(true);
         setIsVideoReady(false);
         setCurrentVideoIndex(index);
@@ -94,8 +100,39 @@ export function HeroVideo() {
         window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
     };
 
+    // Swipe handlers for mobile
+    const minSwipeDistance = 50;
+
+    const onTouchStart = (e: React.TouchEvent) => {
+        setTouchEnd(null);
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const onTouchMove = (e: React.TouchEvent) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const onTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+        const distance = touchStart - touchEnd;
+        const isLeftSwipe = distance > minSwipeDistance;
+        const isRightSwipe = distance < -minSwipeDistance;
+
+        if (isLeftSwipe) {
+            goToNextVideo();
+        } else if (isRightSwipe) {
+            goToPrevVideo();
+        }
+    };
+
     return (
-        <div ref={containerRef} className="relative h-screen w-full overflow-hidden z-0">
+        <div
+            ref={containerRef}
+            className="relative h-screen w-full overflow-hidden z-0"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+        >
             {/* Video Container with Parallax */}
             <motion.div
                 className="fixed inset-0 w-full h-full z-0"
@@ -112,7 +149,7 @@ export function HeroVideo() {
                         autoPlay
                         loop
                         playsInline
-                        preload="auto"
+                        preload="metadata"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -161,9 +198,10 @@ export function HeroVideo() {
                 )}
             </motion.div>
 
-            {/* Video Navigation - Bottom left corner (DNEG style) */}
+            {/* Video Navigation - Desktop: titles on left, Mobile/Tablet: dots centered */}
+            {/* Desktop Navigation - Hidden on mobile and tablet */}
             <motion.div
-                className="absolute bottom-20 sm:bottom-12 left-4 sm:left-6 md:left-10 z-20 flex flex-col items-start gap-0.5 sm:gap-1"
+                className="hidden md:flex absolute bottom-12 left-10 z-20 flex-col items-start gap-1"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.4, delay: 0.5 }}
@@ -172,9 +210,8 @@ export function HeroVideo() {
                 {VIDEOS.map((video, index) => (
                     <button
                         key={index}
-                        onClick={() => goToVideo(index)}
                         onMouseEnter={() => goToVideo(index)}
-                        className={`text-left text-xs sm:text-sm md:text-base uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${index === currentVideoIndex
+                        className={`text-left text-sm md:text-base uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer ${index === currentVideoIndex
                             ? "text-white"
                             : "text-white/40 hover:text-white/70"
                             }`}
@@ -185,9 +222,48 @@ export function HeroVideo() {
                 ))}
             </motion.div>
 
-            {/* Scroll Indicator - hidden on mobile, visible on larger screens */}
+            {/* Mobile Navigation - Title and dots only, swipe to navigate */}
+            <motion.div
+                className="flex md:hidden absolute bottom-28 left-0 right-0 z-20 flex-col items-center gap-3 px-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.5 }}
+                style={{ opacity: smoothOpacity }}
+            >
+                {/* Current video title with animation */}
+                <AnimatePresence mode="wait">
+                    <motion.span
+                        key={currentVideoIndex}
+                        className="text-sm uppercase tracking-widest font-medium text-white px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-center"
+                        initial={{ opacity: 0, x: currentVideoIndex > prevIndexRef.current ? 30 : -30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: currentVideoIndex > prevIndexRef.current ? -30 : 30 }}
+                        transition={{ duration: 0.3 }}
+                    >
+                        {VIDEOS[currentVideoIndex].title}
+                    </motion.span>
+                </AnimatePresence>
+
+                {/* Dot indicators */}
+                <div className="flex items-center gap-2">
+                    {VIDEOS.map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => goToVideo(index)}
+                            className={`rounded-full transition-all duration-300 ${index === currentVideoIndex
+                                ? "w-8 h-2 bg-primary"
+                                : "w-2 h-2 bg-white/40 active:bg-white/70"
+                                }`}
+                            disabled={isTransitioning}
+                            aria-label={`Vidéo ${index + 1}`}
+                        />
+                    ))}
+                </div>
+            </motion.div>
+
+            {/* Scroll Indicator - hidden on mobile/tablet, visible on desktop */}
             <motion.button
-                className="hidden sm:flex absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex-col items-center gap-2 cursor-pointer group"
+                className="hidden md:flex absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex-col items-center gap-2 cursor-pointer group"
                 onClick={scrollToContent}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -207,9 +283,9 @@ export function HeroVideo() {
                 </motion.div>
             </motion.button>
 
-            {/* Volume Control */}
+            {/* Volume Control - Below title on mobile */}
             <motion.div
-                className="absolute bottom-6 right-4 sm:right-6 z-20 flex items-center gap-3"
+                className="absolute bottom-16 md:bottom-6 right-4 md:right-6 z-20 flex items-center gap-3"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: 0.7 }}
@@ -217,9 +293,9 @@ export function HeroVideo() {
                 onMouseEnter={() => setShowVolumeSlider(true)}
                 onMouseLeave={() => setShowVolumeSlider(false)}
             >
-                {/* Volume Slider - hidden on mobile */}
+                {/* Volume Slider - hidden on mobile/tablet */}
                 <motion.div
-                    className="hidden sm:block glass px-4 py-2 rounded-full border border-white/10"
+                    className="hidden md:block glass px-4 py-2 rounded-full border border-white/10"
                     initial={{ width: 0, opacity: 0 }}
                     animate={{ width: showVolumeSlider ? "auto" : 0, opacity: showVolumeSlider ? 1 : 0 }}
                     transition={{ duration: 0.2 }}
