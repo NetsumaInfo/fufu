@@ -15,17 +15,19 @@ class VideoProvider {
     async getLatestVideos(options: VideoProviderOptions = {}): Promise<Video[]> {
         const { maxResults = 6 } = options;
 
+        console.log("[VideoProvider] getLatestVideos called");
+
         // 1. Try YouTube API (Best quality)
-        if (process.env.YOUTUBE_API_KEY) {
-            try {
-                const apiVideos = await fetchVideosFromAPI(maxResults);
-                if (apiVideos.length > 0) return apiVideos;
-            } catch (err) {
-                console.warn("API fetch failed, falling back to mock");
-            }
+        // Delegate check to service to ensure we get logs
+        try {
+            const apiVideos = await fetchVideosFromAPI(maxResults);
+            if (apiVideos.length > 0) return apiVideos;
+        } catch (err) {
+            console.warn("API fetch failed, falling back to mock", err);
         }
 
         // 2. Fallback to Mock Data
+        console.log("[VideoProvider] Fallback to mock data");
         return mockVideos.slice(0, maxResults);
     }
 
@@ -33,18 +35,19 @@ class VideoProvider {
      * Fetch all videos from YouTube channel (with pagination)
      */
     async getAllVideos(): Promise<Video[]> {
+        console.log("[VideoProvider] getAllVideos called");
+
         // 1. Try YouTube API with pagination
-        if (process.env.YOUTUBE_API_KEY) {
-            try {
-                // Fetch up to 200 videos (4 pages of 50)
-                const apiVideos = await fetchAllVideosFromAPI(4);
-                if (apiVideos.length > 0) return apiVideos;
-            } catch (err) {
-                console.warn("API fetch failed, falling back to mock");
-            }
+        try {
+            // Fetch up to 200 videos (4 pages of 50)
+            const apiVideos = await fetchAllVideosFromAPI(4);
+            if (apiVideos.length > 0) return apiVideos;
+        } catch (err) {
+            console.warn("API fetch failed, falling back to mock", err);
         }
 
         // 2. Fallback to Mock Data
+        console.log("[VideoProvider] Fallback to mock data");
         return mockVideos;
     }
 }
