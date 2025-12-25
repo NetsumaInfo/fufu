@@ -1,7 +1,8 @@
 import { getAllVideos } from "@/lib/providers/VideoProvider";
 import { HomePageClient } from "@/components/home/HomePageClient";
 
-export const revalidate = 3600; // Revalidate page every hour
+// Force dynamic rendering to access runtime env vars
+export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
     // Load all available videos for infinite scroll
