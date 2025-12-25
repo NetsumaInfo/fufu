@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "docker:build": "docker build -t fulguria-team .",
+    "docker:run": "docker run -p 8080:8080 fulguria-team",
+    "deploy:cloudrun": "gcloud run deploy fulguria-team --source . --region europe-west1 --platform managed"
   },
   "dependencies": {
     "clsx": "^2.1.1",

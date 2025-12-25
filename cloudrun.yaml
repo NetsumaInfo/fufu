@@ -1,0 +1,56 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: fulguria-team
+  labels:
+    cloud.googleapis.com/location: europe-west1
+spec:
+  template:
+    metadata:
+      annotations:
+        # Scaling configuration
+        autoscaling.knative.dev/minScale: '0'
+        autoscaling.knative.dev/maxScale: '10'
+        # CPU allocation
+        run.googleapis.com/cpu-throttling: 'true'
+        # Startup CPU boost
+        run.googleapis.com/startup-cpu-boost: 'true'
+    spec:
+      # Maximum 80 concurrent requests per instance
+      containerConcurrency: 80
+      # Request timeout (5 minutes max)
+      timeoutSeconds: 300
+      containers:
+      - name: fulguria-team
+        # Image will be set during deployment
+        image: PLACEHOLDER_IMAGE
+        ports:
+        - name: http1
+          containerPort: 8080
+        env:
+        # Next.js environment variables
+        - name: NODE_ENV
+          value: production
+        - name: PORT
+          value: '8080'
+        # YouTube API credentials (to be configured as secrets)
+        # Use: gcloud run services update fulguria-team --update-secrets YOUTUBE_API_KEY=youtube-api-key:latest
+        # - name: YOUTUBE_API_KEY
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: youtube-api-key
+        #       key: latest
+        # - name: YOUTUBE_CHANNEL_ID
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: youtube-channel-id
+        #       key: latest
+        resources:
+          limits:
+            # 1 vCPU
+            cpu: '1'
+            # 512 MB memory
+            memory: 512Mi
+  traffic:
+  - percent: 100
+    latestRevision: true
