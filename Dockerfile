@@ -21,6 +21,10 @@ RUN npm ci
 # Copy source code
 COPY . .
 
+# Accept build argument for CDN URL
+ARG NEXT_PUBLIC_CDN_URL
+ENV NEXT_PUBLIC_CDN_URL=$NEXT_PUBLIC_CDN_URL
+
 # Build Next.js application
 # Next.js will collect anonymous telemetry data, disable it
 ENV NEXT_TELEMETRY_DISABLED=1
