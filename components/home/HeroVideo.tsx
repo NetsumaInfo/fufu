@@ -4,14 +4,15 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import { ChevronDown, Volume2, VolumeX } from "lucide-react";
+import { getVideoUrl } from "@/lib/config/storage";
 
 // Liste des vidéos disponibles
 const VIDEOS = [
-    { src: "/video/Aether.webm", title: "Aether" },
-    { src: "/video/KiRr_-_Shizuku_II.webm", title: "KiRr - Shizuku II" },
-    { src: "/video/Lunikyuu_-_Stardust_Universe.webm", title: "Lunikyuu - Stardust Universe" },
-    { src: "/video/Zeph83_-_Anxius.webm", title: "Zeph83 - Anxius" },
-    { src: "/video/Zeph_Lunikyuu_-_Billouuu_3.webm", title: "Zeph & Lunikyuu - Billouuu 3" },
+    { src: getVideoUrl("Aether.webm"), title: "Aether" },
+    { src: getVideoUrl("KiRr_-_Shizuku_II.webm"), title: "KiRr - Shizuku II" },
+    { src: getVideoUrl("Lunikyuu_-_Stardust_Universe.webm"), title: "Lunikyuu - Stardust Universe" },
+    { src: getVideoUrl("Zeph83_-_Anxius.webm"), title: "Zeph83 - Anxius" },
+    { src: getVideoUrl("Zeph_Lunikyuu_-_Billouuu_3.webm"), title: "Zeph & Lunikyuu - Billouuu 3" },
 ];
 
 export function HeroVideo() {

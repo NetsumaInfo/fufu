@@ -23,6 +23,7 @@ out
 README.md
 AGENTS.md
 Docs
+STORAGE_SETUP.md
 
 # IDE
 .vscode
@@ -35,3 +36,7 @@ coverage
 # Misc
 .DS_Store
 *.pem
+
+# Large assets (videos should be on Cloud Storage)
+public/video/**/*.webm
+public/video/**/*.mp4
