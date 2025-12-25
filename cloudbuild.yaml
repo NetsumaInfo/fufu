@@ -1,0 +1,11 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_CDN_URL=https://storage.googleapis.com/fulguria-assets'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/fulguria-team'
+      - '.'
+images:
+  - 'gcr.io/$PROJECT_ID/fulguria-team'
