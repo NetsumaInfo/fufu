@@ -9,8 +9,14 @@ interface YouTubeAPIResponse {
 }
 
 export async function fetchVideosFromAPI(maxResults: number = 6): Promise<Video[]> {
+    console.log("[YouTube API] fetchVideosFromAPI called with maxResults:", maxResults);
+    console.log("[YouTube API] Has API KEY:", !!YOUTUBE_API_KEY, "Has Channel ID:", !!YOUTUBE_CHANNEL_ID);
+
     if (!YOUTUBE_API_KEY || !YOUTUBE_CHANNEL_ID) {
-        console.warn("YouTube API credentials missing");
+        console.error("[YouTube API] CREDENTIALS MISSING!", {
+            apiKey: YOUTUBE_API_KEY ? "EXISTS" : "MISSING",
+            channelId: YOUTUBE_CHANNEL_ID ? "EXISTS" : "MISSING"
+        });
         return [];
     }
 
@@ -49,8 +55,14 @@ export async function fetchVideosFromAPI(maxResults: number = 6): Promise<Video[
  * @param maxPages Maximum number of API pages to fetch (default: 4 = 200 videos max)
  */
 export async function fetchAllVideosFromAPI(maxPages: number = 4): Promise<Video[]> {
+    console.log("[YouTube API] fetchAllVideosFromAPI called with maxPages:", maxPages);
+    console.log("[YouTube API] Has API KEY:", !!YOUTUBE_API_KEY, "Has Channel ID:", !!YOUTUBE_CHANNEL_ID);
+
     if (!YOUTUBE_API_KEY || !YOUTUBE_CHANNEL_ID) {
-        console.warn("YouTube API credentials missing");
+        console.error("[YouTube API] CREDENTIALS MISSING!", {
+            apiKey: YOUTUBE_API_KEY ? "EXISTS" : "MISSING",
+            channelId: YOUTUBE_CHANNEL_ID ? "EXISTS" : "MISSING"
+        });
         return [];
     }
 
