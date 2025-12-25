@@ -1,7 +1,7 @@
 import { Video } from "@/lib/types";
 
-const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
-const YOUTUBE_CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
+// const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+// const YOUTUBE_CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
 
 interface YouTubeAPIResponse {
     items: any[];
@@ -9,22 +9,26 @@ interface YouTubeAPIResponse {
 }
 
 export async function fetchVideosFromAPI(maxResults: number = 6): Promise<Video[]> {
-    console.log("[YouTube API] fetchVideosFromAPI called with maxResults:", maxResults);
-    console.log("[YouTube API] Has API KEY:", !!YOUTUBE_API_KEY, "Has Channel ID:", !!YOUTUBE_CHANNEL_ID);
+    const apiKey = process.env.YOUTUBE_API_KEY;
+    const channelId = process.env.YOUTUBE_CHANNEL_ID;
 
-    if (!YOUTUBE_API_KEY || !YOUTUBE_CHANNEL_ID) {
+    console.log("[YouTube API] fetchVideosFromAPI called with maxResults:", maxResults);
+    console.log("[YouTube API] Env Keys Available:", Object.keys(process.env).join(", "));
+    console.log("[YouTube API] Has API KEY:", !!apiKey, "Has Channel ID:", !!channelId);
+
+    if (!apiKey || !channelId) {
         console.error("[YouTube API] CREDENTIALS MISSING!", {
-            apiKey: YOUTUBE_API_KEY ? "EXISTS" : "MISSING",
-            channelId: YOUTUBE_CHANNEL_ID ? "EXISTS" : "MISSING"
+            apiKey: apiKey ? "EXISTS" : "MISSING",
+            channelId: channelId ? "EXISTS" : "MISSING"
         });
         return [];
     }
 
     // Convert Channel ID to Uploads Playlist ID (UC -> UU)
-    const uploadsPlaylistId = YOUTUBE_CHANNEL_ID.replace(/^UC/, "UU");
+    const uploadsPlaylistId = channelId.replace(/^UC/, "UU");
 
     try {
-        const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${uploadsPlaylistId}&maxResults=${maxResults}&key=${YOUTUBE_API_KEY}`;
+        const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${uploadsPlaylistId}&maxResults=${maxResults}&key=${apiKey}`;
 
         const response = await fetch(url, {
             next: { revalidate: 3600 }, // Cache for 1 hour
@@ -55,25 +59,28 @@ export async function fetchVideosFromAPI(maxResults: number = 6): Promise<Video[
  * @param maxPages Maximum number of API pages to fetch (default: 4 = 200 videos max)
  */
 export async function fetchAllVideosFromAPI(maxPages: number = 4): Promise<Video[]> {
-    console.log("[YouTube API] fetchAllVideosFromAPI called with maxPages:", maxPages);
-    console.log("[YouTube API] Has API KEY:", !!YOUTUBE_API_KEY, "Has Channel ID:", !!YOUTUBE_CHANNEL_ID);
+    const apiKey = process.env.YOUTUBE_API_KEY;
+    const channelId = process.env.YOUTUBE_CHANNEL_ID;
 
-    if (!YOUTUBE_API_KEY || !YOUTUBE_CHANNEL_ID) {
+    console.log("[YouTube API] fetchAllVideosFromAPI called with maxPages:", maxPages);
+    console.log("[YouTube API] Has API KEY:", !!apiKey, "Has Channel ID:", !!channelId);
+
+    if (!apiKey || !channelId) {
         console.error("[YouTube API] CREDENTIALS MISSING!", {
-            apiKey: YOUTUBE_API_KEY ? "EXISTS" : "MISSING",
-            channelId: YOUTUBE_CHANNEL_ID ? "EXISTS" : "MISSING"
+            apiKey: apiKey ? "EXISTS" : "MISSING",
+            channelId: channelId ? "EXISTS" : "MISSING"
         });
         return [];
     }
 
-    const uploadsPlaylistId = YOUTUBE_CHANNEL_ID.replace(/^UC/, "UU");
+    const uploadsPlaylistId = channelId.replace(/^UC/, "UU");
     const allVideos: Video[] = [];
     let pageToken: string | undefined = undefined;
     let pageCount = 0;
 
     try {
         while (pageCount < maxPages) {
-            const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${uploadsPlaylistId}&maxResults=50${pageToken ? `&pageToken=${pageToken}` : ''}&key=${YOUTUBE_API_KEY}`;
+            const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${uploadsPlaylistId}&maxResults=50${pageToken ? `&pageToken=${pageToken}` : ''}&key=${apiKey}`;
 
             const response = await fetch(url, {
                 next: { revalidate: 3600 }, // Cache for 1 hour
