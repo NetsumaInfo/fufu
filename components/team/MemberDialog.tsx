@@ -1,11 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { Youtube, Twitter, Instagram, Globe, ExternalLink } from "lucide-react";
+import { Youtube, Twitter, Instagram, Globe } from "lucide-react";
 import { DiscordIcon } from "@/components/ui/DiscordIcon";
 import { Dialog } from "@/components/ui/Dialog";
 import { Badge, getRoleBadgeVariant } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
 import { Member } from "@/lib/types";
 
 interface MemberDialogProps {
@@ -38,12 +37,14 @@ export function MemberDialog({ member, isOpen, onClose }: MemberDialogProps) {
 
     return (
         <Dialog isOpen={isOpen} onClose={onClose} size="lg">
-            <div className="grid md:grid-cols-3 gap-8">
-                {/* Left column - Avatar and basic info */}
+            {/* Mobile: Stack layout / Desktop: Grid layout */}
+            <div className="flex flex-col md:grid md:grid-cols-3 gap-6 md:gap-8">
+
+                {/* Header section - Avatar + Name + Roles */}
                 <div className="md:col-span-1">
-                    <div className="sticky top-0">
-                        {/* Large avatar */}
-                        <div className="relative w-48 h-48 mx-auto mb-6">
+                    <div className="flex flex-col items-center">
+                        {/* Avatar - smaller on mobile */}
+                        <div className="relative w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 mb-4">
                             <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-xl" />
                             <div className="relative w-full h-full rounded-2xl overflow-hidden border-2 border-primary">
                                 <Image
@@ -56,17 +57,17 @@ export function MemberDialog({ member, isOpen, onClose }: MemberDialogProps) {
                         </div>
 
                         {/* Name */}
-                        <h3 className="text-2xl font-bold text-center text-primary-light mb-3">
+                        <h3 className="text-xl sm:text-2xl font-bold text-center text-primary-light mb-3">
                             {member.pseudo}
                         </h3>
 
                         {/* Roles */}
-                        <div className="flex flex-wrap gap-2 justify-center mb-6">
-                            <Badge variant={getRoleBadgeVariant(member.primaryRole)}>
+                        <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center mb-4">
+                            <Badge variant={getRoleBadgeVariant(member.primaryRole)} className="text-xs sm:text-sm">
                                 {member.primaryRole}
                             </Badge>
                             {member.secondaryRoles?.map((role) => (
-                                <Badge key={role} variant={getRoleBadgeVariant(role)}>
+                                <Badge key={role} variant={getRoleBadgeVariant(role)} className="text-xs sm:text-sm">
                                     {role}
                                 </Badge>
                             ))}
@@ -74,7 +75,7 @@ export function MemberDialog({ member, isOpen, onClose }: MemberDialogProps) {
 
                         {/* Joined date */}
                         {member.joinedDate && (
-                            <p className="text-sm text-muted-foreground text-center">
+                            <p className="text-xs sm:text-sm text-muted-foreground text-center">
                                 Membre depuis {new Date(member.joinedDate).toLocaleDateString("fr-FR", {
                                     month: "long",
                                     year: "numeric"
@@ -84,35 +85,35 @@ export function MemberDialog({ member, isOpen, onClose }: MemberDialogProps) {
                     </div>
                 </div>
 
-                {/* Right column - Details */}
-                <div className="md:col-span-2 space-y-6">
+                {/* Content section - scrollable on mobile */}
+                <div className="md:col-span-2 space-y-5 sm:space-y-6">
                     {/* Bio */}
                     <div>
-                        <h4 className="text-lg font-semibold text-foreground mb-3">À propos</h4>
-                        <p className="text-muted-foreground leading-relaxed">
+                        <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">À propos</h4>
+                        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                             {member.bioLong || member.bioShort}
                         </p>
                     </div>
 
                     {/* Social links */}
                     <div>
-                        <h4 className="text-lg font-semibold text-foreground mb-3">Réseaux sociaux</h4>
-                        <div className="grid sm:grid-cols-2 gap-3">
+                        <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Réseaux sociaux</h4>
+                        <div className="grid grid-cols-1 gap-2 sm:gap-3">
                             {Object.entries(member.socials).map(([platform, url]) => {
                                 if (!url) return null;
                                 const Icon = socialIcons[platform as keyof typeof socialIcons] || Globe;
                                 const label = socialLabels[platform] || platform;
 
-                                // Special handling for Discord - if it's just a username (not a URL), display it as text
+                                // Special handling for Discord
                                 if (platform === 'discord' && !url.startsWith('http')) {
                                     return (
                                         <div
                                             key={platform}
-                                            className="flex items-center gap-3 p-3 rounded-lg border border-border bg-secondary/50"
+                                            className="flex items-center gap-3 p-2.5 sm:p-3 rounded-lg border border-border bg-secondary/50"
                                         >
                                             <Icon className="w-5 h-5 text-primary flex-shrink-0" />
-                                            <span className="flex-1 font-medium">{label}</span>
-                                            <span className="text-sm text-muted-foreground">@{url}</span>
+                                            <span className="flex-1 text-sm sm:text-base font-medium">{label}</span>
+                                            <span className="text-xs sm:text-sm text-muted-foreground">@{url}</span>
                                         </div>
                                     );
                                 }
@@ -123,11 +124,10 @@ export function MemberDialog({ member, isOpen, onClose }: MemberDialogProps) {
                                         href={url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-all group"
+                                        className="flex items-center gap-3 p-2.5 sm:p-3 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-all active:scale-[0.98]"
                                     >
                                         <Icon className="w-5 h-5 text-primary flex-shrink-0" />
-                                        <span className="flex-1 font-medium">{label}</span>
-                                        <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        <span className="flex-1 text-sm sm:text-base font-medium">{label}</span>
                                     </a>
                                 );
                             })}
@@ -137,41 +137,29 @@ export function MemberDialog({ member, isOpen, onClose }: MemberDialogProps) {
                     {/* Highlights / Featured projects */}
                     {member.highlights && member.highlights.length > 0 && (
                         <div>
-                            <h4 className="text-lg font-semibold text-foreground mb-3">Projets mis en avant</h4>
-                            <div className="space-y-3">
+                            <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Projets mis en avant</h4>
+                            <div className="space-y-2 sm:space-y-3">
                                 {member.highlights.map((highlight, index) => (
                                     <a
                                         key={index}
                                         href={highlight.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="block p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-all group"
+                                        className="block p-3 sm:p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-all active:scale-[0.98]"
                                     >
-                                        <div className="flex items-start justify-between gap-3">
-                                            <div className="flex-1">
-                                                <h5 className="font-semibold text-foreground group-hover:text-primary transition-colors">
-                                                    {highlight.label}
-                                                </h5>
-                                                {highlight.description && (
-                                                    <p className="text-sm text-muted-foreground mt-1">
-                                                        {highlight.description}
-                                                    </p>
-                                                )}
-                                            </div>
-                                            <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
-                                        </div>
+                                        <h5 className="text-sm sm:text-base font-semibold text-foreground">
+                                            {highlight.label}
+                                        </h5>
+                                        {highlight.description && (
+                                            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                                                {highlight.description}
+                                            </p>
+                                        )}
                                     </a>
                                 ))}
                             </div>
                         </div>
                     )}
-
-                    {/* Action button */}
-                    <div className="pt-4 border-t border-border">
-                        <Button onClick={onClose} variant="secondary" className="w-full">
-                            Fermer le profil
-                        </Button>
-                    </div>
                 </div>
             </div>
         </Dialog>

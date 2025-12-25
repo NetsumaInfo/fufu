@@ -1,0 +1,95 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  annotations:
+    run.googleapis.com/build-enable-automatic-updates: 'false'
+    run.googleapis.com/build-environment-variables: '{"NEXT_PUBLIC_CDN_URL":"https://storage.googleapis.com/fulguria-assets"}'
+    run.googleapis.com/build-id: 60989675-3648-4223-b7f1-148730c42ff4
+    run.googleapis.com/build-image-uri: europe-west1-docker.pkg.dev/fufu-482308/cloud-run-source-deploy/fulguria-team
+    run.googleapis.com/build-name: projects/250401468026/locations/europe-west1/builds/60989675-3648-4223-b7f1-148730c42ff4
+    run.googleapis.com/build-source-location: gs://run-sources-fufu-482308-europe-west1/services/fulguria-team/1766668975.967698-62087e79887f4f6dba83038a4fe558a3.zip#1766669120658470
+    run.googleapis.com/client-name: gcloud
+    run.googleapis.com/client-version: 550.0.0
+    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress-status: all
+    run.googleapis.com/maxScale: '20'
+    run.googleapis.com/operation-id: bfdec6ad-0c9b-4130-8b51-d076ca3709b8
+    run.googleapis.com/urls: '["https://fulguria-team-250401468026.europe-west1.run.app","https://fulguria-team-juefcxw65q-ew.a.run.app"]'
+    serving.knative.dev/creator: haimfaraj@gmail.com
+    serving.knative.dev/lastModifier: haimfaraj@gmail.com
+  creationTimestamp: '2025-12-25T13:17:20.364085Z'
+  generation: 3
+  labels:
+    cloud.googleapis.com/location: europe-west1
+  name: fulguria-team
+  namespace: '250401468026'
+  resourceVersion: AAZGyYBfgnU
+  selfLink: /apis/serving.knative.dev/v1/namespaces/250401468026/services/fulguria-team
+  uid: e790dba9-6d7c-4ca2-aaf2-5daf7a20f296
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: '10'
+        run.googleapis.com/client-name: gcloud
+        run.googleapis.com/client-version: 550.0.0
+        run.googleapis.com/startup-cpu-boost: 'true'
+      labels:
+        client.knative.dev/nonce: rtqcirkyfs
+        run.googleapis.com/startupProbeType: Default
+    spec:
+      containerConcurrency: 80
+      containers:
+      - env:
+        - name: NEXT_PUBLIC_CDN_URL
+          value: https://storage.googleapis.com/fulguria-assets
+        - name: YOUTUBE_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: youtube-api-key
+              key: latest
+        - name: YOUTUBE_CHANNEL_ID
+          valueFrom:
+            secretKeyRef:
+              name: youtube-channel-id
+              key: latest
+        image: gcr.io/fufu-482308/fulguria-team
+        ports:
+        - containerPort: 8080
+          name: http1
+        resources:
+          limits:
+            cpu: '1'
+            memory: 512Mi
+        startupProbe:
+          failureThreshold: 1
+          periodSeconds: 240
+          tcpSocket:
+            port: 8080
+          timeoutSeconds: 240
+      serviceAccountName: 250401468026-compute@developer.gserviceaccount.com
+      timeoutSeconds: 300
+  traffic:
+  - latestRevision: true
+    percent: 100
+status:
+  address:
+    url: https://fulguria-team-juefcxw65q-ew.a.run.app
+  conditions:
+  - lastTransitionTime: '2025-12-25T16:45:16.377717Z'
+    status: 'True'
+    type: Ready
+  - lastTransitionTime: '2025-12-25T16:45:12.724223Z'
+    status: 'True'
+    type: ConfigurationsReady
+  - lastTransitionTime: '2025-12-25T16:45:16.353983Z'
+    status: 'True'
+    type: RoutesReady
+  latestCreatedRevisionName: fulguria-team-00003-qlt
+  latestReadyRevisionName: fulguria-team-00003-qlt
+  observedGeneration: 3
+  traffic:
+  - latestRevision: true
+    percent: 100
+    revisionName: fulguria-team-00003-qlt
+  url: https://fulguria-team-juefcxw65q-ew.a.run.app

@@ -89,7 +89,7 @@ export function Dialog({
     return createPortal(
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
                     {/* Backdrop */}
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -109,8 +109,8 @@ export function Dialog({
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
                         transition={{ duration: 0.2 }}
                         className={cn(
-                            "relative w-full glass-strong rounded-2xl shadow-2xl",
-                            "max-h-[90vh] overflow-hidden flex flex-col",
+                            "relative w-full glass-strong rounded-xl sm:rounded-2xl shadow-2xl",
+                            "max-h-[95vh] sm:max-h-[90vh] overflow-hidden flex flex-col",
                             sizes[size],
                             className
                         )}
@@ -120,10 +120,10 @@ export function Dialog({
                     >
                         {/* Header */}
                         {title && (
-                            <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+                            <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-border">
                                 <h2
                                     id="dialog-title"
-                                    className="text-2xl font-bold text-foreground"
+                                    className="text-xl sm:text-2xl font-bold text-foreground"
                                 >
                                     {title}
                                 </h2>
@@ -141,7 +141,7 @@ export function Dialog({
                         {!title && (
                             <button
                                 onClick={onClose}
-                                className="absolute top-4 right-4 p-2 rounded-lg hover:bg-muted transition-colors z-10"
+                                className="absolute top-2 right-2 sm:top-4 sm:right-4 p-2 rounded-lg hover:bg-muted transition-colors z-10 bg-card/80 backdrop-blur-sm"
                                 aria-label="Fermer le dialogue"
                             >
                                 <X className="w-5 h-5" />
@@ -149,7 +149,7 @@ export function Dialog({
                         )}
 
                         {/* Content */}
-                        <div className="flex-1 overflow-y-auto px-6 py-6">
+                        <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6">
                             {children}
                         </div>
                     </motion.div>

@@ -32,7 +32,7 @@ export function RoleSection({
             </div>
 
             {/* Members grid */}
-            <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
                 {members.map((member) => (
                     <StaggerItem key={member.id}>
                         <MemberCard member={member} onClick={() => onMemberClick(member)} />
