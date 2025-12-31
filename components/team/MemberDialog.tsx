@@ -89,7 +89,7 @@ export function MemberDialog({ member, isOpen, onClose }: MemberDialogProps) {
                 <div className="md:col-span-2 space-y-5 sm:space-y-6">
                     {/* Bio */}
                     <div>
-                        <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">À propos</h4>
+                        <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Description</h4>
                         <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                             {member.bioLong || member.bioShort}
                         </p>

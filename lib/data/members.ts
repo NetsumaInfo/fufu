@@ -27,7 +27,7 @@ export const members: Member[] = [
         pseudo: "Netsuma",
         primaryRole: "AMV Maker",
         avatarUrl: "/images/team/PP/NETSUMA.png",
-        bioShort: "AMV Maker au style dynamique.",
+        bioShort: "Tranquille.",
         socials: {
             youtube: "https://www.youtube.com/@netsuma_amv",
             x: "https://x.com/NetsumaAMV",
@@ -137,7 +137,7 @@ export const members: Member[] = [
         pseudo: "Lunikyuu",
         primaryRole: "AMV Maker",
         avatarUrl: "/images/team/PP/LUNIKYUU.png",
-        bioShort: "Créateur de contenu AMV.",
+        bioShort: "Je m'identifie comme un calque de forme.",
         socials: {
             youtube: "https://www.youtube.com/@lunikyuuu",
             x: "https://x.com/lunikyuu_arg",
@@ -149,7 +149,7 @@ export const members: Member[] = [
         pseudo: "Atsuyo",
         primaryRole: "AMV Maker",
         avatarUrl: "/images/team/PP/ATSUYO.png",
-        bioShort: "Passionné d'AMV.",
+        bioShort: "Trop d'étranger.",
         socials: {
             youtube: "https://www.youtube.com/@atsuyoAMV",
         },

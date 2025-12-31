@@ -14,6 +14,9 @@ export function TransitionLayout({ children }: TransitionLayoutProps) {
     const [isAnimating, setIsAnimating] = useState(false);
 
     useEffect(() => {
+        // Scroll to top immediately on page change
+        window.scrollTo(0, 0);
+
         setIsAnimating(true);
         const timer = setTimeout(() => {
             setDisplayChildren(children);

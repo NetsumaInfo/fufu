@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Youtube, Twitter, Instagram } from "lucide-react";
+import { Youtube, Twitter } from "lucide-react";
 import { DiscordIcon } from "@/components/ui/DiscordIcon";
+import { BilibiliIcon } from "@/components/ui/BilibiliIcon";
 
 const YOUTUBE_CHANNEL = "https://www.youtube.com/@FulguriaTeam";
 
@@ -9,7 +10,7 @@ const socialLinks = [
     { icon: Youtube, href: YOUTUBE_CHANNEL, label: "YouTube" },
     { icon: DiscordIcon, href: "https://discord.gg/fulguria", label: "Discord" },
     { icon: Twitter, href: "https://x.com/FulguriaTeam", label: "X" },
-    { icon: Instagram, href: "https://instagram.com/fulguria", label: "Instagram" },
+    { icon: BilibiliIcon, href: "https://space.bilibili.com/3546715653146653/?spm_id_from=333.999.0.0", label: "Bilibili" },
 ];
 
 export function Footer() {

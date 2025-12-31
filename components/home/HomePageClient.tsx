@@ -110,14 +110,26 @@ function Carousel<T extends { id: string }>({
     }
 
     return (
-        <div className="relative">
-            {/* Left hover zone + button - Desktop only */}
+        <div className="relative group/carousel">
+            {/* Left arrow - XL+ screens: outside, always visible */}
             {showLeftArrow && (
-                <div className="hidden md:block absolute left-0 top-0 bottom-0 w-16 z-30 group/left">
+                <button
+                    type="button"
+                    onClick={() => handleScroll("left")}
+                    className="hidden xl:flex absolute -left-16 top-1/2 -translate-y-1/2 w-12 h-12 items-center justify-center bg-black/40 hover:bg-black/70 border border-white/20 rounded-full shadow-xl transition-all opacity-60 hover:opacity-100 z-30"
+                    aria-label="Précédent"
+                >
+                    <ChevronLeft className="w-6 h-6 text-white" />
+                </button>
+            )}
+
+            {/* Left arrow - MD to XL screens: inside, hover to show */}
+            {showLeftArrow && (
+                <div className="hidden md:block xl:hidden absolute left-0 top-0 bottom-0 w-16 z-30 group/left">
                     <button
                         type="button"
                         onClick={() => handleScroll("left")}
-                        className="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-black/40 hover:bg-black/60 border border-white/20 rounded-full shadow-xl transition-all opacity-0 group-hover/left:opacity-100"
+                        className="absolute left-2 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-black/40 hover:bg-black/70 border border-white/20 rounded-full shadow-xl transition-all opacity-0 group-hover/left:opacity-100"
                         aria-label="Précédent"
                     >
                         <ChevronLeft className="w-6 h-6 text-white" />
@@ -125,13 +137,25 @@ function Carousel<T extends { id: string }>({
                 </div>
             )}
 
-            {/* Right hover zone + button - Desktop only */}
+            {/* Right arrow - XL+ screens: outside, always visible */}
             {showRightArrow && (
-                <div className="hidden md:block absolute right-0 top-0 bottom-0 w-16 z-30 group/right">
+                <button
+                    type="button"
+                    onClick={() => handleScroll("right")}
+                    className="hidden xl:flex absolute -right-16 top-1/2 -translate-y-1/2 w-12 h-12 items-center justify-center bg-black/40 hover:bg-black/70 border border-white/20 rounded-full shadow-xl transition-all opacity-60 hover:opacity-100 z-30"
+                    aria-label="Suivant"
+                >
+                    <ChevronRight className="w-6 h-6 text-white" />
+                </button>
+            )}
+
+            {/* Right arrow - MD to XL screens: inside, hover to show */}
+            {showRightArrow && (
+                <div className="hidden md:block xl:hidden absolute right-0 top-0 bottom-0 w-16 z-30 group/right">
                     <button
                         type="button"
                         onClick={() => handleScroll("right")}
-                        className="absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-black/40 hover:bg-black/60 border border-white/20 rounded-full shadow-xl transition-all opacity-0 group-hover/right:opacity-100"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-black/40 hover:bg-black/70 border border-white/20 rounded-full shadow-xl transition-all opacity-0 group-hover/right:opacity-100"
                         aria-label="Suivant"
                     >
                         <ChevronRight className="w-6 h-6 text-white" />

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { motion, LayoutGroup } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "./MobileNav";
 
@@ -21,6 +21,11 @@ export function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+    // Refs for measuring link positions
+    const navContainerRef = useRef<HTMLDivElement>(null);
+    const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+    const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
+
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 20);
@@ -29,6 +34,25 @@ export function Navbar() {
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
+    // Calculate indicator position based on active link
+    useEffect(() => {
+        const activeIndex = navLinks.findIndex(link => link.href === pathname);
+        if (activeIndex === -1) return;
+
+        const activeLink = linkRefs.current[activeIndex];
+        const container = navContainerRef.current;
+
+        if (activeLink && container) {
+            const containerRect = container.getBoundingClientRect();
+            const linkRect = activeLink.getBoundingClientRect();
+
+            setIndicatorStyle({
+                left: linkRect.left - containerRect.left + 8, // +8 for padding
+                width: linkRect.width - 16, // -16 for left/right padding
+            });
+        }
+    }, [pathname]);
 
     return (
         <>
@@ -62,43 +86,47 @@ export function Navbar() {
                         </Link>
 
                         {/* Desktop Navigation */}
-                        <LayoutGroup>
-                            <div className="hidden md:flex items-center gap-1">
-                                {navLinks.map((link, index) => (
-                                    <motion.div
-                                        key={link.href}
-                                        initial={{ opacity: 0, y: -10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: index * 0.1, duration: 0.3 }}
+                        <div
+                            ref={navContainerRef}
+                            className="hidden md:flex items-center gap-1 relative"
+                        >
+                            {/* Animated indicator - only moves horizontally */}
+                            <motion.div
+                                className="absolute bottom-0 h-0.5 bg-primary rounded-full"
+                                animate={{
+                                    left: indicatorStyle.left,
+                                    width: indicatorStyle.width,
+                                }}
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 380,
+                                    damping: 32,
+                                    mass: 0.8
+                                }}
+                            />
+
+                            {navLinks.map((link, index) => (
+                                <motion.div
+                                    key={link.href}
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1, duration: 0.3 }}
+                                >
+                                    <Link
+                                        ref={(el) => { linkRefs.current[index] = el; }}
+                                        href={link.href}
+                                        className={cn(
+                                            "relative px-4 py-2 rounded-lg font-medium transition-all duration-300",
+                                            pathname === link.href
+                                                ? "text-primary"
+                                                : "text-foreground hover:text-primary"
+                                        )}
                                     >
-                                        <Link
-                                            href={link.href}
-                                            className={cn(
-                                                "relative px-4 py-2 rounded-lg font-medium transition-all duration-300",
-                                                pathname === link.href
-                                                    ? "text-primary"
-                                                    : "text-foreground hover:text-primary"
-                                            )}
-                                        >
-                                            {link.label}
-                                            {pathname === link.href && (
-                                                <motion.div
-                                                    className="absolute bottom-0 left-2 right-2 h-0.5 bg-primary rounded-full"
-                                                    layoutId="navbar-indicator"
-                                                    initial={false}
-                                                    transition={{
-                                                        type: "spring",
-                                                        stiffness: 380,
-                                                        damping: 32,
-                                                        mass: 0.8
-                                                    }}
-                                                />
-                                            )}
-                                        </Link>
-                                    </motion.div>
-                                ))}
-                            </div>
-                        </LayoutGroup>
+                                        {link.label}
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </div>
 
                         {/* Mobile Menu Button - Animated bars morphing to X */}
                         <button
@@ -146,3 +174,4 @@ export function Navbar() {
         </>
     );
 }
+
