@@ -28,7 +28,7 @@ export function MemberCard({ member, onClick }: MemberCardProps) {
     return (
         <div
             onClick={onClick}
-            className="group relative h-[320px] sm:h-[320px] md:h-[340px] bg-card border border-border rounded-xl overflow-hidden hover:border-primary transition-all duration-300 cursor-pointer active:scale-[0.98] md:hover:shadow-lg md:hover:shadow-primary/20 md:hover:scale-105"
+            className="group relative h-[320px] sm:h-[320px] md:h-[340px] bg-card border border-border rounded-xl overflow-hidden hover:border-primary transition-all duration-500 ease-out cursor-pointer active:scale-[0.98] md:hover:shadow-lg md:hover:shadow-primary/20 md:hover:scale-[1.03] transform-gpu"
         >
             {/* Card content */}
             <div className="p-5 sm:p-5 md:p-6 h-full flex flex-col">

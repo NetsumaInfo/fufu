@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, LayoutGroup } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "./MobileNav";
 
@@ -62,36 +62,43 @@ export function Navbar() {
                         </Link>
 
                         {/* Desktop Navigation */}
-                        <div className="hidden md:flex items-center gap-1">
-                            {navLinks.map((link, index) => (
-                                <motion.div
-                                    key={link.href}
-                                    initial={{ opacity: 0, y: -10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: index * 0.1, duration: 0.3 }}
-                                >
-                                    <Link
-                                        href={link.href}
-                                        className={cn(
-                                            "relative px-4 py-2 rounded-lg font-medium transition-all duration-300",
-                                            pathname === link.href
-                                                ? "text-primary"
-                                                : "text-foreground hover:text-primary"
-                                        )}
+                        <LayoutGroup>
+                            <div className="hidden md:flex items-center gap-1">
+                                {navLinks.map((link, index) => (
+                                    <motion.div
+                                        key={link.href}
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: index * 0.1, duration: 0.3 }}
                                     >
-                                        {link.label}
-                                        {pathname === link.href && (
-                                            <motion.div
-                                                className="absolute bottom-0 left-2 right-2 h-0.5 bg-primary rounded-full"
-                                                layoutId="navbar-indicator"
-                                                initial={false}
-                                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                            />
-                                        )}
-                                    </Link>
-                                </motion.div>
-                            ))}
-                        </div>
+                                        <Link
+                                            href={link.href}
+                                            className={cn(
+                                                "relative px-4 py-2 rounded-lg font-medium transition-all duration-300",
+                                                pathname === link.href
+                                                    ? "text-primary"
+                                                    : "text-foreground hover:text-primary"
+                                            )}
+                                        >
+                                            {link.label}
+                                            {pathname === link.href && (
+                                                <motion.div
+                                                    className="absolute bottom-0 left-2 right-2 h-0.5 bg-primary rounded-full"
+                                                    layoutId="navbar-indicator"
+                                                    initial={false}
+                                                    transition={{
+                                                        type: "spring",
+                                                        stiffness: 380,
+                                                        damping: 32,
+                                                        mass: 0.8
+                                                    }}
+                                                />
+                                            )}
+                                        </Link>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </LayoutGroup>
 
                         {/* Mobile Menu Button - Animated bars morphing to X */}
                         <button

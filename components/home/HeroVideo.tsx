@@ -19,7 +19,9 @@ export function HeroVideo() {
     const containerRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const prevIndexRef = useRef(0);
-    const [volume, setVolume] = useState(0);
+    const lastNonZeroVolumeRef = useRef(20); // For unmute button
+
+    const [volume, setVolume] = useState(0); // UI slider value (always starts at 0)
     const [isVideoReady, setIsVideoReady] = useState(false);
     const [showVolumeSlider, setShowVolumeSlider] = useState(false);
     const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
@@ -33,12 +35,42 @@ export function HeroVideo() {
     const scale = useTransform(scrollY, [0, 600], [1, 1.15]);
     const y = useTransform(scrollY, [0, 600], [0, 150]);
 
-    // Smooth spring animations
     const smoothOpacity = useSpring(opacity, { stiffness: 100, damping: 30 });
     const smoothScale = useSpring(scale, { stiffness: 100, damping: 30 });
     const smoothY = useSpring(y, { stiffness: 100, damping: 30 });
 
-    // Navigation entre les vidéos
+    // Apply volume directly to video
+    const applyVolumeToVideo = useCallback(() => {
+        const video = videoRef.current;
+        if (!video) return;
+        video.volume = volume / 100;
+        video.muted = volume === 0;
+    }, [volume]);
+
+    // Sync volume whenever it changes
+    useEffect(() => {
+        applyVolumeToVideo();
+        if (volume > 0) {
+            lastNonZeroVolumeRef.current = volume;
+        }
+    }, [volume, applyVolumeToVideo]);
+
+    // Handle volume slider changes
+    const handleVolumeChange = useCallback((newVolume: number) => {
+        setVolume(newVolume);
+    }, []);
+
+    // Toggle mute/unmute
+    const toggleMute = useCallback(() => {
+        if (volume > 0) {
+            lastNonZeroVolumeRef.current = volume;
+            setVolume(0);
+        } else {
+            setVolume(lastNonZeroVolumeRef.current);
+        }
+    }, [volume]);
+
+    // Navigation functions
     const goToNextVideo = useCallback(() => {
         if (isTransitioning) return;
         prevIndexRef.current = currentVideoIndex;
@@ -63,7 +95,7 @@ export function HeroVideo() {
         setCurrentVideoIndex(index);
     }, [isTransitioning, currentVideoIndex]);
 
-    // Video loading - non-blocking
+    // Video loaded - apply volume when ready
     useEffect(() => {
         const video = videoRef.current;
         if (!video) return;
@@ -71,6 +103,9 @@ export function HeroVideo() {
         const handleReady = () => {
             setIsVideoReady(true);
             setIsTransitioning(false);
+            // Apply the current volume to the new video
+            video.volume = volume / 100;
+            video.muted = volume === 0;
             video.play().catch(() => { });
         };
 
@@ -87,15 +122,7 @@ export function HeroVideo() {
             video.removeEventListener("canplaythrough", handleReady);
             video.removeEventListener("loadeddata", handleReady);
         };
-    }, [currentVideoIndex]);
-
-    // Volume sync - also apply when video changes
-    useEffect(() => {
-        const video = videoRef.current;
-        if (!video) return;
-        video.volume = volume / 100;
-        video.muted = volume === 0;
-    }, [volume, currentVideoIndex]);
+    }, [currentVideoIndex, volume]);
 
     const scrollToContent = () => {
         window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
@@ -151,10 +178,19 @@ export function HeroVideo() {
                         loop
                         playsInline
                         preload="metadata"
+                        onLoadedMetadata={(e) => {
+                            // Set volume immediately when video metadata loads
+                            const video = e.currentTarget;
+                            video.volume = volume / 100;
+                            video.muted = volume === 0;
+                        }}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.5 }}
+                        transition={{
+                            duration: 0.6,
+                            ease: "easeInOut"
+                        }}
                     />
                 </AnimatePresence>
 
@@ -309,7 +345,7 @@ export function HeroVideo() {
                                 min="0"
                                 max="100"
                                 value={volume}
-                                onChange={(e) => setVolume(Number(e.target.value))}
+                                onChange={(e) => handleVolumeChange(Number(e.target.value))}
                                 className="w-full h-1 bg-white/20 rounded-lg appearance-none cursor-pointer"
                                 style={{
                                     background: `linear-gradient(to right, rgb(59 130 246) 0%, rgb(59 130 246) ${volume}%, rgba(255,255,255,0.2) ${volume}%, rgba(255,255,255,0.2) 100%)`
@@ -320,9 +356,8 @@ export function HeroVideo() {
                     )}
                 </motion.div>
 
-                {/* Volume Button */}
                 <button
-                    onClick={() => setVolume(volume > 0 ? 0 : 50)}
+                    onClick={toggleMute}
                     className="p-2.5 sm:p-3 rounded-full glass border border-white/10 hover:border-primary/30 hover:bg-primary/10 transition-all group"
                     aria-label={volume === 0 ? "Activer le son" : "Couper le son"}
                 >
