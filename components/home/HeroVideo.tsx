@@ -29,15 +29,17 @@ export function HeroVideo() {
     const [touchStart, setTouchStart] = useState<number | null>(null);
     const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
-    // Scroll-based animations
+    // Scroll-based animations - optimized spring values for smoother performance
     const { scrollY } = useScroll();
     const opacity = useTransform(scrollY, [0, 600], [1, 0]);
     const scale = useTransform(scrollY, [0, 600], [1, 1.15]);
     const y = useTransform(scrollY, [0, 600], [0, 150]);
 
-    const smoothOpacity = useSpring(opacity, { stiffness: 100, damping: 30 });
-    const smoothScale = useSpring(scale, { stiffness: 100, damping: 30 });
-    const smoothY = useSpring(y, { stiffness: 100, damping: 30 });
+    // Higher stiffness/damping = faster settling, less computation
+    const springConfig = { stiffness: 200, damping: 40, mass: 0.5 };
+    const smoothOpacity = useSpring(opacity, springConfig);
+    const smoothScale = useSpring(scale, springConfig);
+    const smoothY = useSpring(y, springConfig);
 
     // Apply volume directly to video
     const applyVolumeToVideo = useCallback(() => {

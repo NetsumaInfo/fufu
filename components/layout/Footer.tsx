@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Youtube, Twitter } from "lucide-react";
 import { DiscordIcon } from "@/components/ui/DiscordIcon";
 import { BilibiliIcon } from "@/components/ui/BilibiliIcon";
+import { useTranslation } from "@/lib/context/TranslationContext";
 
 const YOUTUBE_CHANNEL = "https://www.youtube.com/@FulguriaTeam";
 
@@ -14,6 +15,7 @@ const socialLinks = [
 ];
 
 export function Footer() {
+    const { t } = useTranslation();
     return (
         <footer className="relative z-50 bg-[#0d1117] border-t border-white/5 py-6 md:py-4">
             <div className="container-custom">
@@ -48,13 +50,13 @@ export function Footer() {
 
                     {/* Copyright */}
                     <div className="text-gray-500 text-sm text-center md:text-left">
-                        © 2024-{new Date().getFullYear()} Fulguria Team, All Rights Reserved
+                        © 2024-{new Date().getFullYear()} {t('navbar.team')}, {t('footer.rights')}
                     </div>
 
                     {/* Legal Links */}
                     <div className="flex gap-3 text-sm">
                         <Link href="/contact" className="text-red-400 hover:text-red-300 transition-colors">
-                            Contact
+                            {t('navbar.contact')}
                         </Link>
                     </div>
                 </div>

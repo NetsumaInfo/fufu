@@ -1,12 +1,19 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import { motion } from "framer-motion";
 import { prefersReducedMotion } from "@/lib/utils";
 
+const DIRECTIONS = {
+    up: { y: 40 },
+    down: { y: -40 },
+    left: { x: 40 },
+    right: { x: -40 },
+} as const;
+
 interface SlideInProps {
     children: ReactNode;
-    direction?: "up" | "down" | "left" | "right";
+    direction?: keyof typeof DIRECTIONS;
     delay?: number;
     duration?: number;
     className?: string;
@@ -19,26 +26,21 @@ export function SlideIn({
     duration = 0.5,
     className,
 }: SlideInProps) {
-    const reducedMotion = prefersReducedMotion();
+    const reducedMotion = useMemo(() => prefersReducedMotion(), []);
+    const initialState = useMemo(() => ({ opacity: 0, ...DIRECTIONS[direction] }), [direction]);
 
     if (reducedMotion) {
         return <div className={className}>{children}</div>;
     }
 
-    const directions = {
-        up: { y: 40 },
-        down: { y: -40 },
-        left: { x: 40 },
-        right: { x: -40 },
-    };
-
     return (
         <motion.div
-            initial={{ opacity: 0, ...directions[direction] }}
+            initial={initialState}
             whileInView={{ opacity: 1, x: 0, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration, delay }}
             className={className}
+            style={{ willChange: "transform, opacity" }}
         >
             {children}
         </motion.div>

@@ -12,6 +12,8 @@ import { HeroVideo } from "@/components/home/HeroVideo";
 import { Member, Video } from "@/lib/types";
 import { getAllMembers } from "@/lib/data/members";
 
+import { useTranslation } from "@/lib/context/TranslationContext";
+
 const YOUTUBE_CHANNEL = "https://www.youtube.com/@FulguriaTeam";
 
 interface HomePageClientProps {
@@ -65,6 +67,7 @@ function Carousel<T extends { id: string }>({
     itemWidth,
     emptyMessage
 }: CarouselProps<T>) {
+    const { t } = useTranslation();
     const containerRef = useRef<HTMLDivElement>(null);
     const [showLeftArrow, setShowLeftArrow] = useState(false);
     const [showRightArrow, setShowRightArrow] = useState(true);
@@ -117,7 +120,7 @@ function Carousel<T extends { id: string }>({
                     type="button"
                     onClick={() => handleScroll("left")}
                     className="hidden xl:flex absolute -left-16 top-1/2 -translate-y-1/2 w-12 h-12 items-center justify-center bg-black/40 hover:bg-black/70 border border-white/20 rounded-full shadow-xl transition-all opacity-60 hover:opacity-100 z-30"
-                    aria-label="Précédent"
+                    aria-label={t('common.previous')}
                 >
                     <ChevronLeft className="w-6 h-6 text-white" />
                 </button>
@@ -130,7 +133,7 @@ function Carousel<T extends { id: string }>({
                         type="button"
                         onClick={() => handleScroll("left")}
                         className="absolute left-2 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-black/40 hover:bg-black/70 border border-white/20 rounded-full shadow-xl transition-all opacity-0 group-hover/left:opacity-100"
-                        aria-label="Précédent"
+                        aria-label={t('common.previous')}
                     >
                         <ChevronLeft className="w-6 h-6 text-white" />
                     </button>
@@ -143,7 +146,7 @@ function Carousel<T extends { id: string }>({
                     type="button"
                     onClick={() => handleScroll("right")}
                     className="hidden xl:flex absolute -right-16 top-1/2 -translate-y-1/2 w-12 h-12 items-center justify-center bg-black/40 hover:bg-black/70 border border-white/20 rounded-full shadow-xl transition-all opacity-60 hover:opacity-100 z-30"
-                    aria-label="Suivant"
+                    aria-label={t('common.next')}
                 >
                     <ChevronRight className="w-6 h-6 text-white" />
                 </button>
@@ -156,7 +159,7 @@ function Carousel<T extends { id: string }>({
                         type="button"
                         onClick={() => handleScroll("right")}
                         className="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-black/40 hover:bg-black/70 border border-white/20 rounded-full shadow-xl transition-all opacity-0 group-hover/right:opacity-100"
-                        aria-label="Suivant"
+                        aria-label={t('common.next')}
                     >
                         <ChevronRight className="w-6 h-6 text-white" />
                     </button>
@@ -198,6 +201,7 @@ function Carousel<T extends { id: string }>({
 }
 
 export function HomePageClient({ initialVideos }: HomePageClientProps) {
+    const { t } = useTranslation();
     const [selectedMember, setSelectedMember] = useState<Member | null>(null);
     const allMembers = getAllMembers();
 
@@ -214,7 +218,7 @@ export function HomePageClient({ initialVideos }: HomePageClientProps) {
                         <div className="text-center mb-8 md:mb-12">
                             <Link href="/team" className="inline-block group">
                                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
-                                    Membre de notre team
+                                    {t('home.team_section')}
                                 </h2>
                             </Link>
                         </div>
@@ -240,7 +244,7 @@ export function HomePageClient({ initialVideos }: HomePageClientProps) {
                         <div className="text-center mb-8 md:mb-12">
                             <Link href="/videos" className="inline-block group">
                                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
-                                    Dernières vidéos
+                                    {t('home.videos_section')}
                                 </h2>
                             </Link>
                         </div>
@@ -253,12 +257,12 @@ export function HomePageClient({ initialVideos }: HomePageClientProps) {
                             emptyMessage={
                                 <div className="text-center py-12">
                                     <p className="text-muted-foreground mb-4">
-                                        Aucune vidéo disponible pour le moment.
+                                        {t('common.empty_videos')}
                                     </p>
                                     <Button asChild variant="primary">
                                         <Link href={YOUTUBE_CHANNEL} target="_blank">
                                             <Youtube className="w-4 h-4" />
-                                            Visiter notre chaîne YouTube
+                                            {t('common.visit_youtube')}
                                         </Link>
                                     </Button>
                                 </div>

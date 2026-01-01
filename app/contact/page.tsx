@@ -1,96 +1,94 @@
 "use client";
 
 import { useState } from "react";
-import { SectionHeader } from "@/components/ui/SectionHeader";
+import { motion } from "framer-motion";
 import { FadeIn } from "@/components/animations/FadeIn";
-import { SlideIn } from "@/components/animations/SlideIn";
-import { Mail, MessageSquare, Send, CheckCircle2, Sparkles, Users, Zap } from "lucide-react";
-import { DiscordIcon } from "@/components/ui/DiscordIcon";
+import {
+    Send, RotateCcw, User, Mail, MessageSquare, Globe,
+    Calendar, Link, FileText, UserPlus, CheckCircle2
+} from "lucide-react";
+import { countries } from "@/lib/data/countries";
+import { cn } from "@/lib/utils";
+import { useTranslation } from "@/lib/context/TranslationContext";
 
-// Social links with their brand colors
-const socialLinks = [
-    {
-        icon: DiscordIcon,
-        title: "Discord",
-        description: "Notre hub principal",
-        link: "https://discord.gg/fulguria",
-        linkText: "Rejoindre le serveur",
-        color: "from-[#5865F2] to-[#7289da]",
-        hoverBg: "group-hover:bg-[#5865F2]/20",
-    },
-    {
-        icon: () => (
-            <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current">
-                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z" />
-                <path fill="#0a0f1a" d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-            </svg>
-        ),
-        title: "YouTube",
-        description: "Nos vidéos",
-        link: "https://youtube.com/@FulguriaTeam",
-        linkText: "S'abonner",
-        color: "from-[#FF0000] to-[#cc0000]",
-        hoverBg: "group-hover:bg-[#FF0000]/20",
-    },
-    {
-        icon: () => (
-            <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-            </svg>
-        ),
-        title: "X (Twitter)",
-        description: "Actualités",
-        link: "https://x.com/fulguria",
-        linkText: "Suivre",
-        color: "from-[#1DA1F2] to-[#0d8bd9]",
-        hoverBg: "group-hover:bg-[#1DA1F2]/20",
-    },
-];
-
-// Features/reasons to contact
-const features = [
-    {
-        icon: Sparkles,
-        title: "Collaborations",
-        description: "Projets AMV, MEPs ou crossovers"
-    },
-    {
-        icon: Users,
-        title: "Partenariats",
-        description: "Événements et promotions"
-    },
-    {
-        icon: Zap,
-        title: "Demandes",
-        description: "Questions et suggestions"
-    },
-];
+type ContactMode = "apply" | "contact";
 
 export default function ContactPage() {
-    const [formState, setFormState] = useState({
+    const [mode, setMode] = useState<ContactMode>("apply");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
+    // Apply form state
+    const [applyForm, setApplyForm] = useState({
+        username: "",
+        email: "",
+        discordId: "",
+        age: "",
+        nationality: "",
+        bestAmv: "",
+        recentAmv: "",
+        message: "",
+    });
+
+    // Contact form state
+    const [contactForm, setContactForm] = useState({
         name: "",
         email: "",
         subject: "",
         message: "",
     });
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isSubmitted, setIsSubmitted] = useState(false);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const { t } = useTranslation();
+
+    const tabs = [
+        { id: "apply" as ContactMode, labelKey: "contact.tab_apply", icon: UserPlus },
+        { id: "contact" as ContactMode, labelKey: "contact.tab_contact", icon: Mail },
+    ];
+
+    const handleApplySubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-
-        // Simulate form submission
         await new Promise(resolve => setTimeout(resolve, 1500));
-
         setIsSubmitting(false);
         setIsSubmitted(true);
-
-        // Reset after 3 seconds
         setTimeout(() => {
             setIsSubmitted(false);
-            setFormState({ name: "", email: "", subject: "", message: "" });
+            resetApplyForm();
         }, 3000);
+    };
+
+    const handleContactSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+        setTimeout(() => {
+            setIsSubmitted(false);
+            resetContactForm();
+        }, 3000);
+    };
+
+    const resetApplyForm = () => {
+        setApplyForm({
+            username: "",
+            email: "",
+            discordId: "",
+            age: "",
+            nationality: "",
+            bestAmv: "",
+            recentAmv: "",
+            message: "",
+        });
+    };
+
+    const resetContactForm = () => {
+        setContactForm({
+            name: "",
+            email: "",
+            subject: "",
+            message: "",
+        });
     };
 
     return (
@@ -101,191 +99,406 @@ export default function ContactPage() {
                 <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
             </div>
 
-            <div className="container-custom max-w-6xl relative z-10">
-                {/* Header */}
+            <div className="container-custom max-w-3xl relative z-10">
                 <FadeIn>
-                    <SectionHeader
-                        title="Contactez-nous"
-                        description="Une question, une idée de collaboration ou simplement envie de discuter ? On adore échanger avec notre communauté !"
-                        centered
-                    />
-                </FadeIn>
+                    {/* Header */}
+                    <div className="text-center mb-8">
+                        <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+                            {t('contact.title')}
+                        </h1>
+                        <p className="text-muted-foreground">
+                            {t('contact.subtitle')}
+                        </p>
+                    </div>
 
-                {/* Features row */}
-                <div className="mt-10 grid grid-cols-3 gap-4 md:gap-6 max-w-2xl mx-auto">
-                    {features.map((feature, index) => {
-                        const Icon = feature.icon;
-                        return (
-                            <FadeIn key={index} delay={index * 0.1}>
-                                <div className="text-center">
-                                    <div className="w-12 h-12 md:w-14 md:h-14 mx-auto mb-3 rounded-xl bg-primary/10 flex items-center justify-center">
-                                        <Icon className="w-6 h-6 md:w-7 md:h-7 text-primary" />
-                                    </div>
-                                    <h3 className="font-semibold text-foreground text-sm md:text-base">{feature.title}</h3>
-                                    <p className="text-xs md:text-sm text-muted-foreground mt-1 hidden md:block">{feature.description}</p>
-                                </div>
-                            </FadeIn>
-                        );
-                    })}
-                </div>
-
-                {/* Main content grid */}
-                <div className="mt-12 grid lg:grid-cols-5 gap-8">
-
-                    {/* Contact Form - Takes 3 columns */}
-                    <SlideIn direction="left" className="lg:col-span-3">
-                        <div className="glass rounded-2xl p-6 md:p-8 border border-border hover:border-primary/30 transition-colors">
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="p-2.5 bg-primary/20 rounded-lg">
-                                    <Mail className="w-5 h-5 text-primary" />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-bold text-foreground">Envoie-nous un message</h3>
-                                    <p className="text-sm text-muted-foreground">On te répond sous 48h</p>
-                                </div>
-                            </div>
-
-                            {isSubmitted ? (
-                                <div className="flex flex-col items-center justify-center py-12 text-center">
-                                    <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mb-4 animate-pulse">
-                                        <CheckCircle2 className="w-8 h-8 text-green-500" />
-                                    </div>
-                                    <h4 className="text-lg font-semibold text-foreground mb-2">Message envoyé !</h4>
-                                    <p className="text-muted-foreground">Merci, on te répond très vite 🚀</p>
-                                </div>
-                            ) : (
-                                <form onSubmit={handleSubmit} className="space-y-4">
-                                    <div className="grid md:grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-foreground mb-2">Nom / Pseudo</label>
-                                            <input
-                                                type="text"
-                                                required
-                                                value={formState.name}
-                                                onChange={(e) => setFormState(prev => ({ ...prev, name: e.target.value }))}
-                                                className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground"
-                                                placeholder="Ton nom"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-foreground mb-2">Email</label>
-                                            <input
-                                                type="email"
-                                                required
-                                                value={formState.email}
-                                                onChange={(e) => setFormState(prev => ({ ...prev, email: e.target.value }))}
-                                                className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground"
-                                                placeholder="ton@email.com"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-foreground mb-2">Sujet</label>
-                                        <input
-                                            type="text"
-                                            required
-                                            value={formState.subject}
-                                            onChange={(e) => setFormState(prev => ({ ...prev, subject: e.target.value }))}
-                                            className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground"
-                                            placeholder="De quoi veux-tu parler ?"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-foreground mb-2">Message</label>
-                                        <textarea
-                                            required
-                                            rows={4}
-                                            value={formState.message}
-                                            onChange={(e) => setFormState(prev => ({ ...prev, message: e.target.value }))}
-                                            className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground resize-none"
-                                            placeholder="Dis-nous tout..."
-                                        />
-                                    </div>
-                                    <button
-                                        type="submit"
-                                        disabled={isSubmitting}
-                                        className="w-full py-3.5 px-6 rounded-lg bg-gradient-to-r from-primary to-primary-light text-white font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed transform-gpu hover:scale-[1.02] active:scale-[0.98]"
-                                    >
-                                        {isSubmitting ? (
-                                            <>
-                                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                                Envoi en cours...
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Send className="w-5 h-5" />
-                                                Envoyer le message
-                                            </>
-                                        )}
-                                    </button>
-                                </form>
-                            )}
-                        </div>
-                    </SlideIn>
-
-                    {/* Right side - Social links - Takes 2 columns */}
-                    <SlideIn direction="right" className="lg:col-span-2 space-y-4">
-                        {/* Discord highlight card */}
-                        <a
-                            href="https://discord.gg/fulguria"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group block relative overflow-hidden rounded-2xl p-6 border border-[#5865F2]/30 bg-gradient-to-br from-[#5865F2]/10 to-transparent hover:border-[#5865F2]/60 transition-all"
-                        >
-                            <div className="absolute inset-0 bg-gradient-to-br from-[#5865F2]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                            <div className="relative flex items-center gap-4">
-                                <div className="p-3 bg-[#5865F2]/20 rounded-xl group-hover:bg-[#5865F2]/30 transition-colors">
-                                    <DiscordIcon className="w-7 h-7 text-[#5865F2]" />
-                                </div>
-                                <div className="flex-1">
-                                    <h3 className="font-bold text-foreground text-lg group-hover:text-[#5865F2] transition-colors">
-                                        Discord
-                                    </h3>
-                                    <p className="text-sm text-muted-foreground">Notre hub principal • Réponse instantanée</p>
-                                </div>
-                                <div className="text-[#5865F2] opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-2 group-hover:translate-x-0">
-                                    →
-                                </div>
-                            </div>
-                        </a>
-
-                        {/* Other socials */}
-                        <div className="grid grid-cols-2 gap-4">
-                            {socialLinks.slice(1).map((social, index) => {
-                                const Icon = social.icon;
+                    {/* Main Card */}
+                    <div className="glass rounded-2xl p-6 md:p-8 border border-border">
+                        {/* Tab Navigation */}
+                        <div className="relative flex mb-8 p-1 bg-card/50 rounded-xl border border-border">
+                            {/* Sliding background indicator */}
+                            <motion.div
+                                className="absolute top-1 bottom-1 bg-primary rounded-lg shadow-lg"
+                                initial={false}
+                                animate={{
+                                    left: mode === "apply" ? "4px" : "calc(50% - 2px)",
+                                    width: "calc(50% - 4px)"
+                                }}
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 400,
+                                    damping: 30
+                                }}
+                            />
+                            {tabs.map((tab) => {
+                                const Icon = tab.icon;
                                 return (
-                                    <a
-                                        key={index}
-                                        href={social.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={`group p-4 rounded-xl border border-border hover:border-primary/30 bg-card/50 backdrop-blur-sm transition-all ${social.hoverBg}`}
+                                    <button
+                                        key={tab.id}
+                                        onClick={() => {
+                                            setMode(tab.id);
+                                            setIsSubmitted(false);
+                                        }}
+                                        className={cn(
+                                            "flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-medium text-sm transition-colors duration-200 relative z-10",
+                                            mode === tab.id
+                                                ? "text-white"
+                                                : "text-muted-foreground hover:text-foreground"
+                                        )}
                                     >
-                                        <div className="flex flex-col items-center text-center gap-2">
-                                            <div className="p-2.5 bg-primary/10 rounded-lg group-hover:scale-110 transition-transform">
-                                                <Icon />
-                                            </div>
-                                            <h4 className="font-semibold text-foreground text-sm">{social.title}</h4>
-                                            <span className="text-xs text-primary">{social.linkText} →</span>
-                                        </div>
-                                    </a>
+                                        <Icon className="w-4 h-4" />
+                                        {t(tab.labelKey)}
+                                    </button>
                                 );
                             })}
                         </div>
 
-                        {/* Response time info */}
-                        <div className="p-5 rounded-xl bg-card/30 border border-border/50">
-                            <div className="flex items-center gap-3 mb-2">
-                                <MessageSquare className="w-5 h-5 text-primary" />
-                                <h4 className="font-semibold text-foreground">Délai de réponse</h4>
+                        {/* Success Message */}
+                        {isSubmitted ? (
+                            <div className="flex flex-col items-center justify-center py-12 text-center">
+                                <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mb-4 animate-pulse">
+                                    <CheckCircle2 className="w-8 h-8 text-green-500" />
+                                </div>
+                                <h4 className="text-lg font-semibold text-foreground mb-2">
+                                    {mode === "apply" ? "Candidature envoyée !" : "Message envoyé !"}
+                                </h4>
+                                <p className="text-muted-foreground">
+                                    {mode === "apply"
+                                        ? "Merci pour ta candidature, on te répond très vite 🚀"
+                                        : "Merci, on te répond sous 48h 🚀"
+                                    }
+                                </p>
                             </div>
-                            <p className="text-sm text-muted-foreground leading-relaxed">
-                                <span className="text-primary font-medium">Discord</span> : quelques heures<br />
-                                <span className="text-primary font-medium">Email</span> : sous 48h
-                            </p>
-                        </div>
-                    </SlideIn>
-                </div>
+                        ) : (
+                            <>
+                                {/* Apply Form */}
+                                {mode === "apply" && (
+                                    <form onSubmit={handleApplySubmit} className="space-y-4">
+                                        <div className="grid md:grid-cols-2 gap-4">
+                                            {/* Username */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-foreground mb-1.5">
+                                                    {t('contact.form_apply.username')} *
+                                                </label>
+                                                <div className="relative">
+                                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                                                        <User className="w-4 h-4" />
+                                                    </div>
+                                                    <input
+                                                        type="text"
+                                                        required
+                                                        value={applyForm.username}
+                                                        onChange={(e) => setApplyForm(prev => ({ ...prev, username: e.target.value }))}
+                                                        className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
+                                                        placeholder={t('login.username_placeholder')}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {/* Email */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-foreground mb-1.5">
+                                                    {t('contact.form_apply.email')} *
+                                                </label>
+                                                <div className="relative">
+                                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                                                        <Mail className="w-4 h-4" />
+                                                    </div>
+                                                    <input
+                                                        type="email"
+                                                        required
+                                                        value={applyForm.email}
+                                                        onChange={(e) => setApplyForm(prev => ({ ...prev, email: e.target.value }))}
+                                                        className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
+                                                        placeholder="ton@email.com"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {/* Discord ID */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-foreground mb-1.5">
+                                                    {t('contact.form_apply.discord')} *
+                                                </label>
+                                                <div className="relative">
+                                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-500">
+                                                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                                            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+                                                        </svg>
+                                                    </div>
+                                                    <input
+                                                        type="text"
+                                                        required
+                                                        value={applyForm.discordId}
+                                                        onChange={(e) => setApplyForm(prev => ({ ...prev, discordId: e.target.value }))}
+                                                        className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
+                                                        placeholder="123456789012345678"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {/* Age */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-foreground mb-1.5">
+                                                    {t('contact.form_apply.age')} *
+                                                </label>
+                                                <div className="relative">
+                                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                                                        <Calendar className="w-4 h-4" />
+                                                    </div>
+                                                    <input
+                                                        type="number"
+                                                        required
+                                                        min="13"
+                                                        max="99"
+                                                        value={applyForm.age}
+                                                        onChange={(e) => setApplyForm(prev => ({ ...prev, age: e.target.value }))}
+                                                        className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
+                                                        placeholder="Ton âge"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Nationality */}
+                                        <div>
+                                            <label className="block text-sm font-medium text-foreground mb-1.5">
+                                                {t('contact.form_apply.nationality')} *
+                                            </label>
+                                            <div className="relative">
+                                                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                                                    <Globe className="w-4 h-4" />
+                                                </div>
+                                                <select
+                                                    required
+                                                    value={applyForm.nationality}
+                                                    onChange={(e) => setApplyForm(prev => ({ ...prev, nationality: e.target.value }))}
+                                                    className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm appearance-none cursor-pointer"
+                                                >
+                                                    <option value="">{t('contact.form_apply.select_country')}</option>
+                                                    {countries.map((country) => (
+                                                        <option key={country} value={country}>
+                                                            {country}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground">
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* AMV Links */}
+                                        <div className="grid md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-sm font-medium text-foreground mb-1.5">
+                                                    Meilleur AMV *
+                                                </label>
+                                                <div className="relative">
+                                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                                                        <Link className="w-4 h-4" />
+                                                    </div>
+                                                    <input
+                                                        type="url"
+                                                        required
+                                                        value={applyForm.bestAmv}
+                                                        onChange={(e) => setApplyForm(prev => ({ ...prev, bestAmv: e.target.value }))}
+                                                        className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
+                                                        placeholder={t('contact.form_apply.best_amv_placeholder')}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm font-medium text-foreground mb-1.5">
+                                                    AMV Récent *
+                                                </label>
+                                                <div className="relative">
+                                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                                                        <Link className="w-4 h-4" />
+                                                    </div>
+                                                    <input
+                                                        type="url"
+                                                        required
+                                                        value={applyForm.recentAmv}
+                                                        onChange={(e) => setApplyForm(prev => ({ ...prev, recentAmv: e.target.value }))}
+                                                        className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
+                                                        placeholder={t('contact.form_apply.recent_amv_placeholder')}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Message */}
+                                        <div>
+                                            <label className="block text-sm font-medium text-foreground mb-1.5">
+                                                Message
+                                            </label>
+                                            <div className="relative">
+                                                <div className="absolute left-3 top-3 text-muted-foreground">
+                                                    <FileText className="w-4 h-4" />
+                                                </div>
+                                                <textarea
+                                                    rows={4}
+                                                    value={applyForm.message}
+                                                    onChange={(e) => setApplyForm(prev => ({ ...prev, message: e.target.value }))}
+                                                    className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm resize-y min-h-[100px]"
+                                                    placeholder={t('contact.form_apply.message_placeholder')}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Buttons */}
+                                        <div className="flex gap-3 pt-2">
+                                            <button
+                                                type="button"
+                                                onClick={resetApplyForm}
+                                                className="flex-1 py-3 px-6 rounded-lg border border-border text-muted-foreground font-medium flex items-center justify-center gap-2 hover:bg-card hover:text-foreground transition-all"
+                                            >
+                                                <RotateCcw className="w-4 h-4" />
+                                                {t('common.reset')}
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                disabled={isSubmitting}
+                                                className="flex-1 py-3 px-6 rounded-lg bg-gradient-to-r from-primary to-primary-light text-white font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                            >
+                                                {isSubmitting ? (
+                                                    <>
+                                                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                                        Envoi...
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Send className="w-4 h-4" />
+                                                        {t('common.submit')}
+                                                    </>
+                                                )}
+                                            </button>
+                                        </div>
+                                    </form>
+                                )}
+
+                                {/* Contact Form */}
+                                {mode === "contact" && (
+                                    <form onSubmit={handleContactSubmit} className="space-y-4">
+                                        <div className="grid md:grid-cols-2 gap-4">
+                                            {/* Name */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-foreground mb-1.5">
+                                                    {t('contact.form_contact.name')} *
+                                                </label>
+                                                <div className="relative">
+                                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                                                        <User className="w-4 h-4" />
+                                                    </div>
+                                                    <input
+                                                        type="text"
+                                                        required
+                                                        value={contactForm.name}
+                                                        onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
+                                                        className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
+                                                        placeholder="Ton nom"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {/* Email */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-foreground mb-1.5">
+                                                    {t('contact.form_contact.email')} *
+                                                </label>
+                                                <div className="relative">
+                                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                                                        <Mail className="w-4 h-4" />
+                                                    </div>
+                                                    <input
+                                                        type="email"
+                                                        required
+                                                        value={contactForm.email}
+                                                        onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
+                                                        className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
+                                                        placeholder="ton@email.com"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Subject */}
+                                        <div>
+                                            <label className="block text-sm font-medium text-foreground mb-1.5">
+                                                {t('contact.form_contact.subject')} *
+                                            </label>
+                                            <div className="relative">
+                                                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                                                    <MessageSquare className="w-4 h-4" />
+                                                </div>
+                                                <input
+                                                    type="text"
+                                                    required
+                                                    value={contactForm.subject}
+                                                    onChange={(e) => setContactForm(prev => ({ ...prev, subject: e.target.value }))}
+                                                    className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
+                                                    placeholder={t('contact.form_contact.message_placeholder')}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Message */}
+                                        <div>
+                                            <label className="block text-sm font-medium text-foreground mb-1.5">
+                                                {t('contact.form_contact.message')} *
+                                            </label>
+                                            <div className="relative">
+                                                <div className="absolute left-3 top-3 text-muted-foreground">
+                                                    <FileText className="w-4 h-4" />
+                                                </div>
+                                                <textarea
+                                                    required
+                                                    rows={5}
+                                                    value={contactForm.message}
+                                                    onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
+                                                    className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm resize-y min-h-[120px]"
+                                                    placeholder={t('contact.form_contact.details_placeholder')}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Buttons */}
+                                        <div className="flex gap-3 pt-2">
+                                            <button
+                                                type="button"
+                                                onClick={resetContactForm}
+                                                className="flex-1 py-3 px-6 rounded-lg border border-border text-muted-foreground font-medium flex items-center justify-center gap-2 hover:bg-card hover:text-foreground transition-all"
+                                            >
+                                                <RotateCcw className="w-4 h-4" />
+                                                {t('common.reset')}
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                disabled={isSubmitting}
+                                                className="flex-1 py-3 px-6 rounded-lg bg-gradient-to-r from-primary to-primary-light text-white font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                            >
+                                                {isSubmitting ? (
+                                                    <>
+                                                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                                        Envoi...
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Send className="w-4 h-4" />
+                                                        Envoyer
+                                                    </>
+                                                )}
+                                            </button>
+                                        </div>
+                                    </form>
+                                )}
+                            </>
+                        )}
+                    </div>
+                </FadeIn>
             </div>
         </div>
     );

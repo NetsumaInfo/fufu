@@ -6,6 +6,7 @@ import { DiscordIcon } from "@/components/ui/DiscordIcon";
 import { Dialog } from "@/components/ui/Dialog";
 import { Badge, getRoleBadgeVariant } from "@/components/ui/Badge";
 import { Member } from "@/lib/types";
+import { useTranslation } from "@/lib/context/TranslationContext";
 
 interface MemberDialogProps {
     member: Member | null;
@@ -33,6 +34,7 @@ const socialLabels: Record<string, string> = {
 };
 
 export function MemberDialog({ member, isOpen, onClose }: MemberDialogProps) {
+    const { t, locale } = useTranslation();
     if (!member) return null;
 
     return (
@@ -64,11 +66,11 @@ export function MemberDialog({ member, isOpen, onClose }: MemberDialogProps) {
                         {/* Roles */}
                         <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center mb-4">
                             <Badge variant={getRoleBadgeVariant(member.primaryRole)} className="text-xs sm:text-sm">
-                                {member.primaryRole}
+                                {t(`members.role_badge.${member.primaryRole}`)}
                             </Badge>
                             {member.secondaryRoles?.map((role) => (
                                 <Badge key={role} variant={getRoleBadgeVariant(role)} className="text-xs sm:text-sm">
-                                    {role}
+                                    {t(`members.role_badge.${role}`)}
                                 </Badge>
                             ))}
                         </div>
@@ -76,7 +78,7 @@ export function MemberDialog({ member, isOpen, onClose }: MemberDialogProps) {
                         {/* Joined date */}
                         {member.joinedDate && (
                             <p className="text-xs sm:text-sm text-muted-foreground text-center">
-                                Membre depuis {new Date(member.joinedDate).toLocaleDateString("fr-FR", {
+                                {t('members.dialog.member_since')} {new Date(member.joinedDate).toLocaleDateString(locale, {
                                     month: "long",
                                     year: "numeric"
                                 })}
@@ -89,15 +91,15 @@ export function MemberDialog({ member, isOpen, onClose }: MemberDialogProps) {
                 <div className="md:col-span-2 space-y-5 sm:space-y-6">
                     {/* Bio */}
                     <div>
-                        <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Description</h4>
+                        <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">{t('members.dialog.description')}</h4>
                         <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                            {member.bioLong || member.bioShort}
+                            {member.bioLong ? t(`members.${member.id}.bio_long`) : t(`members.${member.id}.bio_short`)}
                         </p>
                     </div>
 
                     {/* Social links */}
                     <div>
-                        <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Réseaux sociaux</h4>
+                        <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">{t('members.dialog.socials')}</h4>
                         <div className="grid grid-cols-1 gap-2 sm:gap-3">
                             {Object.entries(member.socials).map(([platform, url]) => {
                                 if (!url) return null;
@@ -137,7 +139,7 @@ export function MemberDialog({ member, isOpen, onClose }: MemberDialogProps) {
                     {/* Highlights / Featured projects */}
                     {member.highlights && member.highlights.length > 0 && (
                         <div>
-                            <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">Projets mis en avant</h4>
+                            <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">{t('members.dialog.projects')}</h4>
                             <div className="space-y-2 sm:space-y-3">
                                 {member.highlights.map((highlight, index) => (
                                     <a

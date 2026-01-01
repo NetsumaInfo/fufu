@@ -1,0 +1,165 @@
+{
+    "common": {
+        "submit": "Enviar",
+        "reset": "Restablecer",
+        "cancel": "Cancelar",
+        "save": "Guardar",
+        "loading": "Cargando...",
+        "previous": "Anterior",
+        "next": "Siguiente",
+        "empty_videos": "No hay videos disponibles por el momento.",
+        "visit_youtube": "Visitar nuestro canal de YouTube",
+        "select": "Seleccionar",
+        "optional": "opcional",
+        "views": "vistas"
+    },
+    "navbar": {
+        "home": "Inicio",
+        "about": "Acerca de",
+        "videos": "Videos",
+        "ranking": "Clasificación",
+        "contact": "Contacto",
+        "login": "Iniciar sesión",
+        "profile": "Mi Perfil",
+        "logout": "Cerrar sesión",
+        "team": "Equipo Fulguria"
+    },
+    "footer": {
+        "rights": "All rights reserved"
+    },
+    "home": {
+        "team_section": "Miembros del equipo",
+        "videos_section": "Últimos videos"
+    },
+    "about": {
+        "tab_videos": "Videos",
+        "tab_members": "Miembros"
+    },
+    "contact": {
+        "title": "Únete a Fulguria",
+        "subtitle": "Postula para unirte a nuestro equipo o contáctanos",
+        "tab_apply": "Postular",
+        "tab_contact": "Contáctanos",
+        "form_apply": {
+            "username": "Nombre de usuario",
+            "email": "Correo electrónico",
+            "discord": "Discord ID (ej: 123456789)",
+            "age": "Edad",
+            "nationality": "Nacionalidad",
+            "select_country": "Selecciona un país",
+            "best_amv": "Mejor AMV",
+            "best_amv_placeholder": "Enlace a tu mejor AMV",
+            "recent_amv": "AMV Reciente",
+            "recent_amv_placeholder": "Enlace a tu AMV reciente",
+            "message": "Mensaje",
+            "message_placeholder": "Cuéntanos sobre ti, tu motivación..."
+        },
+        "form_contact": {
+            "name": "Nombre",
+            "email": "Correo electrónico",
+            "subject": "Asunto",
+            "message": "Mensaje",
+            "message_placeholder": "¿De qué quieres hablar?",
+            "details_placeholder": "Cuéntanos todo..."
+        },
+        "success": "¡Mensaje enviado con éxito!",
+        "error": "Ocurrió un error."
+    },
+    "login": {
+        "tab_login": "Iniciar sesión",
+        "tab_register": "Registrarse",
+        "login_title": "Iniciar sesión",
+        "login_subtitle": "Inicia sesión en tu cuenta",
+        "register_title": "Crear una cuenta",
+        "register_subtitle": "Únete a la comunidad Fulguria",
+        "username": "Nombre de usuario",
+        "username_placeholder": "Tu nombre de usuario",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "confirm_password": "Confirmar",
+        "forgot_password": "¿Olvidaste tu contraseña?",
+        "social_optional": "Redes sociales (opcional)",
+        "date_of_birth": "Fecha de nacimiento",
+        "gender": "Género",
+        "team": "Equipo",
+        "select": "Seleccionar",
+        "submit_login": "Iniciar sesión",
+        "submit_register": "Crear cuenta"
+    },
+    "profile": {
+        "title": "Mi Perfil",
+        "subtitle": "Administra tu información personal",
+        "personal_info": "Información personal",
+        "social_links": "Redes sociales",
+        "save_success": "¡Perfil actualizado con éxito!",
+        "member_since": "Miembro desde"
+    },
+    "members": {
+        "role_badge": {
+            "Leader": "Leader",
+            "AMV Maker": "AMV Maker",
+            "Graphiste": "Diseñador gráfico"
+        },
+        "dialog": {
+            "description": "Description",
+            "socials": "Social Networks",
+            "projects": "Featured Projects",
+            "member_since": "Member since"
+        },
+        "kirr": {
+            "bio_short": "Leader of Fulguria Team, AMV Maker and versatile Graphic Designer.",
+            "bio_long": "Founding Leader of Fulguria Team. I combine my editing and graphic design skills to guide the collective's artistic vision. Passionate about visual creation in all its forms."
+        },
+        "netsuma": {
+            "bio_short": "Chill."
+        },
+        "ruby": {
+            "bio_short": "Urama & Zeeeph Fucking Gayyy !!!"
+        },
+        "conan": {
+            "bio_short": "Maravilloso joven de belleza impecable."
+        },
+        "isashii": {
+            "bio_short": "Talented AMV Editor."
+        },
+        "zeph": {
+            "bio_short": "Anime Music Video Creator."
+        },
+        "kotori": {
+            "bio_short": "AMV Maker with a unique touch."
+        },
+        "danny": {
+            "bio_short": "AMV Editor active on YouTube and TikTok."
+        },
+        "jasu": {
+            "bio_short": "Versatile creator on multiple platforms."
+        },
+        "leo": {
+            "bio_short": "AMV Maker."
+        },
+        "lunikyuu": {
+            "bio_short": "I identify as a shape layer."
+        },
+        "atsuyo": {
+            "bio_short": "Too many foreigners."
+        },
+        "uram": {
+            "bio_short": "AMV Maker and Graphic Designer."
+        },
+        "tenteki": {
+            "bio_short": "AMV Maker passionate about creative editing."
+        },
+        "louvi": {
+            "bio_short": "Creative AMV Maker."
+        },
+        "j3ifer": {
+            "bio_short": "Talented AMV Maker."
+        },
+        "kure": {
+            "bio_short": "Talented Graphic Designer for the team."
+        },
+        "mirae": {
+            "bio_short": "Creative Graphic Designer."
+        }
+    }
+}

@@ -1,0 +1,165 @@
+{
+    "common": {
+        "submit": "Отправить",
+        "reset": "Сбросить",
+        "cancel": "Отмена",
+        "save": "Сохранить",
+        "loading": "Загрузка...",
+        "previous": "Назад",
+        "next": "Вперед",
+        "empty_videos": "Видео пока нет.",
+        "visit_youtube": "Посетить наш YouTube канал",
+        "select": "Select",
+        "optional": "optional",
+        "views": "views"
+    },
+    "navbar": {
+        "home": "Главная",
+        "about": "О нас",
+        "videos": "Видео",
+        "ranking": "Рейтинг",
+        "contact": "Контакты",
+        "login": "Войти",
+        "profile": "Профиль",
+        "logout": "Выйти",
+        "team": "Команда Fulguria"
+    },
+    "footer": {
+        "rights": "All rights reserved"
+    },
+    "home": {
+        "team_section": "Участники команды",
+        "videos_section": "Последние видео"
+    },
+    "about": {
+        "tab_videos": "Видео",
+        "tab_members": "Участники"
+    },
+    "contact": {
+        "title": "Присоединиться к Fulguria",
+        "subtitle": "Подайте заявку в команду или свяжитесь с нами",
+        "tab_apply": "Подать заявку",
+        "tab_contact": "Связаться с нами",
+        "form_apply": {
+            "username": "Имя пользователя",
+            "email": "Email",
+            "discord": "Discord ID (напр: 123456789)",
+            "age": "Возраст",
+            "nationality": "Национальность",
+            "select_country": "Выберите страну",
+            "best_amv": "Лучшее AMV",
+            "best_amv_placeholder": "Ссылка на ваше лучшее AMV",
+            "recent_amv": "Недавнее AMV",
+            "recent_amv_placeholder": "Ссылка на ваше недавнее AMV",
+            "message": "Сообщение",
+            "message_placeholder": "Расскажите о себе, вашей мотивации..."
+        },
+        "form_contact": {
+            "name": "Имя",
+            "email": "Email",
+            "subject": "Тема",
+            "message": "Сообщение",
+            "message_placeholder": "О чем вы хотите поговорить?",
+            "details_placeholder": "Расскажите подробнее..."
+        },
+        "success": "Сообщение успешно отправлено!",
+        "error": "Произошла ошибка."
+    },
+    "login": {
+        "tab_login": "Вход",
+        "tab_register": "Регистрация",
+        "login_title": "Вход",
+        "login_subtitle": "Войдите в свой аккаунт",
+        "register_title": "Создать аккаунт",
+        "register_subtitle": "Присоединяйтесь к сообществу Fulguria",
+        "username": "Имя пользователя",
+        "username_placeholder": "Ваше имя пользователя",
+        "email": "Email",
+        "password": "Пароль",
+        "confirm_password": "Подтверждение",
+        "forgot_password": "Забыли пароль?",
+        "social_optional": "Соцсети (желательно)",
+        "date_of_birth": "Дата рождения",
+        "gender": "Пол",
+        "team": "Команда",
+        "select": "Выбрать",
+        "submit_login": "Войти",
+        "submit_register": "Создать аккаунт"
+    },
+    "profile": {
+        "title": "Мой Профиль",
+        "subtitle": "Управление личной информацией",
+        "personal_info": "Личная информация",
+        "social_links": "Социальные сети",
+        "save_success": "Профиль успешно обновлен!",
+        "member_since": "Участник с"
+    },
+    "members": {
+        "role_badge": {
+            "Leader": "Leader",
+            "AMV Maker": "AMV Maker",
+            "Graphiste": "Графический дизайнер"
+        },
+        "dialog": {
+            "description": "Description",
+            "socials": "Social Networks",
+            "projects": "Featured Projects",
+            "member_since": "Member since"
+        },
+        "kirr": {
+            "bio_short": "Leader of Fulguria Team, AMV Maker and versatile Graphic Designer.",
+            "bio_long": "Founding Leader of Fulguria Team. I combine my editing and graphic design skills to guide the collective's artistic vision. Passionate about visual creation in all its forms."
+        },
+        "netsuma": {
+            "bio_short": "Chill."
+        },
+        "ruby": {
+            "bio_short": "Urama & Zeeeph Fucking Gayyy !!!"
+        },
+        "conan": {
+            "bio_short": "Замечательный молодой человек безупречной красоты."
+        },
+        "isashii": {
+            "bio_short": "Talented AMV Editor."
+        },
+        "zeph": {
+            "bio_short": "Anime Music Video Creator."
+        },
+        "kotori": {
+            "bio_short": "AMV Maker with a unique touch."
+        },
+        "danny": {
+            "bio_short": "AMV Editor active on YouTube and TikTok."
+        },
+        "jasu": {
+            "bio_short": "Versatile creator on multiple platforms."
+        },
+        "leo": {
+            "bio_short": "AMV Maker."
+        },
+        "lunikyuu": {
+            "bio_short": "I identify as a shape layer."
+        },
+        "atsuyo": {
+            "bio_short": "Too many foreigners."
+        },
+        "uram": {
+            "bio_short": "AMV Maker and Graphic Designer."
+        },
+        "tenteki": {
+            "bio_short": "AMV Maker passionate about creative editing."
+        },
+        "louvi": {
+            "bio_short": "Creative AMV Maker."
+        },
+        "j3ifer": {
+            "bio_short": "Talented AMV Maker."
+        },
+        "kure": {
+            "bio_short": "Talented Graphic Designer for the team."
+        },
+        "mirae": {
+            "bio_short": "Creative Graphic Designer."
+        }
+    }
+}

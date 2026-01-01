@@ -38,6 +38,6 @@ export function getRoleBadgeVariant(role: string): BadgeProps["variant"] {
     const roleLower = role.toLowerCase();
     if (roleLower.includes("leader")) return "leader";
     if (roleLower.includes("amv")) return "amv";
-    if (roleLower.includes("design") || roleLower.includes("fx")) return "design";
+    if (roleLower.includes("design") || roleLower.includes("fx") || roleLower.includes("graphiste")) return "design";
     return "default";
 }

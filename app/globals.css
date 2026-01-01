@@ -264,13 +264,15 @@ a:hover {
     background: var(--card);
     border-radius: var(--radius-lg);
     padding: var(--spacing-lg, 2rem);
-    transition: all var(--transition-base);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    contain: layout style;
+    will-change: transform;
   }
 
   .card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-4px) translateZ(0);
     box-shadow: 0 10px 40px rgba(59, 130, 246, 0.15);
   }
 

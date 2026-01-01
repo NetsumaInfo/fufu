@@ -1,0 +1,182 @@
+{
+    "common": {
+        "submit": "Envoyer",
+        "reset": "Réinitialiser",
+        "cancel": "Annuler",
+        "save": "Enregistrer",
+        "loading": "Chargement...",
+        "previous": "Précédent",
+        "next": "Suivant",
+        "empty_videos": "Aucune vidéo disponible pour le moment.",
+        "visit_youtube": "Visiter notre chaîne YouTube",
+        "select": "Sélectionner",
+        "optional": "optionnel",
+        "views": "vues"
+    },
+    "navbar": {
+        "home": "Accueil",
+        "about": "À Propos",
+        "videos": "Vidéos",
+        "ranking": "Classement",
+        "contact": "Contact",
+        "login": "Connexion",
+        "profile": "Mon Profil",
+        "logout": "Déconnexion",
+        "team": "Fulguria Team"
+    },
+    "footer": {
+        "rights": "Tous droits réservés"
+    },
+    "home": {
+        "team_section": "Membre de notre team",
+        "videos_section": "Dernières vidéos"
+    },
+    "about": {
+        "tab_videos": "Vidéos",
+        "tab_members": "Membres"
+    },
+    "contact": {
+        "title": "Rejoindre Fulguria",
+        "subtitle": "Postule pour rejoindre notre équipe ou contacte-nous pour toute question",
+        "tab_apply": "Postuler",
+        "tab_contact": "Nous contacter",
+        "form_apply": {
+            "username": "Nom d'utilisateur",
+            "email": "Adresse e-mail",
+            "discord": "Discord ID (ex: 123456789)",
+            "age": "Âge",
+            "nationality": "Nationalité",
+            "select_country": "Sélectionnez un pays",
+            "best_amv": "Meilleur AMV",
+            "best_amv_placeholder": "Lien vers ton meilleur AMV",
+            "recent_amv": "AMV Récent",
+            "recent_amv_placeholder": "Lien vers ton AMV récent",
+            "message": "Message",
+            "message_placeholder": "Parle-nous de toi, ta motivation..."
+        },
+        "form_contact": {
+            "name": "Nom",
+            "email": "Adresse e-mail",
+            "subject": "Sujet",
+            "message": "Message",
+            "message_placeholder": "De quoi veux-tu parler ?",
+            "details_placeholder": "Dis-nous tout..."
+        },
+        "success": "Message envoyé avec succès !",
+        "error": "Une erreur est survenue."
+    },
+    "login": {
+        "tab_login": "Connexion",
+        "tab_register": "Inscription",
+        "login_title": "Connexion",
+        "login_subtitle": "Connectez-vous à votre compte",
+        "register_title": "Créer un compte",
+        "register_subtitle": "Rejoignez la communauté Fulguria",
+        "username": "Nom d'utilisateur",
+        "username_placeholder": "Votre nom d'utilisateur",
+        "email": "Adresse e-mail",
+        "password": "Mot de passe",
+        "password_placeholder": "Votre mot de passe",
+        "confirm_password": "Confirmer",
+        "confirm_placeholder": "Confirmer",
+        "forgot_password": "Mot de passe oublié ?",
+        "social_links_title": "Réseaux sociaux",
+        "date_of_birth": "Date de naissance",
+        "gender": "Genre",
+        "team": "Team",
+        "submit": "Se connecter",
+        "register_submit": "Créer mon compte",
+        "submit_login": "Se connecter",
+        "submit_register": "Créer mon compte",
+        "register": {
+            "title": "Créer un compte",
+            "subtitle": "Rejoignez la communauté Fulguria",
+            "username_placeholder": "Minimum 3 caractères",
+            "password_placeholder": "Min. 6 car.",
+            "confirm_password": "Confirmer",
+            "confirm_placeholder": "Confirmer",
+            "country": "Pays",
+            "birthdate": "Date de naissance",
+            "gender": "Genre",
+            "team": "Team",
+            "social_links_title": "Réseaux sociaux",
+            "submit": "Créer mon compte"
+        }
+    },
+    "profile": {
+        "title": "Mon Profil",
+        "subtitle": "Gérez vos informations personnelles",
+        "personal_info": "Informations personnelles",
+        "social_links": "Réseaux sociaux",
+        "save_success": "Profil mis à jour avec succès !",
+        "member_since": "Membre depuis le"
+    },
+    "members": {
+        "role_badge": {
+            "Leader": "Leader",
+            "AMV Maker": "AMV Maker",
+            "Graphiste": "Graphiste"
+        },
+        "dialog": {
+            "description": "Description",
+            "socials": "Réseaux sociaux",
+            "projects": "Projets mis en avant",
+            "member_since": "Membre depuis"
+        },
+        "kirr": {
+            "bio_short": "Leader de la Fulguria Team, AMV Maker et Graphiste polyvalent.",
+            "bio_long": "Leader fondateur de la Fulguria Team. Je combine mes compétences en editing et en graphisme pour guider la vision artistique du collectif. Passionné par la création visuelle sous toutes ses formes."
+        },
+        "netsuma": {
+            "bio_short": "Tranquille."
+        },
+        "ruby": {
+            "bio_short": "Urama & Zeeeph Fucking Gayyy !!!"
+        },
+        "conan": {
+            "bio_short": "Merveilleux jeune homme d'une beauté irréprochable."
+        },
+        "isashii": {
+            "bio_short": "Éditeur AMV talentueux."
+        },
+        "zeph": {
+            "bio_short": "Créateur de vidéos musicales anime."
+        },
+        "kotori": {
+            "bio_short": "AMV Maker avec une touche unique."
+        },
+        "danny": {
+            "bio_short": "Éditeur AMV actif sur YouTube et TikTok."
+        },
+        "jasu": {
+            "bio_short": "Créateur polyvalent sur plusieurs plateformes."
+        },
+        "leo": {
+            "bio_short": "AMV Maker."
+        },
+        "lunikyuu": {
+            "bio_short": "Je m'identifie comme un calque de forme."
+        },
+        "atsuyo": {
+            "bio_short": "Trop d'étranger."
+        },
+        "uram": {
+            "bio_short": "AMV Maker et Graphiste."
+        },
+        "tenteki": {
+            "bio_short": "AMV Maker passionné par l'editing créatif."
+        },
+        "louvi": {
+            "bio_short": "AMV Maker créatif."
+        },
+        "j3ifer": {
+            "bio_short": "AMV Maker talentueux."
+        },
+        "kure": {
+            "bio_short": "Graphiste talentueux pour la team."
+        },
+        "mirae": {
+            "bio_short": "Graphiste créatif."
+        }
+    }
+}

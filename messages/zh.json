@@ -1,0 +1,165 @@
+{
+    "common": {
+        "submit": "提交",
+        "reset": "重置",
+        "cancel": "取消",
+        "save": "保存",
+        "loading": "加载中...",
+        "previous": "上一页",
+        "next": "下一页",
+        "empty_videos": "暂无视频。",
+        "visit_youtube": "访问我们的YouTube频道",
+        "select": "Select",
+        "optional": "optional",
+        "views": "views"
+    },
+    "navbar": {
+        "home": "首页",
+        "about": "关于我们",
+        "videos": "视频",
+        "ranking": "排名",
+        "contact": "联系我们",
+        "login": "登录",
+        "profile": "我的资料",
+        "logout": "登出",
+        "team": "Fulguria 团队"
+    },
+    "footer": {
+        "rights": "All rights reserved"
+    },
+    "home": {
+        "team_section": "团队成员",
+        "videos_section": "最新视频"
+    },
+    "about": {
+        "tab_videos": "视频",
+        "tab_members": "成员"
+    },
+    "contact": {
+        "title": "加入 Fulguria",
+        "subtitle": "申请加入我们的团队或联系我们",
+        "tab_apply": "申请",
+        "tab_contact": "联系我们",
+        "form_apply": {
+            "username": "用户名",
+            "email": "邮箱地址",
+            "discord": "Discord ID (例: 123456789)",
+            "age": "年龄",
+            "nationality": "国籍",
+            "select_country": "选择国家",
+            "best_amv": "最佳 AMV",
+            "best_amv_placeholder": "你最好的 AMV 链接",
+            "recent_amv": "近期 AMV",
+            "recent_amv_placeholder": "你最近的 AMV 链接",
+            "message": "留言",
+            "message_placeholder": "介绍一下你自己，你的动机..."
+        },
+        "form_contact": {
+            "name": "姓名",
+            "email": "邮箱地址",
+            "subject": "主题",
+            "message": "留言",
+            "message_placeholder": "你想谈论什么？",
+            "details_placeholder": "请详细告诉我们..."
+        },
+        "success": "消息发送成功！",
+        "error": "发生错误。"
+    },
+    "login": {
+        "tab_login": "登录",
+        "tab_register": "注册",
+        "login_title": "登录",
+        "login_subtitle": "登录到你的账户",
+        "register_title": "创建账户",
+        "register_subtitle": "加入 Fulguria 社区",
+        "username": "用户名",
+        "username_placeholder": "你的用户名",
+        "email": "邮箱地址",
+        "password": "密码",
+        "confirm_password": "确认密码",
+        "forgot_password": "忘记密码？",
+        "social_optional": "社交网络 (可选)",
+        "date_of_birth": "出生日期",
+        "gender": "性别",
+        "team": "团队",
+        "select": "选择",
+        "submit_login": "登录",
+        "submit_register": "创建账户"
+    },
+    "profile": {
+        "title": "我的资料",
+        "subtitle": "管理你的个人信息",
+        "personal_info": "个人信息",
+        "social_links": "社交网络",
+        "save_success": "资料更新成功！",
+        "member_since": "加入时间"
+    },
+    "members": {
+        "role_badge": {
+            "Leader": "Leader",
+            "AMV Maker": "AMV Maker",
+            "Graphiste": "平面设计师"
+        },
+        "dialog": {
+            "description": "Description",
+            "socials": "Social Networks",
+            "projects": "Featured Projects",
+            "member_since": "Member since"
+        },
+        "kirr": {
+            "bio_short": "Leader of Fulguria Team, AMV Maker and versatile Graphic Designer.",
+            "bio_long": "Founding Leader of Fulguria Team. I combine my editing and graphic design skills to guide the collective's artistic vision. Passionate about visual creation in all its forms."
+        },
+        "netsuma": {
+            "bio_short": "Chill."
+        },
+        "ruby": {
+            "bio_short": "Urama & Zeeeph Fucking Gayyy !!!"
+        },
+        "conan": {
+            "bio_short": "拥有无可挑剔美貌的美妙青年。"
+        },
+        "isashii": {
+            "bio_short": "Talented AMV Editor."
+        },
+        "zeph": {
+            "bio_short": "Anime Music Video Creator."
+        },
+        "kotori": {
+            "bio_short": "AMV Maker with a unique touch."
+        },
+        "danny": {
+            "bio_short": "AMV Editor active on YouTube and TikTok."
+        },
+        "jasu": {
+            "bio_short": "Versatile creator on multiple platforms."
+        },
+        "leo": {
+            "bio_short": "AMV Maker."
+        },
+        "lunikyuu": {
+            "bio_short": "I identify as a shape layer."
+        },
+        "atsuyo": {
+            "bio_short": "Too many foreigners."
+        },
+        "uram": {
+            "bio_short": "AMV Maker and Graphic Designer."
+        },
+        "tenteki": {
+            "bio_short": "AMV Maker passionate about creative editing."
+        },
+        "louvi": {
+            "bio_short": "Creative AMV Maker."
+        },
+        "j3ifer": {
+            "bio_short": "Talented AMV Maker."
+        },
+        "kure": {
+            "bio_short": "Talented Graphic Designer for the team."
+        },
+        "mirae": {
+            "bio_short": "Creative Graphic Designer."
+        }
+    }
+}

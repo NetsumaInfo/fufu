@@ -82,24 +82,24 @@ export function getLatestVideos(count: number = 6): Video[] {
     return videos.slice(0, count);
 }
 
-// Utility function to format published date
-export function formatPublishedDate(dateString: string): string {
+// Utility function to format published date using Intl.RelativeTimeFormat
+export function formatPublishedDate(dateString: string, locale: string = 'fr'): string {
     const date = new Date(dateString);
     const now = new Date();
-    const diffTime = Math.abs(now.getTime() - date.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const diffSeconds = (date.getTime() - now.getTime()) / 1000;
+    const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
 
-    if (diffDays === 0) return "Aujourd'hui";
-    if (diffDays === 1) return "Hier";
-    if (diffDays < 7) return `Il y a ${diffDays} jours`;
-    if (diffDays < 30) return `Il y a ${Math.floor(diffDays / 7)} semaine${Math.floor(diffDays / 7) > 1 ? 's' : ''}`;
-    if (diffDays < 365) return `Il y a ${Math.floor(diffDays / 30)} mois`;
-    return `Il y a ${Math.floor(diffDays / 365)} an${Math.floor(diffDays / 365) > 1 ? 's' : ''}`;
+    if (Math.abs(diffSeconds) < 60) return rtf.format(Math.round(diffSeconds), 'second');
+    if (Math.abs(diffSeconds) < 3600) return rtf.format(Math.round(diffSeconds / 60), 'minute');
+    if (Math.abs(diffSeconds) < 86400) return rtf.format(Math.round(diffSeconds / 3600), 'hour');
+    if (Math.abs(diffSeconds) < 604800) return rtf.format(Math.round(diffSeconds / 86400), 'day');
+    if (Math.abs(diffSeconds) < 2592000) return rtf.format(Math.round(diffSeconds / 604800), 'week');
+    if (Math.abs(diffSeconds) < 31536000) return rtf.format(Math.round(diffSeconds / 2592000), 'month');
+
+    return rtf.format(Math.round(diffSeconds / 31536000), 'year');
 }
 
-// Utility function to format view count
-export function formatViews(views: number): string {
-    if (views >= 1000000) return `${(views / 1000000).toFixed(1)}M vues`;
-    if (views >= 1000) return `${(views / 1000).toFixed(0)}K vues`;
-    return `${views} vues`;
+// Utility function to format view count using Intl.NumberFormat
+export function formatViews(views: number, locale: string = 'fr'): string {
+    return new Intl.NumberFormat(locale, { notation: "compact", compactDisplay: "short" }).format(views);
 }

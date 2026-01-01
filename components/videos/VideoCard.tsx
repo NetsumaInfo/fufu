@@ -6,6 +6,7 @@ import { ExternalLink, PlayCircle } from "lucide-react";
 import { Video } from "@/lib/types";
 import { formatPublishedDate, formatViews } from "@/lib/data/videos";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/lib/context/TranslationContext";
 
 interface VideoCardProps {
     video: Video;
@@ -13,6 +14,7 @@ interface VideoCardProps {
 }
 
 export function VideoCard({ video, className }: VideoCardProps) {
+    const { t, locale } = useTranslation();
     return (
         <Link
             href={video.url}
@@ -29,7 +31,9 @@ export function VideoCard({ video, className }: VideoCardProps) {
                     src={video.thumbnailUrl}
                     alt={video.title}
                     fill
+                    sizes="(max-width: 640px) 300px, (max-width: 768px) 340px, 380px"
                     className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                    loading="lazy"
                 />
 
                 {/* Play overlay */}
@@ -56,10 +60,10 @@ export function VideoCard({ video, className }: VideoCardProps) {
 
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
                     {video.views && (
-                        <span>{formatViews(video.views)}</span>
+                        <span>{formatViews(video.views, locale)} {t('common.views')}</span>
                     )}
                     <span>•</span>
-                    <span>{formatPublishedDate(video.publishedAt)}</span>
+                    <span>{formatPublishedDate(video.publishedAt, locale)}</span>
                 </div>
 
                 {video.description && (

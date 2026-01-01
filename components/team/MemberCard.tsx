@@ -5,6 +5,7 @@ import { Youtube, Twitter, Instagram } from "lucide-react";
 import { Badge, getRoleBadgeVariant } from "@/components/ui/Badge";
 import { Member } from "@/lib/types";
 import { DiscordIcon } from "@/components/ui/DiscordIcon";
+import { useTranslation } from "@/lib/context/TranslationContext";
 
 interface MemberCardProps {
     member: Member;
@@ -20,6 +21,7 @@ const socialIcons = {
 };
 
 export function MemberCard({ member, onClick }: MemberCardProps) {
+    const { t } = useTranslation();
     // Get available social links
     const availableSocials = Object.entries(member.socials)
         .filter(([_, url]) => url)
@@ -40,6 +42,7 @@ export function MemberCard({ member, onClick }: MemberCardProps) {
                             src={member.avatarUrl}
                             alt={member.pseudo}
                             fill
+                            sizes="(max-width: 640px) 80px, (max-width: 768px) 80px, 96px"
                             className="object-cover"
                         />
                     </div>
@@ -53,18 +56,18 @@ export function MemberCard({ member, onClick }: MemberCardProps) {
                 {/* Roles - show all on mobile in 1-column, limit on smaller views */}
                 <div className="flex flex-wrap gap-2 justify-center mb-3 sm:mb-4">
                     <Badge variant={getRoleBadgeVariant(member.primaryRole)} className="text-xs">
-                        {member.primaryRole}
+                        {t(`members.role_badge.${member.primaryRole}`)}
                     </Badge>
                     {member.secondaryRoles?.slice(0, 2).map((role) => (
                         <Badge key={role} variant={getRoleBadgeVariant(role)} className="text-xs">
-                            {role}
+                            {t(`members.role_badge.${role}`)}
                         </Badge>
                     ))}
                 </div>
 
                 {/* Bio - show 3 lines on all screens */}
                 <p className="text-sm text-muted-foreground text-center line-clamp-3 flex-1">
-                    {member.bioShort}
+                    {t(`members.${member.id}.bio_short`)}
                 </p>
 
                 {/* Social Icons */}

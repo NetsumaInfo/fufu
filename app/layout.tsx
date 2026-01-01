@@ -1,28 +1,18 @@
-import type { Metadata } from "next";
+"use client";
+
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { TransitionLayout } from "@/components/layout/TransitionLayout";
+import { AuthProvider } from "@/lib/context/AuthContext";
+import { TranslationProvider } from "@/lib/context/TranslationContext";
 
 const inter = Inter({
     subsets: ["latin"],
     variable: "--font-inter",
     display: "swap",
 });
-
-export const metadata: Metadata = {
-    title: "Fulguria Team - Collectif AMV & Création Visuelle",
-    description: "Collectif de créateurs passionnés spécialisés dans la création d'AMV et de contenus visuels de qualité. Découvrez notre équipe et nos dernières créations.",
-    keywords: ["AMV", "Anime Music Video", "Editing", "Motion Design", "Fulguria", "Team"],
-    authors: [{ name: "Fulguria Team" }],
-    openGraph: {
-        title: "Fulguria Team - Collectif AMV & Création Visuelle",
-        description: "Collectif de créateurs passionnés spécialisés dans la création d'AMV et de contenus visuels de qualité.",
-        type: "website",
-        locale: "fr_FR",
-    },
-};
 
 export default function RootLayout({
     children,
@@ -32,13 +22,17 @@ export default function RootLayout({
     return (
         <html lang="fr" className={inter.variable}>
             <body className="antialiased">
-                <Navbar />
-                <TransitionLayout>
-                    <main className="min-h-screen">
-                        {children}
-                    </main>
-                </TransitionLayout>
-                <Footer />
+                <AuthProvider>
+                    <TranslationProvider>
+                        <Navbar />
+                        <TransitionLayout>
+                            <main className="min-h-screen">
+                                {children}
+                            </main>
+                        </TransitionLayout>
+                        <Footer />
+                    </TranslationProvider>
+                </AuthProvider>
             </body>
         </html>
     );

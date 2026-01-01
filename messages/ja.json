@@ -1,0 +1,165 @@
+{
+    "common": {
+        "submit": "送信",
+        "reset": "リセット",
+        "cancel": "キャンセル",
+        "save": "保存",
+        "loading": "読み込み中...",
+        "previous": "前へ",
+        "next": "次へ",
+        "empty_videos": "現在利用可能な動画はありません。",
+        "visit_youtube": "YouTubeチャンネルへ",
+        "select": "選択",
+        "optional": "任意",
+        "views": "回視聴"
+    },
+    "navbar": {
+        "home": "ホーム",
+        "about": "プロフィール",
+        "videos": "動画",
+        "ranking": "ランキング",
+        "contact": "お問い合わせ",
+        "login": "ログイン",
+        "profile": "マイプロフィール",
+        "logout": "ログアウト",
+        "team": "Fulguria チーム"
+    },
+    "footer": {
+        "rights": "All rights reserved"
+    },
+    "home": {
+        "team_section": "チームメンバー",
+        "videos_section": "最新の動画"
+    },
+    "about": {
+        "tab_videos": "動画",
+        "tab_members": "メンバー"
+    },
+    "contact": {
+        "title": "Fulguriaに参加する",
+        "subtitle": "チームへの参加応募や、ご質問はこちらから",
+        "tab_apply": "応募する",
+        "tab_contact": "お問い合わせ",
+        "form_apply": {
+            "username": "ユーザー名",
+            "email": "メールアドレス",
+            "discord": "Discord ID (例: 123456789)",
+            "age": "年齢",
+            "nationality": "国籍",
+            "select_country": "国を選択",
+            "best_amv": "代表作のAMV",
+            "best_amv_placeholder": "最高のAMVのリンク",
+            "recent_amv": "最近のAMV",
+            "recent_amv_placeholder": "最近のAMVのリンク",
+            "message": "メッセージ",
+            "message_placeholder": "自己紹介や志望動機を教えてください..."
+        },
+        "form_contact": {
+            "name": "お名前",
+            "email": "メールアドレス",
+            "subject": "件名",
+            "message": "メッセージ",
+            "message_placeholder": "どのようなご用件ですか？",
+            "details_placeholder": "詳細をお書きください..."
+        },
+        "success": "メッセージが送信されました！",
+        "error": "エラーが発生しました。"
+    },
+    "login": {
+        "tab_login": "ログイン",
+        "tab_register": "登録",
+        "login_title": "ログイン",
+        "login_subtitle": "アカウントにサインイン",
+        "register_title": "アカウント作成",
+        "register_subtitle": "Fulguriaコミュニティに参加しよう",
+        "username": "ユーザー名",
+        "username_placeholder": "ユーザー名を入力",
+        "email": "メールアドレス",
+        "password": "パスワード",
+        "confirm_password": "確認用パスワード",
+        "forgot_password": "パスワードをお忘れですか？",
+        "social_optional": "SNS (任意)",
+        "date_of_birth": "生年月日",
+        "gender": "性別",
+        "team": "チーム",
+        "select": "選択してください",
+        "submit_login": "ログイン",
+        "submit_register": "アカウント作成"
+    },
+    "profile": {
+        "title": "マイプロフィール",
+        "subtitle": "個人情報の管理",
+        "personal_info": "個人情報",
+        "social_links": "SNSリンク",
+        "save_success": "プロフィールが更新されました！",
+        "member_since": "参加日:"
+    },
+    "members": {
+        "role_badge": {
+            "Leader": "Leader",
+            "AMV Maker": "AMV Maker",
+            "Graphiste": "グラフィックデザイナー"
+        },
+        "dialog": {
+            "description": "Description",
+            "socials": "Social Networks",
+            "projects": "Featured Projects",
+            "member_since": "Member since"
+        },
+        "kirr": {
+            "bio_short": "Fulguriaチームのリーダー、AMV制作者、多才なグラフィックデザイナー。",
+            "bio_long": "Fulguriaチームの創設リーダー。編集とグラフィックデザインのスキルを組み合わせて、集団の芸術的ビジョンを導いています。あらゆる形態の視覚的創造に情熱を注いでいます。"
+        },
+        "netsuma": {
+            "bio_short": "チル。"
+        },
+        "ruby": {
+            "bio_short": "UramaとZeeephは超ゲイ！！！"
+        },
+        "conan": {
+            "bio_short": "非の打ちどころのない美しさを持つ素晴らしい青年。"
+        },
+        "isashii": {
+            "bio_short": "才能あるAMV編集者。"
+        },
+        "zeph": {
+            "bio_short": "アニメミュージックビデオクリエイター。"
+        },
+        "kotori": {
+            "bio_short": "ユニークなタッチを持つAMV制作者。"
+        },
+        "danny": {
+            "bio_short": "YouTubeとTikTokで活動中のAMV編集者。"
+        },
+        "jasu": {
+            "bio_short": "複数のプラットフォームで活動する多才なクリエイター。"
+        },
+        "leo": {
+            "bio_short": "AMV制作者。"
+        },
+        "lunikyuu": {
+            "bio_short": "シェイプレイヤーとして生きています。"
+        },
+        "atsuyo": {
+            "bio_short": "外国人が多すぎる。"
+        },
+        "uram": {
+            "bio_short": "AMV制作者兼グラフィックデザイナー。"
+        },
+        "tenteki": {
+            "bio_short": "クリエイティブな編集に情熱を注ぐAMV制作者。"
+        },
+        "louvi": {
+            "bio_short": "クリエイティブなAMV制作者。"
+        },
+        "j3ifer": {
+            "bio_short": "才能あるAMV制作者。"
+        },
+        "kure": {
+            "bio_short": "チームの才能あるグラフィックデザイナー。"
+        },
+        "mirae": {
+            "bio_short": "クリエイティブなグラフィックデザイナー。"
+        }
+    }
+}

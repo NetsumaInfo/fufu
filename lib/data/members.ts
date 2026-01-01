@@ -8,7 +8,7 @@ export const members: Member[] = [
         slug: "kirr",
         pseudo: "KiRr",
         primaryRole: "Leader",
-        secondaryRoles: ["AMV Maker", "Design FX"],
+        secondaryRoles: ["AMV Maker", "Graphiste"],
         avatarUrl: "/images/team/PP/KIRR.png",
         bioShort: "Leader de la Fulguria Team, AMV Maker et Graphiste polyvalent.",
         bioLong: "Leader fondateur de la Fulguria Team. Je combine mes compétences en editing et en graphisme pour guider la vision artistique du collectif. Passionné par la création visuelle sous toutes ses formes.",
@@ -39,7 +39,7 @@ export const members: Member[] = [
         pseudo: "Ruby",
         primaryRole: "AMV Maker",
         avatarUrl: "/images/team/PP/RUBY.png",
-        bioShort: "Créateur de contenus AMV.",
+        bioShort: "Urama & Zeeeph Fucking Gayyy !!!",
         socials: {
             youtube: "https://www.youtube.com/@Rubynix",
             x: "https://x.com/Rosycoco555",
@@ -51,7 +51,7 @@ export const members: Member[] = [
         pseudo: "Conan",
         primaryRole: "AMV Maker",
         avatarUrl: "/images/team/PP/CONAN.png",
-        bioShort: "Passionné par l'animation et le montage.",
+        bioShort: "Merveilleux jeune homme d'une beauté irréprochable.",
         socials: {
             youtube: "https://www.youtube.com/@AkaiMV",
             x: "https://x.com/AkaiMv49068",
@@ -159,7 +159,7 @@ export const members: Member[] = [
         slug: "uram",
         pseudo: "Uram's",
         primaryRole: "AMV Maker",
-        secondaryRoles: ["Design FX"],
+        secondaryRoles: ["Graphiste"],
         avatarUrl: "/images/team/PP/URAMA.png",
         bioShort: "AMV Maker et Graphiste.",
         socials: {
@@ -209,7 +209,7 @@ export const members: Member[] = [
         id: "kure",
         slug: "kure",
         pseudo: "Kure",
-        primaryRole: "Design FX",
+        primaryRole: "Graphiste",
         avatarUrl: "/images/team/PP/KURE.png",
         bioShort: "Graphiste talentueux pour la team.",
         socials: {
@@ -221,7 +221,7 @@ export const members: Member[] = [
         id: "mirae",
         slug: "mirae",
         pseudo: "Mirae",
-        primaryRole: "Design FX",
+        primaryRole: "Graphiste",
         avatarUrl: "/images/team/PP/MIRAE.png",
         bioShort: "Graphiste créatif.",
         socials: {
@@ -242,7 +242,7 @@ export function getMemberBySlug(slug: string): Member | undefined {
 
 // Get role groups in order
 export function getRoleGroups() {
-    const roleOrder: Role[] = ["Leader", "AMV Maker", "Design FX"];
+    const roleOrder: Role[] = ["Leader", "AMV Maker", "Graphiste"];
 
     return roleOrder.map(role => ({
         role,
@@ -255,7 +255,7 @@ function getRoleDescription(role: Role): string {
     const descriptions: Record<string, string> = {
         "Leader": "Direction créative et coordination de l'équipe",
         "AMV Maker": "Créateurs de contenus AMV et montage vidéo",
-        "Design FX": "Effets visuels, motion design et création graphique",
+        "Graphiste": "Effets visuels, motion design et création graphique",
     };
     return descriptions[role] || "";
 }

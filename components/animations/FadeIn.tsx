@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import { motion } from "framer-motion";
 import { prefersReducedMotion } from "@/lib/utils";
 
@@ -17,7 +17,7 @@ export function FadeIn({
     duration = 0.5,
     className,
 }: FadeInProps) {
-    const reducedMotion = prefersReducedMotion();
+    const reducedMotion = useMemo(() => prefersReducedMotion(), []);
 
     if (reducedMotion) {
         return <div className={className}>{children}</div>;
@@ -30,6 +30,7 @@ export function FadeIn({
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration, delay }}
             className={className}
+            style={{ willChange: "opacity" }}
         >
             {children}
         </motion.div>
