@@ -161,7 +161,7 @@ export const members: Member[] = [
         primaryRole: "AMV Maker",
         secondaryRoles: ["Graphiste"],
         avatarUrl: "/images/team/PP/URAMA.png",
-        bioShort: "AMV Maker et Graphiste.",
+        bioShort: "Célibataire malgré lui.",
         socials: {
             youtube: "https://www.youtube.com/@Urama3066",
             x: "https://x.com/Urama_Sama",
@@ -186,7 +186,7 @@ export const members: Member[] = [
         pseudo: "Louvi",
         primaryRole: "AMV Maker",
         avatarUrl: "/images/team/PP/LOUVI.png",
-        bioShort: "AMV Maker créatif.",
+        bioShort: "feignasse .",
         socials: {
             youtube: "https://www.youtube.com/@Louvi_Amv",
             x: "https://x.com/Louviisback",
