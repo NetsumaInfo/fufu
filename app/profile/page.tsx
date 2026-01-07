@@ -344,7 +344,7 @@ export default function ProfilePage() {
                                 {/* Discord */}
                                 <div>
                                     <label className="block text-sm font-medium text-foreground mb-1.5">
-                                        Discord ID
+                                        Pseudo Discord
                                     </label>
                                     <div className="relative">
                                         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-500">
@@ -358,7 +358,7 @@ export default function ProfilePage() {
                                             value={formState.discordId}
                                             onChange={(e) => setFormState(prev => ({ ...prev, discordId: e.target.value }))}
                                             className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
-                                            placeholder="123456789012345678"
+                                            placeholder="TonPseudo"
                                         />
                                     </div>
                                 </div>

@@ -13,10 +13,13 @@ export function TransitionLayout({ children }: TransitionLayoutProps) {
     const [displayChildren, setDisplayChildren] = useState(children);
     const [isAnimating, setIsAnimating] = useState(false);
 
+    // Scroll to top only on actual page navigation (pathname change)
     useEffect(() => {
-        // Scroll to top immediately on page change
         window.scrollTo(0, 0);
+    }, [pathname]);
 
+    // Handle transition animation for children
+    useEffect(() => {
         setIsAnimating(true);
         const timer = setTimeout(() => {
             setDisplayChildren(children);
@@ -24,7 +27,7 @@ export function TransitionLayout({ children }: TransitionLayoutProps) {
         }, 150);
 
         return () => clearTimeout(timer);
-    }, [pathname, children]);
+    }, [children]);
 
     return (
         <motion.div

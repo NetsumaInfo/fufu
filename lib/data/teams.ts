@@ -5,7 +5,6 @@ export const teams = [
     "BlackGods",
     "Crows Team",
     "Ellines Nakama",
-    "Eden Team",
     "Ethereal Team",
     "Fulguria Team",
     "Gomibako Team",
@@ -17,13 +16,14 @@ export const teams = [
     "Mellow Team",
     "Mirai Team",
     "Sora To Kasai",
-    "Soul's Team"
+    "Soul's Team",
+    "Null Object"
 ];
 
 // Liste des genres
 export const genders = [
-    "Non spécifié",
     "Homme",
     "Femme",
+    "Calque de forme",
     "Autre"
 ];

@@ -43,7 +43,7 @@
         "form_apply": {
             "username": "Nombre de usuario",
             "email": "Correo electrónico",
-            "discord": "Discord ID (ej: 123456789)",
+            "discord": "Discord Username",
             "age": "Edad",
             "nationality": "Nacionalidad",
             "select_country": "Selecciona un país",

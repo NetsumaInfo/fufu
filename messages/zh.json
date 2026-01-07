@@ -43,7 +43,7 @@
         "form_apply": {
             "username": "用户名",
             "email": "邮箱地址",
-            "discord": "Discord ID (例: 123456789)",
+            "discord": "Discord 用户名",
             "age": "年龄",
             "nationality": "国籍",
             "select_country": "选择国家",

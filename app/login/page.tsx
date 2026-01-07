@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 import { FadeIn } from "@/components/animations/FadeIn";
-import { User, Lock, LogIn, Eye, EyeOff, Mail, Globe, Calendar, UserPlus, KeyRound, ArrowLeft, CheckCircle, Users, Youtube } from "lucide-react";
+import { User, Lock, LogIn, Eye, EyeOff, Mail, Globe, Calendar, UserPlus, KeyRound, ArrowLeft, CheckCircle, Users, Youtube, ImagePlus } from "lucide-react";
 import { useAuth } from "@/lib/context/AuthContext";
 import { countries } from "@/lib/data/countries";
 import { teams, genders } from "@/lib/data/teams";
@@ -43,6 +42,37 @@ export default function LoginPage() {
         twitter: "",
         bluesky: "",
     });
+
+    // Profile picture state
+    const [profileImage, setProfileImage] = useState<File | null>(null);
+    const [profilePreview, setProfilePreview] = useState<string | null>(null);
+
+    // Max file size: 2MB
+    const MAX_PROFILE_IMAGE_SIZE = 2 * 1024 * 1024;
+    const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+    const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            // Validate file type
+            if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+                setError('Format non supporté. Utilisez JPG, PNG, GIF ou WebP.');
+                return;
+            }
+            // Validate file size
+            if (file.size > MAX_PROFILE_IMAGE_SIZE) {
+                setError('L\'image est trop lourde. Maximum 2MB.');
+                return;
+            }
+            setError('');
+            setProfileImage(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setProfilePreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     // Forgot password form state
     const [forgotEmail, setForgotEmail] = useState("");
@@ -130,11 +160,6 @@ export default function LoginPage() {
 
     const { t } = useTranslation();
 
-    const tabs = [
-        { id: "login" as AuthMode, labelKey: "login.tab_login", icon: LogIn },
-        { id: "register" as AuthMode, labelKey: "login.tab_register", icon: UserPlus },
-    ];
-
     return (
         <div className="py-12 pt-28 md:pt-32 min-h-screen flex items-center justify-center">
             {/* Background decorations */}
@@ -145,55 +170,38 @@ export default function LoginPage() {
 
             <div className="container-custom max-w-lg relative z-10">
                 <FadeIn>
+                    {/* Tab Navigation - Outside card, casual style */}
+                    <div className="flex justify-center gap-4 mb-6">
+                        <button
+                            onClick={() => setMode("login")}
+                            className={cn(
+                                "px-6 py-2.5 text-base font-medium transition-all duration-300 transform skew-x-[-6deg]",
+                                mode === "login"
+                                    ? "bg-foreground text-background"
+                                    : "bg-card border border-border text-foreground hover:bg-foreground/10"
+                            )}
+                        >
+                            <span className="block skew-x-[6deg]">{t('login.tab_login')}</span>
+                        </button>
+                        <button
+                            onClick={() => setMode("register")}
+                            className={cn(
+                                "px-6 py-2.5 text-base font-medium transition-all duration-300 transform skew-x-[-6deg]",
+                                mode === "register"
+                                    ? "bg-foreground text-background"
+                                    : "bg-card border border-border text-foreground hover:bg-foreground/10"
+                            )}
+                        >
+                            <span className="block skew-x-[6deg]">{t('login.tab_register')}</span>
+                        </button>
+                    </div>
+
                     <div className="glass rounded-2xl p-6 md:p-8 border border-border hover:border-primary/30 transition-colors">
-                        {/* Tab Navigation */}
-                        <div className="relative flex gap-1 mb-6 p-1 bg-card/50 rounded-xl border border-border">
-                            {/* Sliding background indicator */}
-                            <motion.div
-                                className="absolute top-1 bottom-1 bg-primary rounded-lg shadow-lg"
-                                initial={false}
-                                animate={{
-                                    left: mode === "login" ? "4px" : "calc(50% + 2px)",
-                                    width: "calc(50% - 6px)"
-                                }}
-                                transition={{
-                                    type: "spring",
-                                    stiffness: 400,
-                                    damping: 30
-                                }}
-                            />
-                            {tabs.map((tab) => {
-                                const Icon = tab.icon;
-                                return (
-                                    <button
-                                        key={tab.id}
-                                        onClick={() => setMode(tab.id)}
-                                        className={cn(
-                                            "flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-medium text-sm transition-colors duration-200 relative z-10",
-                                            mode === tab.id
-                                                ? "text-white"
-                                                : "text-muted-foreground hover:text-foreground"
-                                        )}
-                                    >
-                                        <Icon className="w-4 h-4" />
-                                        {t(tab.labelKey)}
-                                    </button>
-                                );
-                            })}
-                        </div>
 
                         {/* Login Form */}
                         {mode === "login" && (
                             <FadeIn key="login">
-                                <div className="text-center mb-6">
-                                    <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-primary/20 flex items-center justify-center">
-                                        <User className="w-7 h-7 text-primary" />
-                                    </div>
-                                    <h1 className="text-2xl font-bold text-foreground">{t('login.title')}</h1>
-                                    <p className="text-muted-foreground text-sm mt-1">
-                                        {t('login.subtitle')}
-                                    </p>
-                                </div>
+
 
                                 <form onSubmit={handleLogin} className="space-y-4">
                                     <div>
@@ -281,15 +289,7 @@ export default function LoginPage() {
                         {/* Register Form */}
                         {mode === "register" && (
                             <FadeIn key="register">
-                                <div className="text-center mb-5">
-                                    <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-primary/20 flex items-center justify-center">
-                                        <UserPlus className="w-7 h-7 text-primary" />
-                                    </div>
-                                    <h1 className="text-2xl font-bold text-foreground">{t('login.register.title')}</h1>
-                                    <p className="text-muted-foreground text-sm mt-1">
-                                        {t('login.register.subtitle')}
-                                    </p>
-                                </div>
+
 
                                 <form onSubmit={handleRegister} className="space-y-3.5">
                                     <div>
@@ -435,6 +435,43 @@ export default function LoginPage() {
                                         </div>
                                     </div>
 
+                                    {/* Profile Picture Upload */}
+                                    <div>
+                                        <label className="block text-sm font-medium text-foreground mb-1.5">
+                                            Photo de profil
+                                        </label>
+                                        <div className="flex items-center gap-4">
+                                            <div className="relative w-16 h-16 rounded-full bg-card border-2 border-dashed border-border overflow-hidden flex-shrink-0 group">
+                                                {profilePreview ? (
+                                                    <img
+                                                        src={profilePreview}
+                                                        alt="Preview"
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                                                        <User className="w-6 h-6" />
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div className="flex-1">
+                                                <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-card border border-border hover:border-primary hover:bg-card/80 transition-all text-sm text-foreground">
+                                                    <ImagePlus className="w-4 h-4" />
+                                                    Choisir une image
+                                                    <input
+                                                        type="file"
+                                                        accept="image/jpeg,image/png,image/gif,image/webp"
+                                                        onChange={handleProfileImageChange}
+                                                        className="hidden"
+                                                    />
+                                                </label>
+                                                <p className="text-xs text-muted-foreground mt-1">
+                                                    JPG, PNG ou GIF (max. 2MB)
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     {/* Gender and Team Row */}
                                     <div className="grid grid-cols-2 gap-3">
                                         <div>
@@ -538,7 +575,7 @@ export default function LoginPage() {
                                                     value={registerForm.discordId}
                                                     onChange={(e) => setRegisterForm(prev => ({ ...prev, discordId: e.target.value }))}
                                                     className="w-full pl-10 pr-3 py-2 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground text-sm"
-                                                    placeholder="Discord ID (ex: 123456789)"
+                                                    placeholder="Pseudo Discord"
                                                 />
                                             </div>
 
