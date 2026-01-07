@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { FadeIn } from "@/components/animations/FadeIn";
 import {
     Send, RotateCcw, User, Mail, MessageSquare, Globe,
@@ -21,18 +20,17 @@ export default function ContactPage() {
     // Apply form state
     const [applyForm, setApplyForm] = useState({
         username: "",
-        email: "",
         discordId: "",
         age: "",
         nationality: "",
         bestAmv: "",
-        recentAmv: "",
         message: "",
     });
 
     // Contact form state
     const [contactForm, setContactForm] = useState({
         name: "",
+        discordId: "",
         email: "",
         subject: "",
         message: "",
@@ -40,44 +38,79 @@ export default function ContactPage() {
 
     const { t } = useTranslation();
 
-    const tabs = [
-        { id: "apply" as ContactMode, labelKey: "contact.tab_apply", icon: UserPlus },
-        { id: "contact" as ContactMode, labelKey: "contact.tab_contact", icon: Mail },
-    ];
-
     const handleApplySubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        setIsSubmitting(false);
-        setIsSubmitted(true);
-        setTimeout(() => {
-            setIsSubmitted(false);
-            resetApplyForm();
-        }, 3000);
+
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    type: 'apply',
+                    ...applyForm
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit');
+            }
+
+            setIsSubmitted(true);
+            setTimeout(() => {
+                setIsSubmitted(false);
+                resetApplyForm();
+            }, 3000);
+        } catch (error) {
+            console.error('Submit error:', error);
+            alert('Une erreur est survenue. Veuillez réessayer.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handleContactSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        setIsSubmitting(false);
-        setIsSubmitted(true);
-        setTimeout(() => {
-            setIsSubmitted(false);
-            resetContactForm();
-        }, 3000);
+
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    type: 'contact',
+                    ...contactForm
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit');
+            }
+
+            setIsSubmitted(true);
+            setTimeout(() => {
+                setIsSubmitted(false);
+                resetContactForm();
+            }, 3000);
+        } catch (error) {
+            console.error('Submit error:', error);
+            alert('Une erreur est survenue. Veuillez réessayer.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const resetApplyForm = () => {
         setApplyForm({
             username: "",
-            email: "",
             discordId: "",
             age: "",
             nationality: "",
             bestAmv: "",
-            recentAmv: "",
             message: "",
         });
     };
@@ -85,6 +118,7 @@ export default function ContactPage() {
     const resetContactForm = () => {
         setContactForm({
             name: "",
+            discordId: "",
             email: "",
             subject: "",
             message: "",
@@ -110,47 +144,40 @@ export default function ContactPage() {
                             {t('contact.subtitle')}
                         </p>
                     </div>
+                    {/* Tab Navigation - Outside card, casual style */}
+                    <div className="flex justify-center gap-4 mb-8">
+                        <button
+                            onClick={() => {
+                                setMode("apply");
+                                setIsSubmitted(false);
+                            }}
+                            className={cn(
+                                "px-6 py-2.5 text-base font-medium transition-all duration-300 transform skew-x-[-6deg]",
+                                mode === "apply"
+                                    ? "bg-foreground text-background"
+                                    : "bg-card border border-border text-foreground hover:bg-foreground/10"
+                            )}
+                        >
+                            <span className="block skew-x-[6deg]">{t('contact.tab_apply')}</span>
+                        </button>
+                        <button
+                            onClick={() => {
+                                setMode("contact");
+                                setIsSubmitted(false);
+                            }}
+                            className={cn(
+                                "px-6 py-2.5 text-base font-medium transition-all duration-300 transform skew-x-[-6deg]",
+                                mode === "contact"
+                                    ? "bg-foreground text-background"
+                                    : "bg-card border border-border text-foreground hover:bg-foreground/10"
+                            )}
+                        >
+                            <span className="block skew-x-[6deg]">{t('contact.tab_contact')}</span>
+                        </button>
+                    </div>
 
                     {/* Main Card */}
                     <div className="glass rounded-2xl p-6 md:p-8 border border-border">
-                        {/* Tab Navigation */}
-                        <div className="relative flex mb-8 p-1 bg-card/50 rounded-xl border border-border">
-                            {/* Sliding background indicator */}
-                            <motion.div
-                                className="absolute top-1 bottom-1 bg-primary rounded-lg shadow-lg"
-                                initial={false}
-                                animate={{
-                                    left: mode === "apply" ? "4px" : "calc(50% - 2px)",
-                                    width: "calc(50% - 4px)"
-                                }}
-                                transition={{
-                                    type: "spring",
-                                    stiffness: 400,
-                                    damping: 30
-                                }}
-                            />
-                            {tabs.map((tab) => {
-                                const Icon = tab.icon;
-                                return (
-                                    <button
-                                        key={tab.id}
-                                        onClick={() => {
-                                            setMode(tab.id);
-                                            setIsSubmitted(false);
-                                        }}
-                                        className={cn(
-                                            "flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-medium text-sm transition-colors duration-200 relative z-10",
-                                            mode === tab.id
-                                                ? "text-white"
-                                                : "text-muted-foreground hover:text-foreground"
-                                        )}
-                                    >
-                                        <Icon className="w-4 h-4" />
-                                        {t(tab.labelKey)}
-                                    </button>
-                                );
-                            })}
-                        </div>
 
                         {/* Success Message */}
                         {isSubmitted ? (
@@ -194,27 +221,7 @@ export default function ContactPage() {
                                                 </div>
                                             </div>
 
-                                            {/* Email */}
-                                            <div>
-                                                <label className="block text-sm font-medium text-foreground mb-1.5">
-                                                    {t('contact.form_apply.email')} *
-                                                </label>
-                                                <div className="relative">
-                                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                                                        <Mail className="w-4 h-4" />
-                                                    </div>
-                                                    <input
-                                                        type="email"
-                                                        required
-                                                        value={applyForm.email}
-                                                        onChange={(e) => setApplyForm(prev => ({ ...prev, email: e.target.value }))}
-                                                        className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
-                                                        placeholder="ton@email.com"
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            {/* Discord ID */}
+                                            {/* Discord */}
                                             <div>
                                                 <label className="block text-sm font-medium text-foreground mb-1.5">
                                                     {t('contact.form_apply.discord')} *
@@ -231,7 +238,7 @@ export default function ContactPage() {
                                                         value={applyForm.discordId}
                                                         onChange={(e) => setApplyForm(prev => ({ ...prev, discordId: e.target.value }))}
                                                         className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
-                                                        placeholder="123456789012345678"
+                                                        placeholder="TonPseudo"
                                                     />
                                                 </div>
                                             </div>
@@ -289,44 +296,23 @@ export default function ContactPage() {
                                             </div>
                                         </div>
 
-                                        {/* AMV Links */}
-                                        <div className="grid md:grid-cols-2 gap-4">
-                                            <div>
-                                                <label className="block text-sm font-medium text-foreground mb-1.5">
-                                                    Meilleur AMV *
-                                                </label>
-                                                <div className="relative">
-                                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                                                        <Link className="w-4 h-4" />
-                                                    </div>
-                                                    <input
-                                                        type="url"
-                                                        required
-                                                        value={applyForm.bestAmv}
-                                                        onChange={(e) => setApplyForm(prev => ({ ...prev, bestAmv: e.target.value }))}
-                                                        className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
-                                                        placeholder={t('contact.form_apply.best_amv_placeholder')}
-                                                    />
+                                        {/* AMV Link */}
+                                        <div>
+                                            <label className="block text-sm font-medium text-foreground mb-1.5">
+                                                Meilleur AMV *
+                                            </label>
+                                            <div className="relative">
+                                                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                                                    <Link className="w-4 h-4" />
                                                 </div>
-                                            </div>
-
-                                            <div>
-                                                <label className="block text-sm font-medium text-foreground mb-1.5">
-                                                    AMV Récent *
-                                                </label>
-                                                <div className="relative">
-                                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                                                        <Link className="w-4 h-4" />
-                                                    </div>
-                                                    <input
-                                                        type="url"
-                                                        required
-                                                        value={applyForm.recentAmv}
-                                                        onChange={(e) => setApplyForm(prev => ({ ...prev, recentAmv: e.target.value }))}
-                                                        className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
-                                                        placeholder={t('contact.form_apply.recent_amv_placeholder')}
-                                                    />
-                                                </div>
+                                                <input
+                                                    type="url"
+                                                    required
+                                                    value={applyForm.bestAmv}
+                                                    onChange={(e) => setApplyForm(prev => ({ ...prev, bestAmv: e.target.value }))}
+                                                    className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
+                                                    placeholder={t('contact.form_apply.best_amv_placeholder')}
+                                                />
                                             </div>
                                         </div>
 
@@ -422,6 +408,27 @@ export default function ContactPage() {
                                                         placeholder="ton@email.com"
                                                     />
                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Discord */}
+                                        <div>
+                                            <label className="block text-sm font-medium text-foreground mb-1.5">
+                                                {t('contact.form_apply.discord')}
+                                            </label>
+                                            <div className="relative">
+                                                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-500">
+                                                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+                                                    </svg>
+                                                </div>
+                                                <input
+                                                    type="text"
+                                                    value={contactForm.discordId}
+                                                    onChange={(e) => setContactForm(prev => ({ ...prev, discordId: e.target.value }))}
+                                                    className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
+                                                    placeholder="TonPseudo"
+                                                />
                                             </div>
                                         </div>
 
