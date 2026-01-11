@@ -607,19 +607,15 @@ export default function ProfilePage() {
 
                     {/* Delete Confirmation Modal */}
                     {showDeleteModal && (
-                        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-                            <div className="glass rounded-2xl p-6 max-w-md w-full border border-red-500/30">
-                                <h3 className="text-xl font-bold text-red-400 mb-4 flex items-center gap-2">
-                                    <AlertCircle className="w-6 h-6" />
-                                    {t('profile.delete_account')}
-                                </h3>
-                                <p className="text-muted-foreground mb-6">
+                        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" onClick={() => setShowDeleteModal(false)}>
+                            <div className="bg-card rounded-xl p-6 max-w-sm w-full border border-border text-center" onClick={(e) => e.stopPropagation()}>
+                                <p className="text-foreground mb-6">
                                     {t('profile.delete_confirm')}
                                 </p>
                                 <div className="flex gap-3">
                                     <button
                                         onClick={() => setShowDeleteModal(false)}
-                                        className="flex-1 py-2.5 px-4 rounded-lg bg-card border border-border text-foreground font-medium hover:bg-card/80 transition-all"
+                                        className="flex-1 py-2.5 px-4 rounded-lg border border-border text-muted-foreground font-medium hover:bg-card/80 transition-all"
                                     >
                                         {t('profile.delete_cancel')}
                                     </button>
@@ -630,14 +626,13 @@ export default function ProfilePage() {
                                             setIsDeletingAccount(false);
                                         }}
                                         disabled={isDeletingAccount}
-                                        className="flex-1 py-2.5 px-4 rounded-lg bg-red-500 text-white font-medium flex items-center justify-center gap-2 hover:bg-red-600 transition-all disabled:opacity-50"
+                                        className="flex-1 py-2.5 px-4 rounded-lg bg-red-500 text-white font-medium hover:bg-red-600 transition-all disabled:opacity-50"
                                     >
                                         {isDeletingAccount ? (
-                                            <Loader2 className="w-4 h-4 animate-spin" />
+                                            <Loader2 className="w-4 h-4 animate-spin mx-auto" />
                                         ) : (
-                                            <Trash2 className="w-4 h-4" />
+                                            t('common.submit')
                                         )}
-                                        {t('profile.delete_confirm_button')}
                                     </button>
                                 </div>
                             </div>
