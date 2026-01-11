@@ -1,5 +1,6 @@
 import { Video } from "../types";
 import { videos as mockVideos } from "../data/videos";
+import { fetchVideosFromAPI, fetchAllVideosFromAPI } from "../services/youtubeApi";
 
 export interface VideoProviderOptions {
     maxResults?: number;
@@ -9,20 +10,44 @@ export interface VideoProviderOptions {
 class VideoProvider {
     /**
      * Fetch latest videos
-     * Reverted to Mock only
+     * Prefers YouTube API -> Mock
      */
     async getLatestVideos(options: VideoProviderOptions = {}): Promise<Video[]> {
         const { maxResults = 6 } = options;
-        console.log("[VideoProvider] getLatestVideos called (Mock)");
+
+        console.log("[VideoProvider] getLatestVideos called");
+
+        // 1. Try YouTube API (Best quality)
+        // Delegate check to service to ensure we get logs
+        try {
+            const apiVideos = await fetchVideosFromAPI(maxResults);
+            if (apiVideos.length > 0) return apiVideos;
+        } catch (err) {
+            console.warn("API fetch failed, falling back to mock", err);
+        }
+
+        // 2. Fallback to Mock Data
+        console.log("[VideoProvider] Fallback to mock data");
         return mockVideos.slice(0, maxResults);
     }
 
     /**
-     * Fetch all videos
-     * Reverted to Mock only
+     * Fetch all videos from YouTube channel (with pagination)
      */
     async getAllVideos(): Promise<Video[]> {
-        console.log("[VideoProvider] getAllVideos called (Mock)");
+        console.log("[VideoProvider] getAllVideos called");
+
+        // 1. Try YouTube API with pagination
+        try {
+            // Fetch up to 200 videos (4 pages of 50)
+            const apiVideos = await fetchAllVideosFromAPI(4);
+            if (apiVideos.length > 0) return apiVideos;
+        } catch (err) {
+            console.warn("API fetch failed, falling back to mock", err);
+        }
+
+        // 2. Fallback to Mock Data
+        console.log("[VideoProvider] Fallback to mock data");
         return mockVideos;
     }
 }
