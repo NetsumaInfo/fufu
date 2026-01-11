@@ -3,6 +3,50 @@ import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { generateToken } from '@/lib/auth/jwt'
 import { uploadAvatarFromDataUrl, getAvatarSignedUrl } from '@/lib/supabase/storage'
+import { Resend } from 'resend'
+
+const resend = new Resend(process.env.RESEND_API_KEY)
+
+// Helper function to send welcome email
+async function sendWelcomeEmail(email: string, username: string) {
+    try {
+        await resend.emails.send({
+            from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
+            to: [email],
+            subject: 'Bienvenue sur Fulguria ! 🎉',
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 40px; border-radius: 16px;">
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <h1 style="color: #7c3aed; margin: 0; font-size: 28px;">Bienvenue sur Fulguria !</h1>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 12px; border: 1px solid rgba(124,58,237,0.3);">
+                        <p style="color: #e0e0e0; font-size: 16px; margin-bottom: 20px;">
+                            Salut <strong style="color: #7c3aed;">${username}</strong> ! 👋
+                        </p>
+                        <p style="color: #b0b0b0; font-size: 14px; line-height: 1.6;">
+                            Ton compte a été créé avec succès. Tu fais maintenant partie de la communauté Fulguria !
+                        </p>
+                        <p style="color: #b0b0b0; font-size: 14px; line-height: 1.6;">
+                            N'hésite pas à compléter ton profil et à explorer notre contenu.
+                        </p>
+                        <div style="text-align: center; margin-top: 30px;">
+                            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/profile" 
+                               style="background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;">
+                                Voir mon profil
+                            </a>
+                        </div>
+                    </div>
+                    <p style="color: #666; font-size: 12px; text-align: center; margin-top: 30px;">
+                        © Fulguria Team - Tous droits réservés
+                    </p>
+                </div>
+            `,
+        })
+    } catch (error) {
+        console.error('Welcome email error:', error)
+        // Don't throw - email failure shouldn't block registration
+    }
+}
 
 export async function POST(request: NextRequest) {
     try {
@@ -95,6 +139,9 @@ export async function POST(request: NextRequest) {
                     email: tempUser.email,
                 })
 
+                // Send welcome email (async, don't wait)
+                sendWelcomeEmail(tempUser.email, tempUser.username)
+
                 return NextResponse.json({
                     success: true,
                     user: {
@@ -136,6 +183,9 @@ export async function POST(request: NextRequest) {
             username: user.username,
             email: user.email,
         })
+
+        // Send welcome email (async, don't wait)
+        sendWelcomeEmail(user.email, user.username)
 
         return NextResponse.json({
             success: true,

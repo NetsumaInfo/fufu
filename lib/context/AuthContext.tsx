@@ -57,6 +57,8 @@ interface AuthContextType {
     login: (username: string, password: string, rememberMe?: boolean) => Promise<{ success: boolean; error?: string }>;
     register: (data: RegisterData) => Promise<{ success: boolean; error?: string }>;
     updateProfile: (data: ProfileUpdateData) => Promise<{ success: boolean; error?: string }>;
+    changePassword: (currentPassword: string, newPassword: string) => Promise<{ success: boolean; error?: string }>;
+    deleteAccount: () => Promise<{ success: boolean; error?: string }>;
     logout: () => Promise<void>;
     refreshProfile: () => Promise<void>;
     isAuthenticated: boolean;
@@ -172,8 +174,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const logout = async () => {
         try {
-            await fetch("/api/auth/profile", {
-                method: "DELETE",
+            await fetch("/api/auth/logout", {
+                method: "POST",
                 credentials: "include",
             });
         } catch (error) {
@@ -181,6 +183,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
         setUser(null);
         router.push("/");
+    };
+
+    const changePassword = async (currentPassword: string, newPassword: string): Promise<{ success: boolean; error?: string }> => {
+        try {
+            const response = await fetch("/api/auth/profile", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({ currentPassword, newPassword }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                return { success: true };
+            }
+
+            return { success: false, error: result.error || "Erreur lors du changement de mot de passe" };
+        } catch (error) {
+            console.error("Change password error:", error);
+            return { success: false, error: "Erreur de connexion au serveur" };
+        }
+    };
+
+    const deleteAccount = async (): Promise<{ success: boolean; error?: string }> => {
+        try {
+            const response = await fetch("/api/auth/profile", {
+                method: "DELETE",
+                credentials: "include",
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                setUser(null);
+                router.push("/");
+                return { success: true };
+            }
+
+            return { success: false, error: result.error || "Erreur lors de la suppression du compte" };
+        } catch (error) {
+            console.error("Delete account error:", error);
+            return { success: false, error: "Erreur de connexion au serveur" };
+        }
     };
 
     const refreshProfile = async () => {
@@ -195,6 +241,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 login,
                 register,
                 updateProfile,
+                changePassword,
+                deleteAccount,
                 logout,
                 refreshProfile,
                 isAuthenticated: !!user,

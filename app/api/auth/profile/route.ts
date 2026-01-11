@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { verifyToken } from '@/lib/auth/jwt'
 import { uploadAvatarFromDataUrl, deleteAvatar, getAvatarSignedUrl } from '@/lib/supabase/storage'
+import bcrypt from 'bcryptjs'
 
 // GET - Get user profile
 export async function GET(request: NextRequest) {
@@ -190,14 +191,157 @@ export async function PATCH(request: NextRequest) {
     }
 }
 
-// DELETE - Logout (clear cookie)
+// DELETE - Delete user account
 export async function DELETE(request: NextRequest) {
-    const response = NextResponse.json({
-        success: true,
-        message: 'Logged out successfully',
-    })
+    try {
+        // Get token
+        const token = request.cookies.get('auth-token')?.value ||
+            request.headers.get('Authorization')?.replace('Bearer ', '')
 
-    response.cookies.delete('auth-token')
+        if (!token) {
+            return NextResponse.json(
+                { error: 'Unauthorized' },
+                { status: 401 }
+            )
+        }
 
-    return response
+        // Verify token
+        const payload = verifyToken(token)
+        if (!payload) {
+            return NextResponse.json(
+                { error: 'Invalid token' },
+                { status: 401 }
+            )
+        }
+
+        // Get user to delete avatar
+        const user = await prisma.user.findUnique({
+            where: { id: payload.userId },
+        })
+
+        if (!user) {
+            return NextResponse.json(
+                { error: 'User not found' },
+                { status: 404 }
+            )
+        }
+
+        // Delete avatar from storage if exists
+        if (user.avatar) {
+            try {
+                await deleteAvatar(user.avatar)
+            } catch (e) {
+                console.error('Error deleting avatar:', e)
+            }
+        }
+
+        // Delete password reset tokens
+        await prisma.passwordResetToken.deleteMany({
+            where: { userId: payload.userId },
+        })
+
+        // Delete user
+        await prisma.user.delete({
+            where: { id: payload.userId },
+        })
+
+        // Clear auth cookie
+        const response = NextResponse.json({
+            success: true,
+            message: 'Account deleted successfully',
+        })
+        response.cookies.delete('auth-token')
+
+        return response
+    } catch (error) {
+        console.error('Delete account error:', error)
+        return NextResponse.json(
+            { error: 'Internal server error' },
+            { status: 500 }
+        )
+    }
+}
+
+// PUT - Change password
+export async function PUT(request: NextRequest) {
+    try {
+        // Get token
+        const token = request.cookies.get('auth-token')?.value ||
+            request.headers.get('Authorization')?.replace('Bearer ', '')
+
+        if (!token) {
+            return NextResponse.json(
+                { error: 'Unauthorized' },
+                { status: 401 }
+            )
+        }
+
+        // Verify token
+        const payload = verifyToken(token)
+        if (!payload) {
+            return NextResponse.json(
+                { error: 'Invalid token' },
+                { status: 401 }
+            )
+        }
+
+        const body = await request.json()
+        const { currentPassword, newPassword } = body
+
+        // Validation
+        if (!currentPassword || !newPassword) {
+            return NextResponse.json(
+                { error: 'Current password and new password are required' },
+                { status: 400 }
+            )
+        }
+
+        if (newPassword.length < 6) {
+            return NextResponse.json(
+                { error: 'New password must be at least 6 characters' },
+                { status: 400 }
+            )
+        }
+
+        // Get user
+        const user = await prisma.user.findUnique({
+            where: { id: payload.userId },
+        })
+
+        if (!user) {
+            return NextResponse.json(
+                { error: 'User not found' },
+                { status: 404 }
+            )
+        }
+
+        // Verify current password
+        const isValidPassword = await bcrypt.compare(currentPassword, user.password)
+        if (!isValidPassword) {
+            return NextResponse.json(
+                { error: 'Current password is incorrect' },
+                { status: 400 }
+            )
+        }
+
+        // Hash new password
+        const hashedPassword = await bcrypt.hash(newPassword, 12)
+
+        // Update password
+        await prisma.user.update({
+            where: { id: payload.userId },
+            data: { password: hashedPassword },
+        })
+
+        return NextResponse.json({
+            success: true,
+            message: 'Password changed successfully',
+        })
+    } catch (error) {
+        console.error('Change password error:', error)
+        return NextResponse.json(
+            { error: 'Internal server error' },
+            { status: 500 }
+        )
+    }
 }

@@ -108,7 +108,19 @@
         "team": "Equipo",
         "save_button": "Guardar cambios",
         "uploading": "Subiendo...",
-        "saving": "Guardando..."
+        "saving": "Guardando...",
+        "security": "Seguridad",
+        "current_password": "Contraseña actual",
+        "new_password": "Nueva contraseña",
+        "confirm_new_password": "Confirmar nueva contraseña",
+        "change_password": "Cambiar contraseña",
+        "password_changed": "¡Contraseña cambiada con éxito!",
+        "password_mismatch": "Las contraseñas no coinciden",
+        "danger_zone": "Zona peligrosa",
+        "delete_account": "Eliminar mi cuenta",
+        "delete_confirm": "¿Estás seguro de querer eliminar tu cuenta? Esta acción no se puede deshacer.",
+        "delete_confirm_button": "Sí, eliminar mi cuenta",
+        "delete_cancel": "Cancelar"
     },
     "members": {
         "role_badge": {

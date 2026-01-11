@@ -108,7 +108,19 @@
         "team": "团队",
         "save_button": "保存更改",
         "uploading": "上传中...",
-        "saving": "保存中..."
+        "saving": "保存中...",
+        "security": "安全设置",
+        "current_password": "当前密码",
+        "new_password": "新密码",
+        "confirm_new_password": "确认新密码",
+        "change_password": "更改密码",
+        "password_changed": "密码修改成功！",
+        "password_mismatch": "密码不匹配",
+        "danger_zone": "危险区域",
+        "delete_account": "删除我的账户",
+        "delete_confirm": "确定要删除您的账户吗？此操作无法撤销。",
+        "delete_confirm_button": "是的，删除我的账户",
+        "delete_cancel": "取消"
     },
     "members": {
         "role_badge": {

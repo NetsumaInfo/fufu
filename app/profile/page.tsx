@@ -6,7 +6,7 @@ import Image from "next/image";
 import { FadeIn } from "@/components/animations/FadeIn";
 import {
     User, Mail, Globe, Calendar, Save, Youtube,
-    Users, CheckCircle, AlertCircle, Camera, Loader2
+    Users, CheckCircle, AlertCircle, Camera, Loader2, Lock, Trash2, Shield
 } from "lucide-react";
 import { useAuth } from "@/lib/context/AuthContext";
 import { countries } from "@/lib/data/countries";
@@ -16,12 +16,22 @@ import { processAvatarImage, MAX_FILE_SIZE } from "@/lib/utils/imageProcessing";
 import { useTranslation } from "@/lib/context/TranslationContext";
 
 export default function ProfilePage() {
-    const { user, updateProfile, isAuthenticated, isLoading } = useAuth();
+    const { user, updateProfile, changePassword, deleteAccount, isAuthenticated, isLoading } = useAuth();
     const router = useRouter();
     const { t } = useTranslation();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isChangingPassword, setIsChangingPassword] = useState(false);
+    const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+    // Password change state
+    const [passwordForm, setPasswordForm] = useState({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+    });
 
     const [formState, setFormState] = useState({
         username: "",
@@ -487,6 +497,160 @@ export default function ProfilePage() {
                             )}
                         </button>
                     </form>
+
+                    {/* Security Section */}
+                    <div className="glass rounded-2xl p-6 md:p-8 border border-border mt-8">
+                        <h2 className="text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
+                            <Shield className="w-5 h-5 text-primary" />
+                            {t('profile.security')}
+                        </h2>
+
+                        <div className="grid md:grid-cols-3 gap-4">
+                            {/* Current Password */}
+                            <div>
+                                <label className="block text-sm font-medium text-foreground mb-1.5">
+                                    {t('profile.current_password')}
+                                </label>
+                                <div className="relative">
+                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                                        <Lock className="w-4 h-4" />
+                                    </div>
+                                    <input
+                                        type="password"
+                                        value={passwordForm.currentPassword}
+                                        onChange={(e) => setPasswordForm(prev => ({ ...prev, currentPassword: e.target.value }))}
+                                        className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
+                                        placeholder="••••••"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* New Password */}
+                            <div>
+                                <label className="block text-sm font-medium text-foreground mb-1.5">
+                                    {t('profile.new_password')}
+                                </label>
+                                <div className="relative">
+                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                                        <Lock className="w-4 h-4" />
+                                    </div>
+                                    <input
+                                        type="password"
+                                        value={passwordForm.newPassword}
+                                        onChange={(e) => setPasswordForm(prev => ({ ...prev, newPassword: e.target.value }))}
+                                        className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
+                                        placeholder="••••••"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Confirm New Password */}
+                            <div>
+                                <label className="block text-sm font-medium text-foreground mb-1.5">
+                                    {t('profile.confirm_new_password')}
+                                </label>
+                                <div className="relative">
+                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                                        <Lock className="w-4 h-4" />
+                                    </div>
+                                    <input
+                                        type="password"
+                                        value={passwordForm.confirmPassword}
+                                        onChange={(e) => setPasswordForm(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                                        className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
+                                        placeholder="••••••"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <button
+                            type="button"
+                            disabled={isChangingPassword || !passwordForm.currentPassword || !passwordForm.newPassword}
+                            onClick={async () => {
+                                if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+                                    setMessage({ type: 'error', text: t('profile.password_mismatch') });
+                                    return;
+                                }
+                                setIsChangingPassword(true);
+                                setMessage(null);
+                                const result = await changePassword(passwordForm.currentPassword, passwordForm.newPassword);
+                                if (result.success) {
+                                    setMessage({ type: 'success', text: t('profile.password_changed') });
+                                    setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+                                } else {
+                                    setMessage({ type: 'error', text: result.error || t('contact.error') });
+                                }
+                                setIsChangingPassword(false);
+                            }}
+                            className="mt-4 py-2.5 px-6 rounded-lg bg-primary/20 border border-primary/30 text-primary font-medium flex items-center gap-2 hover:bg-primary/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {isChangingPassword ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                                <Lock className="w-4 h-4" />
+                            )}
+                            {t('profile.change_password')}
+                        </button>
+                    </div>
+
+                    {/* Danger Zone */}
+                    <div className="glass rounded-2xl p-6 md:p-8 border border-red-500/30 mt-8">
+                        <h2 className="text-xl font-semibold text-red-400 mb-4 flex items-center gap-2">
+                            <Trash2 className="w-5 h-5" />
+                            {t('profile.danger_zone')}
+                        </h2>
+                        <p className="text-muted-foreground text-sm mb-4">
+                            {t('profile.delete_confirm')}
+                        </p>
+                        <button
+                            type="button"
+                            onClick={() => setShowDeleteModal(true)}
+                            className="py-2.5 px-6 rounded-lg bg-red-500/20 border border-red-500/30 text-red-400 font-medium flex items-center gap-2 hover:bg-red-500/30 transition-all"
+                        >
+                            <Trash2 className="w-4 h-4" />
+                            {t('profile.delete_account')}
+                        </button>
+                    </div>
+
+                    {/* Delete Confirmation Modal */}
+                    {showDeleteModal && (
+                        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+                            <div className="glass rounded-2xl p-6 max-w-md w-full border border-red-500/30">
+                                <h3 className="text-xl font-bold text-red-400 mb-4 flex items-center gap-2">
+                                    <AlertCircle className="w-6 h-6" />
+                                    {t('profile.delete_account')}
+                                </h3>
+                                <p className="text-muted-foreground mb-6">
+                                    {t('profile.delete_confirm')}
+                                </p>
+                                <div className="flex gap-3">
+                                    <button
+                                        onClick={() => setShowDeleteModal(false)}
+                                        className="flex-1 py-2.5 px-4 rounded-lg bg-card border border-border text-foreground font-medium hover:bg-card/80 transition-all"
+                                    >
+                                        {t('profile.delete_cancel')}
+                                    </button>
+                                    <button
+                                        onClick={async () => {
+                                            setIsDeletingAccount(true);
+                                            await deleteAccount();
+                                            setIsDeletingAccount(false);
+                                        }}
+                                        disabled={isDeletingAccount}
+                                        className="flex-1 py-2.5 px-4 rounded-lg bg-red-500 text-white font-medium flex items-center justify-center gap-2 hover:bg-red-600 transition-all disabled:opacity-50"
+                                    >
+                                        {isDeletingAccount ? (
+                                            <Loader2 className="w-4 h-4 animate-spin" />
+                                        ) : (
+                                            <Trash2 className="w-4 h-4" />
+                                        )}
+                                        {t('profile.delete_confirm_button')}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </FadeIn>
             </div>
         </div>

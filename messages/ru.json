@@ -108,7 +108,19 @@
         "team": "Команда",
         "save_button": "Сохранить изменения",
         "uploading": "Загрузка...",
-        "saving": "Сохранение..."
+        "saving": "Сохранение...",
+        "security": "Безопасность",
+        "current_password": "Текущий пароль",
+        "new_password": "Новый пароль",
+        "confirm_new_password": "Подтвердите новый пароль",
+        "change_password": "Изменить пароль",
+        "password_changed": "Пароль успешно изменён!",
+        "password_mismatch": "Пароли не совпадают",
+        "danger_zone": "Опасная зона",
+        "delete_account": "Удалить аккаунт",
+        "delete_confirm": "Вы уверены, что хотите удалить свой аккаунт? Это действие нельзя отменить.",
+        "delete_confirm_button": "Да, удалить мой аккаунт",
+        "delete_cancel": "Отмена"
     },
     "members": {
         "role_badge": {

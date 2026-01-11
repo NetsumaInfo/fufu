@@ -108,7 +108,19 @@
         "team": "チーム",
         "save_button": "変更を保存",
         "uploading": "アップロード中...",
-        "saving": "保存中..."
+        "saving": "保存中...",
+        "security": "セキュリティ",
+        "current_password": "現在のパスワード",
+        "new_password": "新しいパスワード",
+        "confirm_new_password": "新しいパスワードの確認",
+        "change_password": "パスワードを変更",
+        "password_changed": "パスワードが正常に変更されました！",
+        "password_mismatch": "パスワードが一致しません",
+        "danger_zone": "危険ゾーン",
+        "delete_account": "アカウントを削除",
+        "delete_confirm": "本当にアカウントを削除しますか？この操作は取り消せません。",
+        "delete_confirm_button": "はい、アカウントを削除します",
+        "delete_cancel": "キャンセル"
     },
     "members": {
         "role_badge": {
