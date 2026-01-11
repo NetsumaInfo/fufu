@@ -109,7 +109,22 @@
         "personal_info": "Informations personnelles",
         "social_links": "Réseaux sociaux",
         "save_success": "Profil mis à jour avec succès !",
-        "member_since": "Membre depuis le"
+        "member_since": "Membre depuis le",
+        "avatar_hint": "Cliquez sur l'avatar pour changer la photo (max 2MB)",
+        "username": "Pseudo",
+        "email": "Email",
+        "age": "Age",
+        "gender": "Genre",
+        "nationality": "Nationalité",
+        "select_country": "Sélectionnez un pays",
+        "youtube": "Chaîne YouTube",
+        "discord": "Pseudo Discord",
+        "twitter": "Twitter / X",
+        "bluesky": "Bluesky",
+        "team": "Team",
+        "save_button": "Sauvegarder les modifications",
+        "uploading": "Envoi...",
+        "saving": "Sauvegarde..."
     },
     "members": {
         "role_badge": {

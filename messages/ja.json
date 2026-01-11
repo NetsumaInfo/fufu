@@ -92,7 +92,22 @@
         "personal_info": "個人情報",
         "social_links": "SNSリンク",
         "save_success": "プロフィールが更新されました！",
-        "member_since": "参加日:"
+        "member_since": "参加日:",
+        "avatar_hint": "アバターをクリックして写真を変更 (最大 2MB)",
+        "username": "ユーザー名",
+        "email": "メールアドレス",
+        "age": "年齢",
+        "gender": "性別",
+        "nationality": "国籍",
+        "select_country": "国を選択",
+        "youtube": "YouTubeチャンネル",
+        "discord": "Discordユーザー名",
+        "twitter": "Twitter / X",
+        "bluesky": "Bluesky",
+        "team": "チーム",
+        "save_button": "変更を保存",
+        "uploading": "アップロード中...",
+        "saving": "保存中..."
     },
     "members": {
         "role_badge": {

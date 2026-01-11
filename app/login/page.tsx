@@ -33,7 +33,7 @@ export default function LoginPage() {
         password: "",
         confirmPassword: "",
         country: "",
-        dateOfBirth: "",
+        age: "",
         gender: "",
         team: "",
         // Optional social links
@@ -77,7 +77,7 @@ export default function LoginPage() {
     // Forgot password form state
     const [forgotEmail, setForgotEmail] = useState("");
 
-    const { login, register, requestPasswordReset, isAuthenticated } = useAuth();
+    const { login, register, isAuthenticated, isLoading } = useAuth();
     const router = useRouter();
 
     // Redirect if already logged in
@@ -98,12 +98,12 @@ export default function LoginPage() {
         setError("");
         setIsSubmitting(true);
 
-        const success = await login(loginForm.username, loginForm.password);
+        const result = await login(loginForm.username, loginForm.password);
 
-        if (success) {
+        if (result.success) {
             router.push("/");
         } else {
-            setError("Nom d'utilisateur ou mot de passe invalide.");
+            setError(result.error || "Nom d'utilisateur ou mot de passe invalide.");
             setIsSubmitting(false);
         }
     };
@@ -125,9 +125,10 @@ export default function LoginPage() {
             email: registerForm.email,
             password: registerForm.password,
             country: registerForm.country,
-            dateOfBirth: registerForm.dateOfBirth,
+            age: parseInt(registerForm.age),
             gender: registerForm.gender,
             team: registerForm.team,
+            avatar: profilePreview || undefined, // Include base64 avatar
             youtubeLink: registerForm.youtubeLink,
             discordId: registerForm.discordId,
             twitter: registerForm.twitter,
@@ -147,13 +148,23 @@ export default function LoginPage() {
         setError("");
         setIsSubmitting(true);
 
-        const success = await requestPasswordReset(forgotEmail);
+        try {
+            const response = await fetch("/api/auth/forgot-password", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: forgotEmail }),
+            });
 
-        if (success) {
-            setSuccessMessage("Si cette adresse e-mail est associée à un compte, vous recevrez un lien de réinitialisation.");
-            setForgotEmail("");
-        } else {
-            setError("Veuillez entrer une adresse e-mail valide.");
+            const result = await response.json();
+
+            if (response.ok) {
+                setSuccessMessage("Si cette adresse e-mail est associée à un compte, vous recevrez un lien de réinitialisation.");
+                setForgotEmail("");
+            } else {
+                setError(result.error || "Veuillez entrer une adresse e-mail valide.");
+            }
+        } catch {
+            setError("Erreur de connexion au serveur.");
         }
         setIsSubmitting(false);
     };
@@ -418,19 +429,20 @@ export default function LoginPage() {
 
                                     <div>
                                         <label className="block text-sm font-medium text-foreground mb-1.5">
-                                            {t('login.register.birthdate')} *
+                                            {t('login.register.age') || "Age"} *
                                         </label>
                                         <div className="relative">
                                             <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                                                 <Calendar className="w-4 h-4" />
                                             </div>
                                             <input
-                                                type="date"
+                                                type="number"
                                                 required
-                                                value={registerForm.dateOfBirth}
-                                                onChange={(e) => setRegisterForm(prev => ({ ...prev, dateOfBirth: e.target.value }))}
-                                                max={new Date().toISOString().split("T")[0]}
+                                                max="120"
+                                                value={registerForm.age}
+                                                onChange={(e) => setRegisterForm(prev => ({ ...prev, age: e.target.value }))}
                                                 className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
+                                                placeholder="Age"
                                             />
                                         </div>
                                     </div>

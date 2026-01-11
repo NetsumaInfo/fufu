@@ -84,14 +84,12 @@ export async function fetchAllVideosFromAPI(maxPages: number = 4): Promise<Video
 
             // Check if there's a next page
             if (!data.nextPageToken) {
-                console.log(`Loaded all videos after ${pageCount} pages`);
                 break;
             }
 
             pageToken = data.nextPageToken;
         }
 
-        console.log(`Fetched ${allVideos.length} videos from YouTube API`);
         return allVideos;
     } catch (error) {
         console.error("Error fetching all YouTube videos:", error);

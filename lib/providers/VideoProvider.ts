@@ -15,8 +15,6 @@ class VideoProvider {
     async getLatestVideos(options: VideoProviderOptions = {}): Promise<Video[]> {
         const { maxResults = 6 } = options;
 
-        console.log("[VideoProvider] getLatestVideos called");
-
         // 1. Try YouTube API (Best quality)
         // Delegate check to service to ensure we get logs
         try {
@@ -27,7 +25,6 @@ class VideoProvider {
         }
 
         // 2. Fallback to Mock Data
-        console.log("[VideoProvider] Fallback to mock data");
         return mockVideos.slice(0, maxResults);
     }
 
@@ -35,8 +32,6 @@ class VideoProvider {
      * Fetch all videos from YouTube channel (with pagination)
      */
     async getAllVideos(): Promise<Video[]> {
-        console.log("[VideoProvider] getAllVideos called");
-
         // 1. Try YouTube API with pagination
         try {
             // Fetch up to 200 videos (4 pages of 50)
@@ -47,7 +42,6 @@ class VideoProvider {
         }
 
         // 2. Fallback to Mock Data
-        console.log("[VideoProvider] Fallback to mock data");
         return mockVideos;
     }
 }

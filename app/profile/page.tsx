@@ -13,10 +13,12 @@ import { countries } from "@/lib/data/countries";
 import { teams, genders } from "@/lib/data/teams";
 import { cn } from "@/lib/utils";
 import { processAvatarImage, MAX_FILE_SIZE } from "@/lib/utils/imageProcessing";
+import { useTranslation } from "@/lib/context/TranslationContext";
 
 export default function ProfilePage() {
-    const { user, updateProfile, isAuthenticated } = useAuth();
+    const { user, updateProfile, isAuthenticated, isLoading } = useAuth();
     const router = useRouter();
+    const { t } = useTranslation();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -24,7 +26,7 @@ export default function ProfilePage() {
     const [formState, setFormState] = useState({
         username: "",
         email: "",
-        dateOfBirth: "",
+        age: 0,
         gender: "Non spécifié",
         country: "",
         youtubeLink: "",
@@ -51,7 +53,7 @@ export default function ProfilePage() {
             setFormState({
                 username: user.username || "",
                 email: user.email || "",
-                dateOfBirth: user.dateOfBirth || "",
+                age: user.age || 0,
                 gender: user.gender || "Non spécifié",
                 country: user.country || "",
                 youtubeLink: user.youtubeLink || "",
@@ -59,7 +61,7 @@ export default function ProfilePage() {
                 twitter: user.twitter || "",
                 bluesky: user.bluesky || "",
                 team: user.team || "Aucune Team",
-                avatar: user.avatar || ""
+                avatar: user.avatarUrl || "" // Use signed URL for display
             });
         }
     }, [user]);
@@ -76,9 +78,11 @@ export default function ProfilePage() {
 
         if (result.success && result.data) {
             setFormState(prev => ({ ...prev, avatar: result.data! }));
-            setMessage({ type: 'success', text: 'Photo de profil mise à jour ! N\'oubliez pas de sauvegarder.' });
+            // Note: success message is hardcoded in original but we can translate if we add a key.
+            // For now using safe default or direct string if key missing, but let's try to use generic success.
+            setMessage({ type: 'success', text: t('profile.save_success') + ' (Preview)' });
         } else {
-            setMessage({ type: 'error', text: result.error || 'Erreur lors du traitement de l\'image.' });
+            setMessage({ type: 'error', text: result.error || t('contact.error') });
         }
 
         setIsUploadingAvatar(false);
@@ -96,9 +100,9 @@ export default function ProfilePage() {
         const result = await updateProfile(formState);
 
         if (result.success) {
-            setMessage({ type: 'success', text: 'Profil mis à jour avec succès !' });
+            setMessage({ type: 'success', text: t('profile.save_success') });
         } else {
-            setMessage({ type: 'error', text: result.error || 'Une erreur est survenue.' });
+            setMessage({ type: 'error', text: result.error || t('contact.error') });
         }
 
         setIsSubmitting(false);
@@ -108,6 +112,14 @@ export default function ProfilePage() {
             setTimeout(() => setMessage(null), 3000);
         }
     };
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+        );
+    }
 
     if (!isAuthenticated) {
         return null;
@@ -168,14 +180,14 @@ export default function ProfilePage() {
                         </div>
 
                         <p className="text-xs text-muted-foreground mb-4">
-                            Cliquez sur l'avatar pour changer la photo (max 2MB)
+                            {t('profile.avatar_hint')}
                         </p>
 
                         <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-                            Mon Profil
+                            {t('profile.title')}
                         </h1>
                         <p className="text-muted-foreground mt-2">
-                            Modifiez vos informations personnelles
+                            {t('profile.subtitle')}
                         </p>
                     </div>
 
@@ -185,14 +197,14 @@ export default function ProfilePage() {
                         <div className="glass rounded-2xl p-6 md:p-8 border border-border">
                             <h2 className="text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
                                 <User className="w-5 h-5 text-primary" />
-                                Informations Personnelles
+                                {t('profile.personal_info')}
                             </h2>
 
                             <div className="grid md:grid-cols-2 gap-5">
                                 {/* Username */}
                                 <div>
                                     <label className="block text-sm font-medium text-foreground mb-1.5">
-                                        Pseudo
+                                        {t('profile.username')}
                                     </label>
                                     <div className="relative">
                                         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
@@ -205,7 +217,7 @@ export default function ProfilePage() {
                                             value={formState.username}
                                             onChange={(e) => setFormState(prev => ({ ...prev, username: e.target.value }))}
                                             className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
-                                            placeholder="Votre pseudo"
+                                            placeholder={t('profile.username')}
                                         />
                                     </div>
                                 </div>
@@ -213,7 +225,7 @@ export default function ProfilePage() {
                                 {/* Email */}
                                 <div>
                                     <label className="block text-sm font-medium text-foreground mb-1.5">
-                                        Email
+                                        {t('profile.email')}
                                     </label>
                                     <div className="relative">
                                         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
@@ -229,20 +241,20 @@ export default function ProfilePage() {
                                     </div>
                                 </div>
 
-                                {/* Date of Birth */}
+                                {/* Age */}
                                 <div>
                                     <label className="block text-sm font-medium text-foreground mb-1.5">
-                                        Date de naissance
+                                        {t('profile.age')}
                                     </label>
                                     <div className="relative">
                                         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                                             <Calendar className="w-4 h-4" />
                                         </div>
                                         <input
-                                            type="date"
-                                            value={formState.dateOfBirth}
-                                            onChange={(e) => setFormState(prev => ({ ...prev, dateOfBirth: e.target.value }))}
-                                            max={new Date().toISOString().split("T")[0]}
+                                            type="number"
+                                            value={formState.age}
+                                            onChange={(e) => setFormState(prev => ({ ...prev, age: parseInt(e.target.value) || 0 }))}
+                                            max="120"
                                             className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
                                         />
                                     </div>
@@ -251,7 +263,7 @@ export default function ProfilePage() {
                                 {/* Gender */}
                                 <div>
                                     <label className="block text-sm font-medium text-foreground mb-1.5">
-                                        Genre
+                                        {t('profile.gender')}
                                     </label>
                                     <div className="relative">
                                         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
@@ -279,7 +291,7 @@ export default function ProfilePage() {
                                 {/* Country */}
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-medium text-foreground mb-1.5">
-                                        Nationalité
+                                        {t('profile.nationality')}
                                     </label>
                                     <div className="relative">
                                         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
@@ -290,7 +302,7 @@ export default function ProfilePage() {
                                             onChange={(e) => setFormState(prev => ({ ...prev, country: e.target.value }))}
                                             className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm appearance-none cursor-pointer"
                                         >
-                                            <option value="">Sélectionnez un pays</option>
+                                            <option value="">{t('profile.select_country')}</option>
                                             {countries.map((country) => (
                                                 <option key={country} value={country}>
                                                     {country}
@@ -318,14 +330,14 @@ export default function ProfilePage() {
                                     <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
                                     <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
                                 </svg>
-                                Réseaux Sociaux
+                                {t('profile.social_links')}
                             </h2>
 
                             <div className="grid md:grid-cols-2 gap-5">
                                 {/* YouTube */}
                                 <div>
                                     <label className="block text-sm font-medium text-foreground mb-1.5">
-                                        Chaîne YouTube
+                                        {t('profile.youtube')}
                                     </label>
                                     <div className="relative">
                                         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-red-500">
@@ -344,7 +356,7 @@ export default function ProfilePage() {
                                 {/* Discord */}
                                 <div>
                                     <label className="block text-sm font-medium text-foreground mb-1.5">
-                                        Pseudo Discord
+                                        {t('profile.discord')}
                                     </label>
                                     <div className="relative">
                                         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-500">
@@ -358,7 +370,7 @@ export default function ProfilePage() {
                                             value={formState.discordId}
                                             onChange={(e) => setFormState(prev => ({ ...prev, discordId: e.target.value }))}
                                             className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground text-sm"
-                                            placeholder="TonPseudo"
+                                            placeholder={t('profile.discord')}
                                         />
                                     </div>
                                 </div>
@@ -366,7 +378,7 @@ export default function ProfilePage() {
                                 {/* Twitter */}
                                 <div>
                                     <label className="block text-sm font-medium text-foreground mb-1.5">
-                                        Twitter / X
+                                        {t('profile.twitter')}
                                     </label>
                                     <div className="relative">
                                         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground">
@@ -388,7 +400,7 @@ export default function ProfilePage() {
                                 {/* Bluesky */}
                                 <div>
                                     <label className="block text-sm font-medium text-foreground mb-1.5">
-                                        Bluesky
+                                        {t('profile.bluesky')}
                                     </label>
                                     <div className="relative">
                                         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-sky-500">
@@ -413,7 +425,7 @@ export default function ProfilePage() {
                         <div className="glass rounded-2xl p-6 md:p-8 border border-border">
                             <h2 className="text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
                                 <Users className="w-5 h-5 text-primary" />
-                                Team
+                                {t('profile.team')}
                             </h2>
 
                             <div className="relative">
@@ -465,12 +477,12 @@ export default function ProfilePage() {
                             {isSubmitting ? (
                                 <>
                                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                    Sauvegarde...
+                                    {t('profile.saving')}
                                 </>
                             ) : (
                                 <>
                                     <Save className="w-5 h-5" />
-                                    Sauvegarder les modifications
+                                    {t('profile.save_button')}
                                 </>
                             )}
                         </button>

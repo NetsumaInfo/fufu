@@ -92,7 +92,22 @@
         "personal_info": "Личная информация",
         "social_links": "Социальные сети",
         "save_success": "Профиль успешно обновлен!",
-        "member_since": "Участник с"
+        "member_since": "Участник с",
+        "avatar_hint": "Нажмите на аватар для смены фото (макс. 2МБ)",
+        "username": "Имя пользователя",
+        "email": "Email",
+        "age": "Возраст",
+        "gender": "Пол",
+        "nationality": "Национальность",
+        "select_country": "Выберите страну",
+        "youtube": "YouTube канал",
+        "discord": "Discord Имя пользователя",
+        "twitter": "Twitter / X",
+        "bluesky": "Bluesky",
+        "team": "Команда",
+        "save_button": "Сохранить изменения",
+        "uploading": "Загрузка...",
+        "saving": "Сохранение..."
     },
     "members": {
         "role_badge": {

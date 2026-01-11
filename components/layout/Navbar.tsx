@@ -173,10 +173,10 @@ export function Navbar() {
                                         onClick={() => setIsProfileOpen(!isProfileOpen)}
                                         className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer"
                                     >
-                                        {user.avatar ? (
+                                        {user.avatarUrl ? (
                                             <div className="w-6 h-6 rounded-full overflow-hidden">
                                                 <Image
-                                                    src={user.avatar}
+                                                    src={user.avatarUrl}
                                                     alt={user.username}
                                                     width={24}
                                                     height={24}
@@ -216,9 +216,9 @@ export function Navbar() {
                                                         {/* Avatar with ring */}
                                                         <div className="relative">
                                                             <div className="w-14 h-14 rounded-full overflow-hidden ring-2 ring-primary/50 ring-offset-2 ring-offset-[#0d1117] group-hover:ring-primary transition-all">
-                                                                {user.avatar ? (
+                                                                {user.avatarUrl ? (
                                                                     <Image
-                                                                        src={user.avatar}
+                                                                        src={user.avatarUrl}
                                                                         alt={user.username}
                                                                         width={56}
                                                                         height={56}
@@ -230,8 +230,6 @@ export function Navbar() {
                                                                     </div>
                                                                 )}
                                                             </div>
-                                                            {/* Online indicator */}
-                                                            <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-[#0d1117]" />
                                                         </div>
 
                                                         <div className="flex-1 min-w-0">
@@ -241,22 +239,7 @@ export function Navbar() {
                                                     </Link>
                                                 </div>
 
-                                                {/* Menu Items */}
-                                                <div className="p-2">
-                                                    <Link
-                                                        href="/profile"
-                                                        onClick={() => setIsProfileOpen(false)}
-                                                        className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-all group"
-                                                    >
-                                                        <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                                                            <Settings className="w-4 h-4 text-primary" />
-                                                        </div>
-                                                        <div>
-                                                            <span className="text-sm font-semibold text-white block">Mon Profil</span>
-                                                            <span className="text-xs text-gray-500">Gérer mon compte</span>
-                                                        </div>
-                                                    </Link>
-                                                </div>
+                                                {/* Menu Items - Removed duplicate Mon Profil */}
 
                                                 {/* Logout Button */}
                                                 <div className="p-2 border-t border-white/5">

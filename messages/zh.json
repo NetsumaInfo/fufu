@@ -92,7 +92,22 @@
         "personal_info": "个人信息",
         "social_links": "社交网络",
         "save_success": "资料更新成功！",
-        "member_since": "加入时间"
+        "member_since": "加入时间",
+        "avatar_hint": "点击头像更改照片 (最大 2MB)",
+        "username": "用户名",
+        "email": "邮箱",
+        "age": "年龄",
+        "gender": "性别",
+        "nationality": "国籍",
+        "select_country": "选择国家",
+        "youtube": "YouTube 频道",
+        "discord": "Discord 用户名",
+        "twitter": "Twitter / X",
+        "bluesky": "Bluesky",
+        "team": "团队",
+        "save_button": "保存更改",
+        "uploading": "上传中...",
+        "saving": "保存中..."
     },
     "members": {
         "role_badge": {

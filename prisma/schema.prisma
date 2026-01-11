@@ -1,0 +1,65 @@
+// Prisma Schema for Supabase PostgreSQL
+// Documentation: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Role enum for user permissions
+enum Role {
+  user
+  moderator
+  admin
+}
+
+// User model for authentication and profile
+model User {
+  id       String @id @default(uuid())
+  username String @unique
+  email    String @unique
+  password String // bcrypt hash
+  role     Role   @default(user) // user, moderator, admin
+
+  // Profile information
+  avatar  String? // URL to Supabase Storage
+  country String?
+  age     Int?
+  gender  String?
+  team    String?
+
+  // Social links
+  youtubeLink String?
+  discordId   String?
+  twitter     String?
+  bluesky     String?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  passwordResetTokens PasswordResetToken[]
+
+  @@index([username])
+  @@index([email])
+  @@map("users")
+}
+
+// Password reset tokens
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@index([userId])
+  @@map("password_reset_tokens")
+}

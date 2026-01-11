@@ -7,10 +7,10 @@
 export const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB in bytes
 
 // Target dimensions for avatar
-export const AVATAR_SIZE = 200; // 200x200 pixels
+export const AVATAR_SIZE = 400; // 400x400 pixels (higher quality)
 
-// Maximum compressed size
-export const MAX_COMPRESSED_SIZE = 100 * 1024; // 100KB
+// Maximum compressed size (increased for better quality)
+export const MAX_COMPRESSED_SIZE = 300 * 1024; // 300KB
 
 /**
  * Validates file type and size
