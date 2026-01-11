@@ -631,7 +631,7 @@ export default function ProfilePage() {
                                         {isDeletingAccount ? (
                                             <Loader2 className="w-4 h-4 animate-spin mx-auto" />
                                         ) : (
-                                            t('common.submit')
+                                            t('profile.delete_action')
                                         )}
                                     </button>
                                 </div>

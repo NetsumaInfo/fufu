@@ -120,7 +120,8 @@
         "delete_account": "Удалить аккаунт",
         "delete_confirm": "Вы уверены, что хотите удалить свой аккаунт? Это действие нельзя отменить.",
         "delete_confirm_button": "Да, удалить мой аккаунт",
-        "delete_cancel": "Отмена"
+        "delete_cancel": "Отмена",
+        "delete_action": "Удалить"
     },
     "members": {
         "role_badge": {

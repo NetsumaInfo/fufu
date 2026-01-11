@@ -120,7 +120,8 @@
         "delete_account": "アカウントを削除",
         "delete_confirm": "本当にアカウントを削除しますか？この操作は取り消せません。",
         "delete_confirm_button": "はい、アカウントを削除します",
-        "delete_cancel": "キャンセル"
+        "delete_cancel": "キャンセル",
+        "delete_action": "削除"
     },
     "members": {
         "role_badge": {

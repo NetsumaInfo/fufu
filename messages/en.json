@@ -137,7 +137,8 @@
         "delete_account": "Delete my account",
         "delete_confirm": "Are you sure you want to delete your account? This action cannot be undone.",
         "delete_confirm_button": "Yes, delete my account",
-        "delete_cancel": "Cancel"
+        "delete_cancel": "Cancel",
+        "delete_action": "Delete"
     },
     "members": {
         "role_badge": {

@@ -120,7 +120,8 @@
         "delete_account": "Eliminar mi cuenta",
         "delete_confirm": "¿Estás seguro de querer eliminar tu cuenta? Esta acción no se puede deshacer.",
         "delete_confirm_button": "Sí, eliminar mi cuenta",
-        "delete_cancel": "Cancelar"
+        "delete_cancel": "Cancelar",
+        "delete_action": "Eliminar"
     },
     "members": {
         "role_badge": {

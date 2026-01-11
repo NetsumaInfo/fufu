@@ -120,7 +120,8 @@
         "delete_account": "删除我的账户",
         "delete_confirm": "确定要删除您的账户吗？此操作无法撤销。",
         "delete_confirm_button": "是的，删除我的账户",
-        "delete_cancel": "取消"
+        "delete_cancel": "取消",
+        "delete_action": "删除"
     },
     "members": {
         "role_badge": {
