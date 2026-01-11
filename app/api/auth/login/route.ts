@@ -6,7 +6,7 @@ import { generateToken } from '@/lib/auth/jwt'
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json()
-        const { username, password } = body
+        const { username, password, rememberMe } = body
 
         // Validation
         if (!username || !password) {
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
-            maxAge: 7 * 24 * 60 * 60, // 7 days
+            maxAge: rememberMe ? 30 * 24 * 60 * 60 : 7 * 24 * 60 * 60, // 30 days if remember me, else 7 days
             path: '/',
         })
 

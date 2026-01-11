@@ -78,6 +78,7 @@
         "password": "Contraseña",
         "confirm_password": "Confirmar",
         "forgot_password": "¿Olvidaste tu contraseña?",
+        "remember_me": "Mantener sesión iniciada",
         "social_optional": "Redes sociales (opcional)",
         "date_of_birth": "Fecha de nacimiento",
         "gender": "Género",

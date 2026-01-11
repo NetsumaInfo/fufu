@@ -78,6 +78,7 @@
         "password": "Пароль",
         "confirm_password": "Подтверждение",
         "forgot_password": "Забыли пароль?",
+        "remember_me": "Запомнить меня",
         "social_optional": "Соцсети (желательно)",
         "date_of_birth": "Дата рождения",
         "gender": "Пол",

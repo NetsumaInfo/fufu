@@ -24,6 +24,7 @@ export default function LoginPage() {
     const [loginForm, setLoginForm] = useState({
         username: "",
         password: "",
+        rememberMe: false,
     });
 
     // Register form state
@@ -98,7 +99,7 @@ export default function LoginPage() {
         setError("");
         setIsSubmitting(true);
 
-        const result = await login(loginForm.username, loginForm.password);
+        const result = await login(loginForm.username, loginForm.password, loginForm.rememberMe);
 
         if (result.success) {
             router.push("/");
@@ -258,6 +259,20 @@ export default function LoginPage() {
                                                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                             </button>
                                         </div>
+                                    </div>
+
+                                    {/* Remember Me Checkbox */}
+                                    <div className="flex items-center gap-2">
+                                        <input
+                                            type="checkbox"
+                                            id="rememberMe"
+                                            checked={loginForm.rememberMe}
+                                            onChange={(e) => setLoginForm(prev => ({ ...prev, rememberMe: e.target.checked }))}
+                                            className="w-4 h-4 rounded border-border bg-card text-primary focus:ring-primary focus:ring-offset-0 cursor-pointer"
+                                        />
+                                        <label htmlFor="rememberMe" className="text-sm text-muted-foreground cursor-pointer select-none">
+                                            {t('login.remember_me')}
+                                        </label>
                                     </div>
 
                                     {error && (

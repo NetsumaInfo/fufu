@@ -78,6 +78,7 @@
         "password": "密码",
         "confirm_password": "确认密码",
         "forgot_password": "忘记密码？",
+        "remember_me": "保持登录状态",
         "social_optional": "社交网络 (可选)",
         "date_of_birth": "出生日期",
         "gender": "性别",
