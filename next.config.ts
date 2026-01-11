@@ -1,9 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-    // Output configuration for Docker deployment
-    output: 'standalone',
-
     // Optimisation des images
     images: {
         formats: ['image/avif', 'image/webp'],
@@ -31,3 +28,4 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
