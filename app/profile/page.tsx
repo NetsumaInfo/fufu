@@ -564,53 +564,45 @@ export default function ProfilePage() {
                             </div>
                         </div>
 
-                        <button
-                            type="button"
-                            disabled={isChangingPassword || !passwordForm.currentPassword || !passwordForm.newPassword}
-                            onClick={async () => {
-                                if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-                                    setMessage({ type: 'error', text: t('profile.password_mismatch') });
-                                    return;
-                                }
-                                setIsChangingPassword(true);
-                                setMessage(null);
-                                const result = await changePassword(passwordForm.currentPassword, passwordForm.newPassword);
-                                if (result.success) {
-                                    setMessage({ type: 'success', text: t('profile.password_changed') });
-                                    setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
-                                } else {
-                                    setMessage({ type: 'error', text: result.error || t('contact.error') });
-                                }
-                                setIsChangingPassword(false);
-                            }}
-                            className="mt-4 py-2.5 px-6 rounded-lg bg-primary/20 border border-primary/30 text-primary font-medium flex items-center gap-2 hover:bg-primary/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {isChangingPassword ? (
-                                <Loader2 className="w-4 h-4 animate-spin" />
-                            ) : (
-                                <Lock className="w-4 h-4" />
-                            )}
-                            {t('profile.change_password')}
-                        </button>
-                    </div>
+                        <div className="flex flex-wrap gap-3 mt-4">
+                            <button
+                                type="button"
+                                disabled={isChangingPassword || !passwordForm.currentPassword || !passwordForm.newPassword}
+                                onClick={async () => {
+                                    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+                                        setMessage({ type: 'error', text: t('profile.password_mismatch') });
+                                        return;
+                                    }
+                                    setIsChangingPassword(true);
+                                    setMessage(null);
+                                    const result = await changePassword(passwordForm.currentPassword, passwordForm.newPassword);
+                                    if (result.success) {
+                                        setMessage({ type: 'success', text: t('profile.password_changed') });
+                                        setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+                                    } else {
+                                        setMessage({ type: 'error', text: result.error || t('contact.error') });
+                                    }
+                                    setIsChangingPassword(false);
+                                }}
+                                className="py-2.5 px-6 rounded-lg bg-primary/20 border border-primary/30 text-primary font-medium flex items-center gap-2 hover:bg-primary/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {isChangingPassword ? (
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                    <Lock className="w-4 h-4" />
+                                )}
+                                {t('profile.change_password')}
+                            </button>
 
-                    {/* Danger Zone */}
-                    <div className="glass rounded-2xl p-6 md:p-8 border border-red-500/30 mt-8">
-                        <h2 className="text-xl font-semibold text-red-400 mb-4 flex items-center gap-2">
-                            <Trash2 className="w-5 h-5" />
-                            {t('profile.danger_zone')}
-                        </h2>
-                        <p className="text-muted-foreground text-sm mb-4">
-                            {t('profile.delete_confirm')}
-                        </p>
-                        <button
-                            type="button"
-                            onClick={() => setShowDeleteModal(true)}
-                            className="py-2.5 px-6 rounded-lg bg-red-500/20 border border-red-500/30 text-red-400 font-medium flex items-center gap-2 hover:bg-red-500/30 transition-all"
-                        >
-                            <Trash2 className="w-4 h-4" />
-                            {t('profile.delete_account')}
-                        </button>
+                            <button
+                                type="button"
+                                onClick={() => setShowDeleteModal(true)}
+                                className="py-2.5 px-6 rounded-lg bg-red-500/20 border border-red-500/30 text-red-400 font-medium flex items-center gap-2 hover:bg-red-500/30 transition-all"
+                            >
+                                <Trash2 className="w-4 h-4" />
+                                {t('profile.delete_account')}
+                            </button>
+                        </div>
                     </div>
 
                     {/* Delete Confirmation Modal */}
