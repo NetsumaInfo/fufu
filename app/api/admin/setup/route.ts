@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
-import { Role } from '@prisma/client'
 
 // Secret key to protect this endpoint (changez cette valeur!)
 const SETUP_SECRET = process.env.ADMIN_SETUP_SECRET || 'change-me-in-production'
@@ -31,7 +30,7 @@ export async function POST(request: NextRequest) {
             username,
             email,
             password,
-            role: Role.admin,
+            role: 'admin' as const,
             country,
             age: age ? parseInt(age) : null,
             gender,
