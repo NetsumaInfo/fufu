@@ -4,13 +4,13 @@ Site vitrine moderne et premium pour le collectif AMV Fulguria Team.
 
 ## 🚀 Démarrage rapide
 
-### Développement local (recommandé)
+### Développement local
 
 ```bash
 # Installation des dépendances
 npm install
 
-# Lancer le serveur de développement avec hot-reload
+# Lancer le serveur de développement
 npm run dev
 ```
 
@@ -19,21 +19,9 @@ Le site sera accessible sur [http://localhost:3000](http://localhost:3000)
 ### Production
 
 ```bash
-# Build de production (requis avant npm start)
 npm run build
-
-# Lancer le serveur de production
 npm start
 ```
-
-> **Note**: `npm start` nécessite un build de production préalable. Pour le développement, utilisez toujours `npm run dev`.
-
-## 📁 Structure du projet
-
-- `/app` - Pages Next.js (App Router)
-- `/components` - Composants React réutilisables
-- `/lib` - Utilitaires, types TypeScript et données mock
-- `/public` - Assets statiques (images, etc.)
 
 ## 🎨 Stack technologique
 
@@ -41,62 +29,68 @@ npm start
 - **UI**: React 19
 - **Styling**: TailwindCSS v3
 - **Animations**: Framer Motion
+- **Base de données**: PostgreSQL (Supabase)
+- **ORM**: Prisma
+- **Auth**: JWT + bcrypt
+- **Email**: Resend
+- **Storage**: Supabase Storage
 - **Language**: TypeScript
-- **Icons**: Lucide React
 
 ## 📄 Pages
 
-- `/` - Page d'accueil avec hero, preview équipe, vidéos récentes
-- `/team` - Page équipe avec profils détaillés par rôle
-- `/videos` - Galerie de toutes les vidéos
-- `/recruitment` - Page recrutement avec formulaire et FAQ
-- `/contact` - Page contact avec liens sociaux
+| Route | Description |
+|-------|-------------|
+| `/` | Accueil avec hero, équipe, vidéos |
+| `/team` | Profils détaillés par rôle |
+| `/videos` | Galerie des vidéos |
+| `/recruitment` | Recrutement + FAQ |
+| `/contact` | Liens sociaux |
+| `/login` | Connexion / Inscription |
+| `/profile` | Gestion du profil |
+| `/reset-password` | Réinitialisation mot de passe |
 
-## 🔧 Données mocké es
+## 🔐 Fonctionnalités Auth
 
-Actuellement, le site utilise des données mockées dans `/lib/data/`:
+- ✅ Inscription avec email de bienvenue
+- ✅ Connexion avec "Rester connecté" (30 jours)
+- ✅ Mot de passe oublié par email
+- ✅ Changement de mot de passe
+- ✅ Suppression de compte
 
-- `members.ts` - 8 membres de l'équipe
-- `videos.ts` - 15 vidéos AMV
-- `recruitment.ts` - Données de recrutement et FAQ
+## ⚙️ Variables d'environnement
 
-### Intégration API YouTube (Future)
+Copier `.env.example` vers `.env` et remplir :
 
-Le fichier `/lib/providers/VideoProvider.ts` est préparé pour intégrer l'API YouTube Data v3. Instructions détaillées dans les commentaires du fichier.
+```env
+DATABASE_URL=
+DIRECT_URL=
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+JWT_SECRET=
+RESEND_API_KEY=
+RESEND_FROM_EMAIL=
+NEXT_PUBLIC_APP_URL=
+YOUTUBE_API_KEY=
+YOUTUBE_CHANNEL_ID=
+DISCORD_WEBHOOK_URL=
+```
 
-## ♿ Accessibilité
+## 📁 Structure
 
-- Navigation clavier complète
-- Support `prefers-reduced-motion`
-- Labels ARIA
-- Focus trap dans les modales
-- Indicateurs de focus visibles
+```
+/app          - Pages Next.js (App Router)
+/components   - Composants React
+/lib          - Utils, auth, prisma, supabase
+/messages     - Traductions (fr, en, es, ja, ru, zh)
+/prisma       - Schema base de données
+/public       - Assets statiques
+```
 
-## 🎨 Design System
+## 🌐 Internationalisation
 
-Le design system est défini dans `/app/globals.css`:
-
-- **Thème sombre** avec effets glassmorphism
-- **Gradients** purple/pink pour l'identité visuelle
-- **Typographie** Inter (Google Fonts)
-- **Animations** subtiles et respectueuses
+6 langues supportées : 🇫🇷 🇬🇧 🇪🇸 🇯🇵 🇷🇺 🇨🇳
 
 ## 📱 Responsive
 
-Design mobile-first avec breakpoints:
-- Mobile: < 768px
-- Tablet: 768px - 1024px
-- Desktop: > 1024px
-
-## 🔮 Améliorations futures
-
-- Intégration API YouTube pour charger les vraies vidéos
-- Backend pour le formulaire de recrutement
-- CMS pour la gestion du contenu
-- Authentification membres (optionnel)
-- Page projets collaboratifs
-- Section blog/actualités
-
-## 📄 License
-
-© 2024 Fulguria Team - Tous droits réservés
+Mobile-first avec breakpoints : Mobile < 768px, Tablet 768-1024px, Desktop > 1024px
