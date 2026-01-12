@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { generateToken } from '@/lib/auth/jwt'
 
+export const runtime = 'edge';
+
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json()

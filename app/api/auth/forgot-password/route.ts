@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { getResendClient, getResendFromEmail } from '@/lib/resend'
 import crypto from 'crypto'
 
+export const runtime = 'edge';
+
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json()

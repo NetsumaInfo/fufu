@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 
+export const runtime = 'edge';
+
 // Secret key to protect this endpoint (changez cette valeur!)
 const SETUP_SECRET = process.env.ADMIN_SETUP_SECRET || 'change-me-in-production'
 

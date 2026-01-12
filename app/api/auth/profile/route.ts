@@ -4,6 +4,8 @@ import { verifyToken } from '@/lib/auth/jwt'
 import { uploadAvatarFromDataUrl, deleteAvatar, getAvatarSignedUrl } from '@/lib/supabase/storage'
 import bcrypt from 'bcryptjs'
 
+export const runtime = 'edge';
+
 // GET - Get user profile
 export async function GET(request: NextRequest) {
     try {

@@ -3,6 +3,7 @@ import { HomePageClient } from "@/components/home/HomePageClient";
 
 // Force dynamic rendering to access runtime env vars
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 export default async function HomePage() {
     // Load all available videos for infinite scroll

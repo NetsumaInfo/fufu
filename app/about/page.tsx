@@ -3,6 +3,7 @@ import { AboutPageClient } from "@/components/about/AboutPageClient";
 
 // Force dynamic rendering to access runtime env vars
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 export default async function AboutPage() {
     const videos = await getAllVideos();

@@ -5,6 +5,8 @@ import { generateToken } from '@/lib/auth/jwt'
 import { uploadAvatarFromDataUrl, getAvatarSignedUrl } from '@/lib/supabase/storage'
 import { getResendClient, getResendFromEmail } from '@/lib/resend'
 
+export const runtime = 'edge';
+
 // Helper function to send welcome email
 async function sendWelcomeEmail(email: string, username: string) {
     try {
