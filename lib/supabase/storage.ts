@@ -1,4 +1,4 @@
-import { supabaseAdmin as supabase } from './server'
+import { getSupabaseAdmin } from './server'
 
 // Bucket name - PRIVATE bucket
 const BUCKET_NAME = 'avatars'
@@ -18,6 +18,7 @@ export async function uploadAvatar(userId: string, file: File): Promise<string> 
     const filePath = `${userId}/${fileName}` // Organize by user ID
 
     // Upload to Supabase Storage (private bucket)
+    const supabase = getSupabaseAdmin()
     const { data, error } = await supabase.storage
         .from(BUCKET_NAME)
         .upload(filePath, file, {
@@ -48,6 +49,7 @@ export async function uploadAvatarFromDataUrl(userId: string, dataUrl: string): 
     const fileName = `${userId}-${Date.now()}.jpg`
     const filePath = `${userId}/${fileName}`
 
+    const supabase = getSupabaseAdmin()
     const { data, error } = await supabase.storage
         .from(BUCKET_NAME)
         .upload(filePath, blob, {
@@ -73,6 +75,7 @@ export async function uploadAvatarFromDataUrl(userId: string, dataUrl: string): 
 export async function getAvatarSignedUrl(filePath: string): Promise<string | null> {
     if (!filePath) return null
 
+    const supabase = getSupabaseAdmin()
     const { data, error } = await supabase.storage
         .from(BUCKET_NAME)
         .createSignedUrl(filePath, SIGNED_URL_EXPIRY)
@@ -97,6 +100,7 @@ export async function getAvatarSignedUrls(filePaths: string[]): Promise<(string 
         return filePaths.map(() => null)
     }
 
+    const supabase = getSupabaseAdmin()
     const { data, error } = await supabase.storage
         .from(BUCKET_NAME)
         .createSignedUrls(validPaths, SIGNED_URL_EXPIRY)
@@ -119,6 +123,7 @@ export async function deleteAvatar(filePath: string): Promise<void> {
     if (!filePath) return
 
     try {
+        const supabase = getSupabaseAdmin()
         const { error } = await supabase.storage
             .from(BUCKET_NAME)
             .remove([filePath])
