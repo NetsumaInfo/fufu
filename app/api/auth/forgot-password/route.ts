@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { Resend } from 'resend'
+import { getResendClient, getResendFromEmail } from '@/lib/resend'
 import crypto from 'crypto'
-
-const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: NextRequest) {
     try {
@@ -53,8 +51,9 @@ export async function POST(request: NextRequest) {
 
         // Send email
         try {
+            const resend = getResendClient()
             await resend.emails.send({
-                from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
+                from: getResendFromEmail(),
                 to: [email],
                 subject: 'Réinitialisation de votre mot de passe',
                 html: `

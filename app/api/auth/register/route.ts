@@ -3,15 +3,14 @@ import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { generateToken } from '@/lib/auth/jwt'
 import { uploadAvatarFromDataUrl, getAvatarSignedUrl } from '@/lib/supabase/storage'
-import { Resend } from 'resend'
-
-const resend = new Resend(process.env.RESEND_API_KEY)
+import { getResendClient, getResendFromEmail } from '@/lib/resend'
 
 // Helper function to send welcome email
 async function sendWelcomeEmail(email: string, username: string) {
     try {
+        const resend = getResendClient()
         await resend.emails.send({
-            from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
+            from: getResendFromEmail(),
             to: [email],
             subject: 'Bienvenue sur Fulguria ! 🎉',
             html: `
