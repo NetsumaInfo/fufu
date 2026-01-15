@@ -20,7 +20,7 @@ export async function requireAdmin(request: NextRequest) {
         }
 
         // Verify token
-        const payload = verifyToken(token)
+        const payload = await verifyToken(token)
         if (!payload) {
             return NextResponse.json(
                 { error: 'Unauthorized - Invalid token' },

@@ -1,4 +1,5 @@
 import { getSupabaseAdmin } from './server'
+import { safeError } from '../utils/errorLogger'
 
 // Bucket name - PRIVATE bucket
 const BUCKET_NAME = 'avatars'
@@ -27,7 +28,7 @@ export async function uploadAvatar(userId: string, file: File): Promise<string> 
         })
 
     if (error) {
-        console.error('Error uploading avatar:', error)
+        safeError('Error uploading avatar:', error)
         throw new Error('Failed to upload avatar')
     }
 
@@ -59,7 +60,7 @@ export async function uploadAvatarFromDataUrl(userId: string, dataUrl: string): 
         })
 
     if (error) {
-        console.error('Error uploading avatar:', error)
+        safeError('Error uploading avatar:', error)
         throw new Error('Failed to upload avatar')
     }
 
@@ -81,7 +82,7 @@ export async function getAvatarSignedUrl(filePath: string): Promise<string | nul
         .createSignedUrl(filePath, SIGNED_URL_EXPIRY)
 
     if (error) {
-        console.error('Error creating signed URL:', error)
+        safeError('Error creating signed URL:', error)
         return null
     }
 
@@ -106,7 +107,7 @@ export async function getAvatarSignedUrls(filePaths: string[]): Promise<(string 
         .createSignedUrls(validPaths, SIGNED_URL_EXPIRY)
 
     if (error) {
-        console.error('Error creating signed URLs:', error)
+        safeError('Error creating signed URLs:', error)
         return filePaths.map(() => null)
     }
 
@@ -129,11 +130,11 @@ export async function deleteAvatar(filePath: string): Promise<void> {
             .remove([filePath])
 
         if (error) {
-            console.error('Error deleting avatar:', error)
+            safeError('Error deleting avatar:', error)
             // Don't throw - it's okay if deletion fails
         }
     } catch (error) {
-        console.error('Error deleting avatar:', error)
+        safeError('Error deleting avatar:', error)
     }
 }
 

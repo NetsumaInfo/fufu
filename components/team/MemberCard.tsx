@@ -5,6 +5,8 @@ import { Youtube, Twitter, Instagram } from "lucide-react";
 import { Badge, getRoleBadgeVariant } from "@/components/ui/Badge";
 import { Member } from "@/lib/types";
 import { DiscordIcon } from "@/components/ui/DiscordIcon";
+import { TikTokIcon } from "@/components/ui/TikTokIcon";
+import { BilibiliIcon } from "@/components/ui/BilibiliIcon";
 import { useTranslation } from "@/lib/context/TranslationContext";
 
 interface MemberCardProps {
@@ -18,6 +20,8 @@ const socialIcons = {
     twitter: Twitter,
     instagram: Instagram,
     discord: DiscordIcon,
+    tiktok: TikTokIcon,
+    bilibili: BilibiliIcon,
 };
 
 export function MemberCard({ member, onClick }: MemberCardProps) {

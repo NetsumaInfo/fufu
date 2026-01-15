@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { safeError } from "@/lib/utils/errorLogger";
 
 export interface User {
     id: string;
@@ -87,7 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 }
             }
         } catch (error) {
-            console.error("Failed to fetch profile:", error);
+            safeError("Failed to fetch profile:", error);
         }
         setUser(null);
         return false;
@@ -121,7 +122,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             return { success: false, error: result.error || "Erreur lors de l'inscription" };
         } catch (error) {
-            console.error("Register error:", error);
+            safeError("Register error:", error);
             return { success: false, error: "Erreur de connexion au serveur" };
         }
     };
@@ -144,7 +145,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             return { success: false, error: result.error || "Identifiants incorrects" };
         } catch (error) {
-            console.error("Login error:", error);
+            safeError("Login error:", error);
             return { success: false, error: "Erreur de connexion au serveur" };
         }
     };
@@ -167,7 +168,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             return { success: false, error: result.error || "Erreur lors de la mise à jour" };
         } catch (error) {
-            console.error("Update profile error:", error);
+            safeError("Update profile error:", error);
             return { success: false, error: "Erreur de connexion au serveur" };
         }
     };
@@ -179,7 +180,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 credentials: "include",
             });
         } catch (error) {
-            console.error("Logout error:", error);
+            safeError("Logout error:", error);
         }
         setUser(null);
         router.push("/");
@@ -202,7 +203,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             return { success: false, error: result.error || "Erreur lors du changement de mot de passe" };
         } catch (error) {
-            console.error("Change password error:", error);
+            safeError("Change password error:", error);
             return { success: false, error: "Erreur de connexion au serveur" };
         }
     };
@@ -224,7 +225,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             return { success: false, error: result.error || "Erreur lors de la suppression du compte" };
         } catch (error) {
-            console.error("Delete account error:", error);
+            safeError("Delete account error:", error);
             return { success: false, error: "Erreur de connexion au serveur" };
         }
     };

@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getResendClient, getResendFromEmail } from '@/lib/resend'
-import crypto from 'crypto'
-
-export const runtime = 'edge';
+import { safeError } from '@/lib/utils/errorLogger'
 
 export async function POST(request: NextRequest) {
     try {
@@ -30,8 +28,10 @@ export async function POST(request: NextRequest) {
             })
         }
 
-        // Generate secure token
-        const token = crypto.randomBytes(32).toString('hex')
+        // Generate secure token using Web Crypto API (edge runtime compatible)
+        const array = new Uint8Array(32)
+        crypto.getRandomValues(array)
+        const token = Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('')
         const expiresAt = new Date(Date.now() + 3600000) // 1 hour
 
         // Delete old tokens for this user
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
         `,
             })
         } catch (emailError) {
-            console.error('Email sending error:', emailError)
+            safeError('Email sending error:', emailError)
             return NextResponse.json(
                 { error: 'Failed to send reset email' },
                 { status: 500 }
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
             message: 'If an account with that email exists, a password reset link has been sent.',
         })
     } catch (error) {
-        console.error('Forgot password error:', error)
+        safeError('Forgot password error:', error)
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }

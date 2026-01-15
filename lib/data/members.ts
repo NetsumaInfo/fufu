@@ -155,6 +155,18 @@ export const members: Member[] = [
         },
     },
     {
+        id: "ycgm",
+        slug: "ycgm",
+        pseudo: "YCGM",
+        primaryRole: "AMV Maker",
+        avatarUrl: "/images/team/PP/YCGM.png",
+        bioShort: ".",
+        socials: {
+            youtube: "https://www.youtube.com/@YCGM-cn7fu",
+            bilibili: "https://space.bilibili.com/21787827",
+        },
+    },
+    {
         id: "uram",
         slug: "uram",
         pseudo: "Uram's",
@@ -252,12 +264,13 @@ export function getRoleGroups() {
 }
 
 function getRoleDescription(role: Role): string {
-    const descriptions: Record<string, string> = {
-        "Leader": "Direction créative et coordination de l'équipe",
-        "AMV Maker": "Créateurs de contenus AMV et montage vidéo",
-        "Graphiste": "Effets visuels, motion design et création graphique",
+    // Return the translation key instead of the hardcoded string
+    const descriptionKeys: Record<string, string> = {
+        "Leader": "members.roles.Leader.description",
+        "AMV Maker": "members.roles.AMV Maker.description",
+        "Graphiste": "members.roles.Graphiste.description",
     };
-    return descriptions[role] || "";
+    return descriptionKeys[role] || "";
 }
 
 // Get featured members for homepage (2 from each role, or mixed)

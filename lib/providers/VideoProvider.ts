@@ -1,6 +1,7 @@
 import { Video } from "../types";
 import { videos as mockVideos } from "../data/videos";
 import { fetchVideosFromAPI, fetchAllVideosFromAPI } from "../services/youtubeApi";
+import { safeWarn } from "../utils/errorLogger";
 
 export interface VideoProviderOptions {
     maxResults?: number;
@@ -21,7 +22,7 @@ class VideoProvider {
             const apiVideos = await fetchVideosFromAPI(maxResults);
             if (apiVideos.length > 0) return apiVideos;
         } catch (err) {
-            console.warn("API fetch failed, falling back to mock", err);
+            safeWarn("API fetch failed, falling back to mock", err);
         }
 
         // 2. Fallback to Mock Data
@@ -38,7 +39,7 @@ class VideoProvider {
             const apiVideos = await fetchAllVideosFromAPI(4);
             if (apiVideos.length > 0) return apiVideos;
         } catch (err) {
-            console.warn("API fetch failed, falling back to mock", err);
+            safeWarn("API fetch failed, falling back to mock", err);
         }
 
         // 2. Fallback to Mock Data

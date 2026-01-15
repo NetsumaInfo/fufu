@@ -1,4 +1,5 @@
 import { Video } from "@/lib/types";
+import { safeError, safeWarn } from "@/lib/utils/errorLogger";
 
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
 const YOUTUBE_CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
@@ -10,7 +11,7 @@ interface YouTubeAPIResponse {
 
 export async function fetchVideosFromAPI(maxResults: number = 6): Promise<Video[]> {
     if (!YOUTUBE_API_KEY || !YOUTUBE_CHANNEL_ID) {
-        console.warn("YouTube API credentials missing");
+        safeWarn("YouTube API credentials missing");
         return [];
     }
 
@@ -25,7 +26,7 @@ export async function fetchVideosFromAPI(maxResults: number = 6): Promise<Video[
         });
 
         if (!response.ok) {
-            console.error(`YouTube API Error: ${response.statusText}`);
+            safeError(`YouTube API Error: ${response.statusText}`);
             return [];
         }
 
@@ -33,13 +34,13 @@ export async function fetchVideosFromAPI(maxResults: number = 6): Promise<Video[
 
         // Safe check for items array
         if (!data.items || !Array.isArray(data.items)) {
-            console.warn("YouTube API: No items in response");
+            safeWarn("YouTube API: No items in response");
             return [];
         }
 
         return mapYouTubeItems(data.items);
     } catch (error) {
-        console.error("Error fetching YouTube API:", error);
+        safeError("Error fetching YouTube API:", error);
         return [];
     }
 }
@@ -50,7 +51,7 @@ export async function fetchVideosFromAPI(maxResults: number = 6): Promise<Video[
  */
 export async function fetchAllVideosFromAPI(maxPages: number = 4): Promise<Video[]> {
     if (!YOUTUBE_API_KEY || !YOUTUBE_CHANNEL_ID) {
-        console.warn("YouTube API credentials missing");
+        safeWarn("YouTube API credentials missing");
         return [];
     }
 
@@ -68,14 +69,14 @@ export async function fetchAllVideosFromAPI(maxPages: number = 4): Promise<Video
             });
 
             if (!response.ok) {
-                console.error(`YouTube API Error: ${response.statusText}`);
+                safeError(`YouTube API Error: ${response.statusText}`);
                 break;
             }
 
             const data: YouTubeAPIResponse = await response.json();
 
             if (!data.items || !Array.isArray(data.items)) {
-                console.warn("YouTube API: No items in response");
+                safeWarn("YouTube API: No items in response");
                 break;
             }
 
@@ -92,7 +93,7 @@ export async function fetchAllVideosFromAPI(maxPages: number = 4): Promise<Video
 
         return allVideos;
     } catch (error) {
-        console.error("Error fetching all YouTube videos:", error);
+        safeError("Error fetching all YouTube videos:", error);
         return allVideos; // Return what we have so far
     }
 }

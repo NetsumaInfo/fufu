@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { generateToken } from '@/lib/auth/jwt'
-
-export const runtime = 'edge';
+import { safeError } from '@/lib/utils/errorLogger'
 
 export async function POST(request: NextRequest) {
     try {
@@ -44,7 +43,7 @@ export async function POST(request: NextRequest) {
         const { password: _, ...userWithoutPassword } = user
 
         // Generate JWT token
-        const token = generateToken({
+        const token = await generateToken({
             userId: user.id,
             username: user.username,
             email: user.email,
@@ -67,7 +66,7 @@ export async function POST(request: NextRequest) {
 
         return response
     } catch (error) {
-        console.error('Login error:', error)
+        safeError('Login error:', error)
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-export const runtime = 'edge';
+import { safeError } from '@/lib/utils/errorLogger'
 
 type FormType = 'apply' | 'contact';
 
@@ -30,7 +29,7 @@ export async function POST(request: NextRequest) {
         const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
 
         if (!webhookUrl) {
-            console.error('DISCORD_WEBHOOK_URL is not configured');
+            safeError('DISCORD_WEBHOOK_URL is not configured');
             return NextResponse.json(
                 { error: 'Service temporarily unavailable' },
                 { status: 503 }
@@ -143,7 +142,7 @@ export async function POST(request: NextRequest) {
 
         if (!discordResponse.ok) {
             const errorText = await discordResponse.text();
-            console.error('Discord webhook error:', errorText);
+            safeError('Discord webhook error:', errorText);
             return NextResponse.json(
                 { error: 'Failed to send message' },
                 { status: 500 }
@@ -153,7 +152,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ success: true });
 
     } catch (error) {
-        console.error('Contact API error:', error);
+        safeError('Contact API error:', error);
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }

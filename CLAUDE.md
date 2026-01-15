@@ -6,6 +6,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Fulguria Team showcase website - a modern Next.js 15 application built for an AMV (Anime Music Video) collective. This is a multilingual (6 languages), authenticated team showcase platform with user profiles, video galleries, and recruitment features.
 
+**Tech Stack**:
+- **Framework**: Next.js 15 (App Router, React 19, TypeScript)
+- **Database**: PostgreSQL via Supabase with Prisma 7.x + `@prisma/adapter-pg`
+- **Authentication**: JWT with HTTP-only cookies (HS256, 7-day expiry)
+- **Storage**: Supabase Storage (avatars, signed URLs)
+- **Email**: Resend (password resets)
+- **Styling**: TailwindCSS v3, Framer Motion
+- **i18n**: next-intl (6 languages: fr, en, es, ja, ru, zh)
+
 ## Commands
 
 ### Development
@@ -17,32 +26,34 @@ npm run lint        # Run ESLint
 
 ### Database
 ```bash
-npx prisma generate    # Generate Prisma client (required after schema changes)
+npx prisma generate    # Generate Prisma client (ALWAYS after schema changes)
 npx prisma migrate dev # Create and apply migrations
 npx prisma studio      # Open Prisma GUI to view/edit data
 ```
 
+**CRITICAL**: **ALWAYS run `npx prisma generate` after modifying `prisma/schema.prisma`** - TypeScript types will be out of sync otherwise.
+
 ### Build & Deploy
 ```bash
-npm run build                # Standard Next.js build (includes prisma generate)
-npm start                    # Production server
-npm run pages:build          # Cloudflare Pages build (uses @cloudflare/next-on-pages)
-npm run pages:dev           # Local Cloudflare Pages development
+npm run build     # Production build (includes prisma generate)
+npm start         # Production server
 ```
 
 ## Architecture
 
 ### Database & ORM Strategy
 
-**Critical**: This project uses **Prisma 7.x with PostgreSQL adapter** (`@prisma/adapter-pg`). The Prisma client is instantiated in `lib/prisma.ts` with the PrismaPg adapter wrapping a `pg.Pool` connection. This architecture is required for:
-- Cloudflare Pages compatibility (serverless edge runtime)
-- Connection pooling with Supabase's PgBouncer
+**Critical**: This project uses **Prisma 7.x with PostgreSQL adapter** (`@prisma/adapter-pg`). The Prisma client is instantiated in `lib/prisma.ts` with the PrismaPg adapter wrapping a `pg.Pool` connection. This architecture provides:
+- Efficient connection pooling with Supabase's PgBouncer
+- Better performance in serverless and traditional deployments
+- Compatibility with various hosting platforms
 
 When working with Prisma:
-- Always import from `lib/prisma.ts`, never create new PrismaClient instances
-- Run `npx prisma generate` after any schema changes
-- The Role enum in Prisma schema uses lowercase values (`user`, `moderator`, `admin`)
+- **ALWAYS import from `@/lib/prisma.ts`**, NEVER create new PrismaClient instances
+- **ALWAYS run `npx prisma generate` after any schema changes**
+- **CRITICAL**: The Role enum in Prisma schema uses lowercase string literals (`'user'`, `'moderator'`, `'admin'`), NOT enum values
 - Database URLs use connection pooling (`?pgbouncer=true`)
+- Import path uses TypeScript alias: `import { prisma } from '@/lib/prisma'`
 
 ### Authentication System
 
@@ -114,17 +125,61 @@ Layout structure: `AuthProvider` → `TranslationProvider` → `Navbar` → `Tra
 
 TailwindCSS v3 with custom configuration:
 - Mobile-first responsive design (breakpoints: md=768px, lg=1024px)
-- Uses `tailwind-merge` for conditional class merging
+- **ALWAYS use `tailwind-merge` (via `cn()` utility)** for conditional class merging
 - Custom font: Inter (loaded via next/font/google)
 - Global styles in `app/globals.css`
 
-### Cloudflare Pages Deployment
+### Code Style & Conventions
 
-This project is configured for Cloudflare Pages with `@cloudflare/next-on-pages`:
-- Build output goes to `.vercel/output/static`
-- Requires `compatibility_flags = ["nodejs_compat"]` in wrangler.toml
-- **Important**: Prisma enums must be used as string literals (not imported enum types) for edge runtime compatibility
-- Environment variables must be configured in Cloudflare dashboard
+**Import Paths**:
+- **ALWAYS use `@/` prefix** for imports from project root: `import { Component } from '@/components/ui/Component'`
+- TypeScript path alias configured: `"@/*": ["./*"]` in `tsconfig.json`
+
+**Error Handling & Logging**:
+- **ALWAYS use safe logging utilities** from `@/lib/utils/errorLogger.ts` to prevent "[Server] null" errors
+- Use `safeError()`, `safeWarn()`, `safeLog()` instead of direct console methods when logging unknown values
+- Example: `safeError('Failed to fetch user', error)` instead of `console.error('Failed', error)`
+
+**Custom Icons**:
+- Custom social media icons follow pattern in `@/components/ui/BilibiliIcon.tsx` and `@/components/ui/TikTokIcon.tsx`
+- Use `LucideProps` interface for prop typing
+- Set `fill="currentColor"` and `stroke="none"` for filled icons
+
+**API Response Format**:
+- **ALWAYS return consistent shape**: `{ success: boolean, data?: T, error?: string }`
+- Use `NextResponse.json()` for all API responses
+
+### Deployment
+
+This is a standard Next.js 15 application using Node.js runtime. It can be deployed on any platform that supports Next.js:
+
+**Recommended platforms:**
+- **Vercel** (zero configuration, recommended)
+- **Railway** / **Render** (Node.js hosting)
+- **Self-hosted** (VPS with Node.js)
+
+**Deployment requirements:**
+- Node.js 18+ runtime
+- PostgreSQL database (Supabase recommended)
+- All environment variables configured
+- `npm run build` compiles successfully
+
+**Important notes:**
+- Database connection uses `@prisma/adapter-pg` for efficient connection pooling
+- **CRITICAL**: Prisma enums must be used as string literals (e.g., `role: 'admin'` not `Role.ADMIN`)
+- External services (Supabase, Resend) use lazy instantiation for better performance
+- All API routes use edge runtime configuration for Cloudflare Pages compatibility (see recent commits)
+
+**Vercel deployment:**
+```bash
+vercel deploy
+```
+
+**Traditional deployment:**
+```bash
+npm run build
+npm start
+```
 
 ## Environment Variables
 
@@ -152,24 +207,34 @@ Required variables (see `.env.example` for full list with detailed comments):
 
 ### Adding a new API route
 1. Create `app/api/[route]/route.ts` with named exports (GET, POST, etc.)
-2. Import `prisma` from `lib/prisma.ts`
+2. **ALWAYS import `prisma` from `@/lib/prisma`** (use @/ alias)
 3. For authenticated routes: verify JWT from cookies, extract userId
-4. For admin routes: use `requireAdmin()` middleware
-5. Return `NextResponse.json()` with consistent `{ success, data?, error? }` shape
+4. For admin routes: **MUST use `requireAdmin()` middleware** from `@/lib/auth/requireAdmin`
+5. **ALWAYS return consistent shape**: `NextResponse.json({ success: boolean, data?, error? })`
+6. Use safe logging: `import { safeError } from '@/lib/utils/errorLogger'`
 
 ### Adding a new database model
 1. Update `prisma/schema.prisma`
 2. Run `npx prisma migrate dev --name descriptive_name`
-3. Run `npx prisma generate` (updates TypeScript types)
+3. **CRITICAL**: **ALWAYS run `npx prisma generate`** (updates TypeScript types)
 4. Commit both schema and migration files
+5. **BEFORE using new model**: Verify TypeScript types are generated (no import errors)
 
 ### Working with Supabase Storage
-1. Use `lib/supabase/server.ts` for server-side operations (has service role key)
-2. Use `lib/supabase/client.ts` for client-side operations (limited by RLS)
-3. Always generate signed URLs for serving protected files
+1. **ALWAYS use `@/lib/supabase/server.ts` for server-side operations** (has service role key)
+2. Use `@/lib/supabase/client.ts` for client-side operations (limited by RLS)
+3. **ALWAYS generate signed URLs** for serving protected files (15min expiry)
 4. Bucket naming convention: `avatars`, `videos`, etc.
+5. **NEVER expose permanent storage URLs** to clients
 
 ### Adding translations
-1. Add key to all 6 files in `messages/` (fr.json, en.json, es.json, ja.json, ru.json, zh.json)
+1. **ALWAYS add key to ALL 6 files** in `messages/` (fr.json, en.json, es.json, ja.json, ru.json, zh.json)
 2. Use nested objects for organization: `{ "auth": { "login": { "title": "..." } } }`
-3. Access via `t('auth.login.title')` in components
+3. Access via `t('auth.login.title')` in components with `useTranslations()` hook
+4. **NEVER hardcode UI strings** - all user-facing text must be in translation files
+
+### Adding a new UI component
+1. **ALWAYS use existing patterns** from `@/components/ui/` folder
+2. For icons: Follow `BilibiliIcon.tsx` or `TikTokIcon.tsx` pattern with `LucideProps`
+3. Use `cn()` utility from `tailwind-merge` for conditional classes
+4. Import components with `@/` alias: `import { Button } from '@/components/ui/button'`

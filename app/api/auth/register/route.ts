@@ -4,8 +4,7 @@ import bcrypt from 'bcryptjs'
 import { generateToken } from '@/lib/auth/jwt'
 import { uploadAvatarFromDataUrl, getAvatarSignedUrl } from '@/lib/supabase/storage'
 import { getResendClient, getResendFromEmail } from '@/lib/resend'
-
-export const runtime = 'edge';
+import { safeError } from '@/lib/utils/errorLogger'
 
 // Helper function to send welcome email
 async function sendWelcomeEmail(email: string, username: string) {
@@ -44,7 +43,7 @@ async function sendWelcomeEmail(email: string, username: string) {
             `,
         })
     } catch (error) {
-        console.error('Welcome email error:', error)
+        safeError('Welcome email error:', error)
         // Don't throw - email failure shouldn't block registration
     }
 }
@@ -134,7 +133,7 @@ export async function POST(request: NextRequest) {
                 const { password: _, ...userWithoutPassword } = { ...tempUser, avatar: avatarPath }
 
                 // Generate JWT token
-                const token = generateToken({
+                const token = await generateToken({
                     userId: tempUser.id,
                     username: tempUser.username,
                     email: tempUser.email,
@@ -152,7 +151,7 @@ export async function POST(request: NextRequest) {
                     token,
                 })
             } catch (uploadError) {
-                console.error('Avatar upload error:', uploadError)
+                safeError('Avatar upload error:', uploadError)
                 // Continue without avatar
             }
         }
@@ -194,7 +193,7 @@ export async function POST(request: NextRequest) {
             token,
         })
     } catch (error) {
-        console.error('Registration error:', error)
+        safeError('Registration error:', error)
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }

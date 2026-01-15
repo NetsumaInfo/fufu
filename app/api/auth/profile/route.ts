@@ -3,8 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { verifyToken } from '@/lib/auth/jwt'
 import { uploadAvatarFromDataUrl, deleteAvatar, getAvatarSignedUrl } from '@/lib/supabase/storage'
 import bcrypt from 'bcryptjs'
-
-export const runtime = 'edge';
+import { safeError } from '@/lib/utils/errorLogger'
 
 // GET - Get user profile
 export async function GET(request: NextRequest) {
@@ -21,7 +20,7 @@ export async function GET(request: NextRequest) {
         }
 
         // Verify token
-        const payload = verifyToken(token)
+        const payload = await verifyToken(token)
         if (!payload) {
             return NextResponse.json(
                 { error: 'Invalid token' },
@@ -58,7 +57,7 @@ export async function GET(request: NextRequest) {
             },
         })
     } catch (error) {
-        console.error('Get profile error:', error)
+        safeError('Get profile error:', error)
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }
@@ -81,7 +80,7 @@ export async function PATCH(request: NextRequest) {
         }
 
         // Verify token
-        const payload = verifyToken(token)
+        const payload = await verifyToken(token)
         if (!payload) {
             return NextResponse.json(
                 { error: 'Invalid token' },
@@ -145,7 +144,7 @@ export async function PATCH(request: NextRequest) {
                     await deleteAvatar(currentUser.avatar)
                 }
             } catch (uploadError) {
-                console.error('Avatar upload error:', uploadError)
+                safeError('Avatar upload error:', uploadError)
                 // Continue without updating avatar
             }
         }
@@ -185,7 +184,7 @@ export async function PATCH(request: NextRequest) {
             },
         })
     } catch (error) {
-        console.error('Update profile error:', error)
+        safeError('Update profile error:', error)
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }
@@ -208,7 +207,7 @@ export async function DELETE(request: NextRequest) {
         }
 
         // Verify token
-        const payload = verifyToken(token)
+        const payload = await verifyToken(token)
         if (!payload) {
             return NextResponse.json(
                 { error: 'Invalid token' },
@@ -233,7 +232,7 @@ export async function DELETE(request: NextRequest) {
             try {
                 await deleteAvatar(user.avatar)
             } catch (e) {
-                console.error('Error deleting avatar:', e)
+                safeError('Error deleting avatar:', e)
             }
         }
 
@@ -256,7 +255,7 @@ export async function DELETE(request: NextRequest) {
 
         return response
     } catch (error) {
-        console.error('Delete account error:', error)
+        safeError('Delete account error:', error)
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }
@@ -279,7 +278,7 @@ export async function PUT(request: NextRequest) {
         }
 
         // Verify token
-        const payload = verifyToken(token)
+        const payload = await verifyToken(token)
         if (!payload) {
             return NextResponse.json(
                 { error: 'Invalid token' },
@@ -340,7 +339,7 @@ export async function PUT(request: NextRequest) {
             message: 'Password changed successfully',
         })
     } catch (error) {
-        console.error('Change password error:', error)
+        safeError('Change password error:', error)
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }

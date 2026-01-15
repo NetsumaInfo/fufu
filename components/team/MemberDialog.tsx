@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { Youtube, Twitter, Instagram, Globe } from "lucide-react";
 import { DiscordIcon } from "@/components/ui/DiscordIcon";
+import { TikTokIcon } from "@/components/ui/TikTokIcon";
+import { BilibiliIcon } from "@/components/ui/BilibiliIcon";
 import { Dialog } from "@/components/ui/Dialog";
 import { Badge, getRoleBadgeVariant } from "@/components/ui/Badge";
 import { Member } from "@/lib/types";
@@ -21,17 +23,47 @@ const socialIcons = {
     instagram: Instagram,
     website: Globe,
     discord: DiscordIcon,
+    tiktok: TikTokIcon,
+    bilibili: BilibiliIcon,
 };
 
-const socialLabels: Record<string, string> = {
-    youtube: "YouTube",
-    x: "X (Twitter)",
-    twitter: "Twitter",
-    instagram: "Instagram",
-    website: "Site Web",
-    discord: "Discord",
-    tiktok: "TikTok",
-};
+
+
+// Extract username/handle from social URLs
+function extractHandle(platform: string, url: string): string {
+    if (!url) return "";
+
+    // Discord is already just the username
+    if (platform === 'discord' && !url.startsWith('http')) {
+        return url;
+    }
+
+    try {
+        // For Bilibili, extract the numeric ID
+        if (platform === 'bilibili') {
+            const match = url.match(/bilibili\.com\/(\d+)/);
+            return match ? match[1] : url;
+        }
+
+        // For other platforms, extract username from URL
+        const urlObj = new URL(url);
+        let pathname = urlObj.pathname;
+
+        // Remove leading/trailing slashes
+        pathname = pathname.replace(/^\/|\/$/g, '');
+
+        // Extract username part
+        if (pathname.includes('@')) {
+            return pathname.split('/').find(part => part.startsWith('@')) || pathname;
+        }
+
+        // For paths like "channel/UCxxx" or plain usernames
+        const parts = pathname.split('/');
+        return parts[parts.length - 1] || pathname;
+    } catch {
+        return url;
+    }
+}
 
 export function MemberDialog({ member, isOpen, onClose }: MemberDialogProps) {
     const { t, locale } = useTranslation();
@@ -100,36 +132,55 @@ export function MemberDialog({ member, isOpen, onClose }: MemberDialogProps) {
                     {/* Social links */}
                     <div>
                         <h4 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">{t('members.dialog.socials')}</h4>
-                        <div className="grid grid-cols-1 gap-2 sm:gap-3">
+                        <div className="flex flex-wrap gap-2">
                             {Object.entries(member.socials).map(([platform, url]) => {
                                 if (!url) return null;
                                 const Icon = socialIcons[platform as keyof typeof socialIcons] || Globe;
-                                const label = socialLabels[platform] || platform;
+                                const handle = extractHandle(platform, url);
 
-                                // Special handling for Discord
+                                // Check if handle is purely numeric (like Bilibili ID)
+                                const isNumeric = /^\d+$/.test(handle);
+
+                                // Special handling for Discord (non-clickable with @username)
                                 if (platform === 'discord' && !url.startsWith('http')) {
                                     return (
                                         <div
                                             key={platform}
-                                            className="flex items-center gap-3 p-2.5 sm:p-3 rounded-lg border border-border bg-secondary/50"
+                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border bg-secondary/50 text-sm"
                                         >
-                                            <Icon className="w-5 h-5 text-primary flex-shrink-0" />
-                                            <span className="flex-1 text-sm sm:text-base font-medium">{label}</span>
-                                            <span className="text-xs sm:text-sm text-muted-foreground">@{url}</span>
+                                            <Icon className="w-4 h-4 text-primary flex-shrink-0" />
+                                            <span className="text-muted-foreground">@{handle}</span>
                                         </div>
                                     );
                                 }
 
+                                // If numeric ID (like Bilibili), show only icon
+                                if (isNumeric) {
+                                    return (
+                                        <a
+                                            key={platform}
+                                            href={url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-border hover:border-primary hover:bg-primary/5 transition-all"
+                                        >
+                                            <Icon className="w-5 h-5 text-primary" />
+                                        </a>
+                                    );
+                                }
+
+                                // Regular social links with @username
+                                const displayHandle = handle.startsWith('@') ? handle : `@${handle}`;
                                 return (
                                     <a
                                         key={platform}
                                         href={url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex items-center gap-3 p-2.5 sm:p-3 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-all active:scale-[0.98]"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border hover:border-primary hover:bg-primary/5 transition-all text-sm"
                                     >
-                                        <Icon className="w-5 h-5 text-primary flex-shrink-0" />
-                                        <span className="flex-1 text-sm sm:text-base font-medium">{label}</span>
+                                        <Icon className="w-4 h-4 text-primary flex-shrink-0" />
+                                        <span className="text-muted-foreground">{displayHandle}</span>
                                     </a>
                                 );
                             })}

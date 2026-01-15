@@ -3,6 +3,7 @@
 import { Member } from "@/lib/types";
 import { MemberCard } from "./MemberCard";
 import { StaggerContainer, StaggerItem } from "@/components/animations/StaggerContainer";
+import { useTranslation } from "@/lib/context/TranslationContext";
 
 interface RoleSectionProps {
     role: string;
@@ -17,6 +18,8 @@ export function RoleSection({
     members,
     onMemberClick,
 }: RoleSectionProps) {
+    const { t } = useTranslation();
+
     if (members.length === 0) return null;
 
     return (
@@ -27,7 +30,7 @@ export function RoleSection({
                     {role}
                 </h3>
                 {description && (
-                    <p className="text-muted-foreground">{description}</p>
+                    <p className="text-muted-foreground">{t(description)}</p>
                 )}
             </div>
 

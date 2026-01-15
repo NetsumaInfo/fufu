@@ -9,6 +9,7 @@ export interface Socials {
     instagram?: string;
     discord?: string;
     tiktok?: string;
+    bilibili?: string;
     website?: string;
 }
 

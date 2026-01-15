@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
-
-export const runtime = 'edge';
+import { safeError } from '@/lib/utils/errorLogger'
 
 // Secret key to protect this endpoint (changez cette valeur!)
 const SETUP_SECRET = process.env.ADMIN_SETUP_SECRET || 'change-me-in-production'
@@ -108,7 +107,7 @@ export async function POST(request: NextRequest) {
             user: adminWithoutPassword,
         })
     } catch (error) {
-        console.error('Create admin error:', error)
+        safeError('Create admin error:', error)
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }

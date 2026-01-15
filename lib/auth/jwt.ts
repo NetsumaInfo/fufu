@@ -1,50 +1,52 @@
 /**
  * JWT Token utilities for authentication
- * Uses jsonwebtoken for secure HMAC-SHA256 signing
+ * Uses jose for secure HMAC-SHA256 signing (edge runtime compatible)
  */
 
-import jwt from 'jsonwebtoken'
+import { SignJWT, jwtVerify, type JWTPayload } from 'jose'
 
-export interface TokenPayload {
+export interface TokenPayload extends JWTPayload {
     userId: string
     username: string
     email: string
 }
 
-const getJwtSecret = (): string => {
+const getJwtSecret = (): Uint8Array => {
     const secret = process.env.JWT_SECRET
     if (!secret || secret.length < 32) {
         throw new Error('JWT_SECRET must be set and at least 32 characters long')
     }
-    return secret
+    // Convert secret string to Uint8Array for jose
+    return new TextEncoder().encode(secret)
 }
 
 /**
  * Generate a secure JWT token with HMAC-SHA256 signature
  */
-export function generateToken(payload: TokenPayload): string {
+export async function generateToken(payload: TokenPayload): Promise<string> {
     const secret = getJwtSecret()
 
-    return jwt.sign(payload, secret, {
-        algorithm: 'HS256',
-        expiresIn: '7d',
-    })
+    return await new SignJWT(payload)
+        .setProtectedHeader({ alg: 'HS256' })
+        .setIssuedAt()
+        .setExpirationTime('7d')
+        .sign(secret)
 }
 
 /**
  * Verify and decode token with cryptographic signature verification
  */
-export function verifyToken(token: string): TokenPayload | null {
+export async function verifyToken(token: string): Promise<TokenPayload | null> {
     try {
         const secret = getJwtSecret()
-        const decoded = jwt.verify(token, secret, {
+        const { payload } = await jwtVerify(token, secret, {
             algorithms: ['HS256'],
-        }) as TokenPayload & { iat: number; exp: number }
+        })
 
         return {
-            userId: decoded.userId,
-            username: decoded.username,
-            email: decoded.email,
+            userId: payload.userId as string,
+            username: payload.username as string,
+            email: payload.email as string,
         }
     } catch {
         return null

@@ -146,6 +146,17 @@
             "AMV Maker": "AMV Maker",
             "Graphiste": "Graphic Designer"
         },
+        "roles": {
+            "Leader": {
+                "description": "Creative direction and team coordination"
+            },
+            "AMV Maker": {
+                "description": "AMV content creators and video editing"
+            },
+            "Graphiste": {
+                "description": "Visual effects, motion design and graphic creation"
+            }
+        },
         "dialog": {
             "description": "Description",
             "socials": "Social Networks",
@@ -188,6 +199,9 @@
         },
         "atsuyo": {
             "bio_short": "Too many foreigners."
+        },
+        "ycgm": {
+            "bio_short": "Talented AMV Maker specialized in creative editing."
         },
         "uram": {
             "bio_short": "AMV Maker and Graphic Designer."
