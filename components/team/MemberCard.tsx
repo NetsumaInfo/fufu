@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Youtube, Twitter, Instagram } from "lucide-react";
+import { Youtube, Twitter, Instagram, Globe, Linkedin } from "lucide-react";
 import { Badge, getRoleBadgeVariant } from "@/components/ui/Badge";
 import { Member } from "@/lib/types";
 import { DiscordIcon } from "@/components/ui/DiscordIcon";
@@ -18,7 +18,9 @@ const socialIcons = {
     youtube: Youtube,
     x: Twitter,
     twitter: Twitter,
+    linkedin: Linkedin,
     instagram: Instagram,
+    website: Globe,
     discord: DiscordIcon,
     tiktok: TikTokIcon,
     bilibili: BilibiliIcon,

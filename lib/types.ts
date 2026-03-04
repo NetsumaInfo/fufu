@@ -6,6 +6,7 @@ export interface Socials {
     youtube?: string;
     x?: string;
     twitter?: string;
+    linkedin?: string;
     instagram?: string;
     discord?: string;
     tiktok?: string;

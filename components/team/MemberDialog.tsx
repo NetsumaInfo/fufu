@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Youtube, Twitter, Instagram, Globe } from "lucide-react";
+import { Youtube, Twitter, Instagram, Globe, Linkedin } from "lucide-react";
 import { DiscordIcon } from "@/components/ui/DiscordIcon";
 import { TikTokIcon } from "@/components/ui/TikTokIcon";
 import { BilibiliIcon } from "@/components/ui/BilibiliIcon";
@@ -20,6 +20,7 @@ const socialIcons = {
     youtube: Youtube,
     x: Twitter,
     twitter: Twitter,
+    linkedin: Linkedin,
     instagram: Instagram,
     website: Globe,
     discord: DiscordIcon,
@@ -48,9 +49,14 @@ function extractHandle(platform: string, url: string): string {
         // For other platforms, extract username from URL
         const urlObj = new URL(url);
         let pathname = urlObj.pathname;
+        const hostname = urlObj.hostname.replace(/^www\./, "");
 
         // Remove leading/trailing slashes
         pathname = pathname.replace(/^\/|\/$/g, '');
+
+        if (platform === 'website' || !pathname) {
+            return hostname;
+        }
 
         // Extract username part
         if (pathname.includes('@')) {
@@ -154,8 +160,8 @@ export function MemberDialog({ member, isOpen, onClose }: MemberDialogProps) {
                                     );
                                 }
 
-                                // If numeric ID (like Bilibili), show only icon
-                                if (isNumeric) {
+                                // If numeric ID (like Bilibili) or LinkedIn, show only icon
+                                if (isNumeric || platform === 'linkedin') {
                                     return (
                                         <a
                                             key={platform}
@@ -170,7 +176,12 @@ export function MemberDialog({ member, isOpen, onClose }: MemberDialogProps) {
                                 }
 
                                 // Regular social links with @username
-                                const displayHandle = handle.startsWith('@') ? handle : `@${handle}`;
+                                const displayHandle =
+                                    platform === 'website'
+                                        ? handle
+                                        : handle.startsWith('@')
+                                            ? handle
+                                            : `@${handle}`;
                                 return (
                                     <a
                                         key={platform}
